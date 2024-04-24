@@ -16,4 +16,4 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
-Route::get('userAll', [AuthController::class, 'getUser']);
+Route::get('userAll', [AuthController::class, 'userAll']);
