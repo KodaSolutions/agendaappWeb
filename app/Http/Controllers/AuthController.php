@@ -38,5 +38,9 @@ class AuthController extends Controller
 
         return response()->json(compact('user'));
     }
+    public function userAll(){
+        $user = User::all();
+        return response()->json(compact('user'));
+    }
 }
 
