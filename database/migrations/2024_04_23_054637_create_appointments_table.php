@@ -16,8 +16,8 @@ return new class extends Migration
         Schema::create('appointments', function (Blueprint $table) {
             $table->id();
             $table->foreignId('client_id')->constrained('clients')->onDelete('cascade');
-            $table->foreignId('created_by')->constrained('user_details')->onDelete('cascade'); // Asistente que creó la cita
-            $table->foreignId('doctor_id')->constrained('user_details')->onDelete('cascade'); // Doctor a cargo
+            $table->foreignId('created_by')->constrained('user_details')->onDelete('cascade'); 
+            $table->foreignId('doctor_id')->constrained('user_details')->onDelete('cascade'); 
             $table->date('appointment_date');
             $table->string('treatment_type');
             $table->string('payment_method');
