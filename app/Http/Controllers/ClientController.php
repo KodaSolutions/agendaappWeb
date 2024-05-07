@@ -15,6 +15,7 @@ class ClientController extends Controller
         $client->name = $validatedData['name'];
         $client->number = $validatedData['number'];
         $client->email = $validatedData['email'];
+        $client->visit_count = 0;
         $client->save();
         return response()->json(['message' => 'Client creado correctamente', 'client' => $client], 201);
     }

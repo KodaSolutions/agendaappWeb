@@ -13,5 +13,6 @@ class Client extends Model
         'name',
         'number',
         'email',
+        'visit_count'
     ];
 }
