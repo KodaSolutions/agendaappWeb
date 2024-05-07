@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ClientController;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,3 +22,4 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 /*rutas para uso Flutter*/
 Route::post('login', [AuthController::class, 'login']);
 Route::get('user', [AuthController::class, 'getUser'])->middleware('jwt.auth');
+Route::post('createClient', [ClientController::class, 'createClient']);
