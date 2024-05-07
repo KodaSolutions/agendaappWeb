@@ -19,4 +19,8 @@ class ClientController extends Controller
         $client->save();
         return response()->json(['message' => 'Client creado correctamente', 'client' => $client], 201);
     }
+    public function getClients(){
+        $clients = Client::all();
+        return response()->json(compact('clients'));
+    }
 }
