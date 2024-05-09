@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ClientController;
+use App\Http\Controllers\AppointmentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -24,3 +25,4 @@ Route::post('login', [AuthController::class, 'login']);
 Route::get('user', [AuthController::class, 'getUser'])->middleware('jwt.auth');
 Route::post('createClient', [ClientController::class, 'createClient']);
 Route::get('clientsAll', [ClientController::class, 'getClients']);
+Route::post('createAppoinment', [AppointmentController::class, 'store']);
