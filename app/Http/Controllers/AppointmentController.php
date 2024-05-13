@@ -16,14 +16,16 @@ class AppointmentController extends Controller
                 'time' => 'required', 
                 'treatment' => 'required|string', 
             ]);
+            $dateTime = $validatedData['date'] . ' ' . $validatedData['time'];
             $user = Auth::user();
             $appointment = new Appointment;
             $appointment->client_id = $validatedData['client_id'];
             $appointment->created_by = $user->id;
             $appointment->doctor_id = $user->id;
-            $appointment->appointment_date = $validatedData['date'] . ' ' . $validatedData['time'];
+            $appointment->appointment_date = $dateTime; 
             $appointment->treatment_type = $validatedData['treatment'];
             $appointment->status = 'Upcoming'; 
+            $appointment->payment_method = 'Tarjeta'; 
             $appointment->save();
             return response()->json([
                 'message' => 'Appointment creado correctamente',
