@@ -14,7 +14,8 @@ class AppointmentController extends Controller
                 'client_id' => 'required|exists:clients,id',
                 'date' => 'required|date',
                 'time' => 'required', 
-                'treatment' => 'required|string', 
+                'treatment' => 'required|string',
+                'name' => 'required|string',
             ]);
             $dateTime = $validatedData['date'] . ' ' . $validatedData['time'];
             $user = Auth::user();
