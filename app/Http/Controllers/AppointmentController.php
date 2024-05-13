@@ -26,6 +26,7 @@ class AppointmentController extends Controller
             $appointment->treatment_type = $validatedData['treatment'];
             $appointment->status = 'Upcoming'; 
             $appointment->payment_method = 'Tarjeta'; 
+            $appointment->client_name = $validatedData['name']; 
             $appointment->save();
             return response()->json([
                 'message' => 'Appointment creado correctamente',
