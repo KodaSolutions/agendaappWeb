@@ -11,7 +11,7 @@ class AppointmentController extends Controller
     public function store(Request $request){
         try {
             $validatedData = $request->validate([
-                'client_id' => 'required|exists:clients,id',
+                'client_id' => 'required',
                 'date' => 'required|date',
                 'time' => 'required', 
                 'treatment' => 'required|string',
