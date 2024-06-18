@@ -57,7 +57,7 @@ class AppointmentController extends Controller
     } 
     public function deleteAppoinment($id){
         $appt = Appointment::find($id);
-        if($appt->destroy()){
+        if($appt->delete()){
             return response()->json(['message' => 'Appointment eliminado con exito', 'appointment' => $appt], 200);
         }else{
             return response()->json([
