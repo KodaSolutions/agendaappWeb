@@ -61,7 +61,7 @@ class AppointmentController extends Controller
             return response()->json(['message' => 'Appointment eliminado con exito', 'appointment' => $appt], 200);
         }else{
             return response()->json([
-                'message' => 'Error al crear la cita',
+                'message' => 'Error al eliminar appointment',
                 'error' => $e->getMessage()
             ], 500);
         }
