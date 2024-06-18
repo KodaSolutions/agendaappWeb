@@ -26,4 +26,5 @@ Route::get('user', [AuthController::class, 'getUser'])->middleware('jwt.auth');
 Route::post('createClient', [ClientController::class, 'createClient']);
 Route::get('clientsAll', [ClientController::class, 'getClients']);
 Route::post('createAppoinment', [AppointmentController::class, 'store']);
+Route::post('deleteAppoinment/{id}', [AppointmentController::class, 'delete']);
 Route::get('getAppoinments', [AppointmentController::class, 'getAppoinments']);

@@ -55,4 +55,15 @@ class AppointmentController extends Controller
         $appointments = Appointment::all();
         return response()->json(compact('appointments'));
     } 
+    public function deleteAppoinment($id){
+        $appt = Appointment::find($id);
+        if($appt->destroy()){
+            return response()->json(['message' => 'Appointment eliminado con exito', 'appointment' => $appt], 200);
+        }else{
+            return response()->json([
+                'message' => 'Error al crear la cita',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
 }
