@@ -51,8 +51,8 @@ class AppointmentController extends Controller
             ], 500);
         }
     }
-    public function getAppoinments(){
-        $appointments = Appointment::all();
+    public function getAppoinments($id){
+        $appointments = Appointment::where('doctor_id', $id);
         return response()->json(compact('appointments'));
     } 
     public function deleteAppoinment($id){
