@@ -52,7 +52,7 @@ class AppointmentController extends Controller
         }
     }
     public function getAppoinments($id){
-        $appointments = Appointment::where('doctor_id', $id);
+        $appointments = Appointment::where('doctor_id', $id)->get();
         return response()->json(compact('appointments'));
     } 
     public function deleteAppoinment($id){
