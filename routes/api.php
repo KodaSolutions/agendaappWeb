@@ -27,5 +27,5 @@ Route::post('createClient', [ClientController::class, 'createClient']);
 Route::get('clientsAll', [ClientController::class, 'getClients']);
 Route::post('createAppoinment', [AppointmentController::class, 'store']);
 Route::post('deleteAppoinment/{id}', [AppointmentController::class, 'deleteAppoinment']);
-Route::post('editAppoinment/{id}', [AppointmentController::class, 'editAppoinment']);
+Route::put('editAppoinment/{id}', [AppointmentController::class, 'editAppoinment']);
 Route::get('getAppoinments/{id}', [AppointmentController::class, 'getAppoinments']);
