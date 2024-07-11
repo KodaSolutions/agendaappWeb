@@ -66,38 +66,27 @@ class AppointmentController extends Controller
             ], 500);
         }
     }
-    public function editAppoinment($id){
-       try {
+    public function editAppoinment(Request $request, $id){
+        try {
             $validatedData = $request->validate([
-                'client_id' => 'required',
                 'date' => 'required|date',
-                'time' => 'required',
-                'treatment' => 'string',
-                'name' => 'string',
+                'time' => 'required|date_format:H:i',
             ]);
-
             $dateTime = $validatedData['date'] . ' ' . $validatedData['time'];
             $appt = Appointment::find($id);
-            
             if (!$appt) {
                 return response()->json([
                     'message' => 'Cita no encontrada',
+                    'error' => 'No se encontró una cita con el ID proporcionado.'
                 ], 404);
             }
-            $clientZero = $validatedData['client_id'];
-            if($clientZero === 0){
-                $clientZero = 1;
-            }
-            $appt->client_id = $clientZero;
             $appt->appointment_date = $dateTime;
-            $appt->treatment_type = $validatedData['treatment'];
-            $appt->client_name = $validatedData['name'];
             $appt->save();
+
             return response()->json([
                 'message' => 'Cita actualizada correctamente',
                 'appointment' => $appt
             ], 200);
-
         } catch (\Illuminate\Validation\ValidationException $e) {
             return response()->json([
                 'message' => 'Error de validación',
