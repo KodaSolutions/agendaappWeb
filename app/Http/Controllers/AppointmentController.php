@@ -70,7 +70,7 @@ class AppointmentController extends Controller
         try {
             $validatedData = $request->validate([
                 'date' => 'required|date',
-                'time' => 'required|date_format:H:i',
+                'time' => 'required|date_format:H:i:s',
             ]);
             $dateTime = $validatedData['date'] . ' ' . $validatedData['time'];
             $appt = Appointment::find($id);
