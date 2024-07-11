@@ -53,7 +53,7 @@ class AppointmentController extends Controller
     }
     public function getAppoinments($id){
         $appointments = Appointment::where('doctor_id', $id)->get();
-        return response()->json(compact('appointments'));
+        return response()->json(['appointments' => $appointments]);
     } 
     public function deleteAppoinment($id){
         $appt = Appointment::find($id);
@@ -62,6 +62,50 @@ class AppointmentController extends Controller
         }else{
             return response()->json([
                 'message' => 'Error al eliminar appointment',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
+    public function editAppoinment($id){
+       try {
+            $validatedData = $request->validate([
+                'client_id' => 'required',
+                'date' => 'required|date',
+                'time' => 'required',
+                'treatment' => 'required|string',
+                'name' => 'string',
+            ]);
+
+            $dateTime = $validatedData['date'] . ' ' . $validatedData['time'];
+            $appt = Appointment::find($id);
+            
+            if (!$appt) {
+                return response()->json([
+                    'message' => 'Cita no encontrada',
+                ], 404);
+            }
+            $clientZero = $validatedData['client_id'];
+            if($clientZero === 0){
+                $clientZero = 1;
+            }
+            $appt->client_id = $clientZero;
+            $appt->appointment_date = $dateTime;
+            $appt->treatment_type = $validatedData['treatment'];
+            $appt->client_name = $validatedData['name'];
+            $appt->save();
+            return response()->json([
+                'message' => 'Cita actualizada correctamente',
+                'appointment' => $appt
+            ], 200);
+
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return response()->json([
+                'message' => 'Error de validación',
+                'errors' => $e->errors()
+            ], 422);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Error al actualizar la cita',
                 'error' => $e->getMessage()
             ], 500);
         }
