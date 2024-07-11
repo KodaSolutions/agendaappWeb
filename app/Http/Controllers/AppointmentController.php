@@ -72,7 +72,7 @@ class AppointmentController extends Controller
                 'client_id' => 'required',
                 'date' => 'required|date',
                 'time' => 'required',
-                'treatment' => 'required|string',
+                'treatment' => 'string',
                 'name' => 'string',
             ]);
 
