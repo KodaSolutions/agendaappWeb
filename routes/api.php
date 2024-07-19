@@ -29,3 +29,4 @@ Route::post('createAppoinment', [AppointmentController::class, 'store']);
 Route::post('deleteAppoinment/{id}', [AppointmentController::class, 'deleteAppoinment']);
 Route::put('editAppoinment/{id}', [AppointmentController::class, 'editAppoinment']);
 Route::get('getAppoinments/{id}', [AppointmentController::class, 'getAppoinments']);
+Route::get('getAppoinmentsAssit', [AppointmentController::class, 'getAppoinmentsAssit']);
