@@ -52,7 +52,7 @@ class AppointmentController extends Controller
         }
     }
     public function getAppoinments($id){
-        if($id === 3){
+        if($id == 3){
             $appointments = Appointment::all();
         }
         else{
