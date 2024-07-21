@@ -53,7 +53,7 @@ class AppointmentController extends Controller
     }
     public function getAppoinments($id){
         if($id === 3){
-            $appointment = Appointment::all();
+            $appointments = Appointment::all();
         }
         else{
             $appointments = Appointment::where('doctor_id', $id)->get();
