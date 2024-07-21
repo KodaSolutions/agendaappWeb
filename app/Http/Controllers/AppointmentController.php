@@ -52,6 +52,7 @@ class AppointmentController extends Controller
         }
     }
     public function getAppoinments($id){
+        dd($id);
         if($id == 3){
             $appointments = Appointment::all();
         }
