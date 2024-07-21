@@ -52,7 +52,12 @@ class AppointmentController extends Controller
         }
     }
     public function getAppoinments($id){
-        $appointments = Appointment::where('doctor_id', $id)->get();
+        if($id === 3){
+            $appointment = Appointment::all();
+        }
+        else{
+            $appointments = Appointment::where('doctor_id', $id)->get();
+        }
         return response()->json(['appointments' => $appointments]);
     }
     public function getAppoinmentsAssit(){
