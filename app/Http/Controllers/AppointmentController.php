@@ -72,7 +72,7 @@ class AppointmentController extends Controller
         }else{
             $appointments = Appointment::where('doctor_id', $id)->whereDate('appointment_date', $date)->get();
         }
-        return response()->json('appointments' => $appointments);
+        return response()->json(['appointments' => $appointments]);
     }
     public function deleteAppoinment($id){
         $appt = Appointment::find($id);
