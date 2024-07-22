@@ -30,3 +30,4 @@ Route::post('deleteAppoinment/{id}', [AppointmentController::class, 'deleteAppoi
 Route::put('editAppoinment/{id}', [AppointmentController::class, 'editAppoinment']);
 Route::get('getAppoinments/{id}', [AppointmentController::class, 'getAppoinments']);
 Route::get('getAppoinmentsAssit', [AppointmentController::class, 'getAppoinmentsAssit']);
+Route::get('getAppointmentsByDate/{id}/{date}', [AppointmentController::class,'getNotifications']);

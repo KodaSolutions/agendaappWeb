@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Appointment;
 use Auth;
-
+use Carbon\Carbon;
 class AppointmentController extends Controller
 {
     public function store(Request $request){
@@ -64,6 +64,16 @@ class AppointmentController extends Controller
         $appointment = Appointment::all();
         return response()->json(['appointments' => $appointments]);
     } 
+    public function getNotifications($id, $date){
+        $id = (int) $id;
+        $date = Carbon::parse($date);
+        if($id === 3){
+            $appointments = Appointment::whereDate('appointment_date', $date)->get();
+        }else{
+            $appointments = Appointment::where('doctor_id', $id)->whereDate('appointment_date', $date)->get();
+        }
+        return response()->json('appointments' => $appointments);
+    }
     public function deleteAppoinment($id){
         $appt = Appointment::find($id);
         if($appt->delete()){
