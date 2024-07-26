@@ -16,10 +16,19 @@ class AppointmentController extends Controller
                 'time' => 'required', 
                 'treatment' => 'required|string',
                 'name' => 'required|string',
+                'dr_id' => 'number',
             ]);
 
             $dateTime = $validatedData['date'] . ' ' . $validatedData['time'];
             $user = Auth::user();
+            $id = $user->id;
+            $id = (int) $id;
+            if($id === 3){
+                $doctor_id = $validatedData['dr_id'];
+            }else{
+                $doctor_id = Auth::user();
+                $doctor_id = $user->id;
+            }
             $appointment = new Appointment;
             $clientZero = $validatedData['client_id'];
             if($clientZero === 0){
@@ -27,7 +36,7 @@ class AppointmentController extends Controller
             }
             $appointment->client_id = $clientZero;
             $appointment->created_by = $user->id;
-            $appointment->doctor_id = $user->id;
+            $appointment->doctor_id = $doctor_id;
             $appointment->appointment_date = $dateTime; 
             $appointment->treatment_type = $validatedData['treatment'];
             $appointment->status = 'Upcoming'; 
