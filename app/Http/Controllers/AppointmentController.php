@@ -16,7 +16,7 @@ class AppointmentController extends Controller
                 'time' => 'required', 
                 'treatment' => 'required|string',
                 'name' => 'required|string',
-                'dr_id' => 'number',
+                'dr_id' => 'numeric',
             ]);
 
             $dateTime = $validatedData['date'] . ' ' . $validatedData['time'];
