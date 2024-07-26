@@ -26,7 +26,7 @@ class AppointmentController extends Controller
             if($id === 3){
                 $doctor_id = $validatedData['dr_id'];
             }else{
-                $doctor_id = Auth::user();
+                //$doctor_id = Auth::user();
                 $doctor_id = $user->id;
             }
             $appointment = new Appointment;
