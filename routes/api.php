@@ -31,3 +31,5 @@ Route::put('editAppoinment/{id}', [AppointmentController::class, 'editAppoinment
 Route::get('getAppoinments/{id}', [AppointmentController::class, 'getAppoinments']);
 Route::get('getAppoinmentsAssit', [AppointmentController::class, 'getAppoinmentsAssit']);
 Route::get('getAppointmentsByDate/{id}/{date}', [AppointmentController::class,'getNotifications']);
+Route::put('/appointments/{id}/read', [AppointmentController::class, 'notificationRead']);
+

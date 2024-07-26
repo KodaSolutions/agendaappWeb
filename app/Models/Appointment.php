@@ -15,5 +15,6 @@ class Appointment extends Model
         'appointment_date',
         'treatment_type',
         'status',
+        'notification_read',
     ];
 }
