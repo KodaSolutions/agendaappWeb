@@ -154,5 +154,32 @@ class AppointmentController extends Controller
             ], 500);
         }
     }
+    public function notificationUnRead($id) {
+        try{
+            $appt = Appointment::find($id);
+            if (!$appt) {
+                return response()->json([
+                    'message' => 'Appointment no encontrado'
+                ], 404);
+            }
+
+            $appt->notification_read = false;
+            if ($appt->save()) {
+                return response()->json([
+                    'message' => 'Notification marcada como no leída',
+                    'appointment' => $appt
+                ], 200);
+            } else {
+                return response()->json([
+                    'message' => 'Error al marcar notification como no leída'
+                ], 500);
+            }
+        }catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Error al procesar la solicitud',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
 
 }
