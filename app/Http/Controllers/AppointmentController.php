@@ -71,7 +71,7 @@ class AppointmentController extends Controller
     }
     public function getAppoinmentsAssit(){
         $appointment = Appointment::all();
-        return response()->json(['appointments' => $appointments]);
+        return response()->json(compact('appointment'));
     } 
     public function getNotifications($id, $date){
         $id = (int) $id;
