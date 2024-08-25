@@ -61,11 +61,6 @@ class PushNotification extends Notification
         ];
     }
 
-    public function via($notifiable)
-    {
-        return [ApnChannel::class];
-    }
-
     public function toApn($notifiable)
     {
         return ApnMessage::create()
