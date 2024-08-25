@@ -19,13 +19,12 @@ Route::get('/', function () {
     return view('welcome');
 });
 Route::get('userAll', [AuthController::class, 'userAll']);
-Route::get('/send-test-notification/{user_id}', function ($user_id) {
-    $user = User::find($user_id); // Busca al usuario por su ID
-    
-    if ($user) {
+Route::get('/send-test-notification', function () {
+    $users = User::all();
+
+    foreach ($users as $user) {
         $user->notify(new PushNotification());
-        return "Notificación de prueba enviada al usuario con ID: $user_id";
-    } else {
-        return "Usuario no encontrado";
     }
+
+    return "Notificaciones de prueba enviadas a todos los usuarios.";
 });

@@ -29,7 +29,7 @@ class PushNotification extends Notification
      */
     public function via($notifiable)
     {
-        return [ApnChannel::class];
+        return ['apn'];
     }
 
     /**
