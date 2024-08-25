@@ -29,7 +29,7 @@ class PushNotification extends Notification
      */
     public function via($notifiable)
     {
-       return [ApnChannel::class];
+        return [ApnChannel::class];
     }
 
     /**
@@ -38,7 +38,13 @@ class PushNotification extends Notification
      * @param  mixed  $notifiable
      * @return \Illuminate\Notifications\Messages\MailMessage
      */
-
+    public function toMail($notifiable)
+    {
+        return (new MailMessage)
+                    ->line('The introduction to the notification.')
+                    ->action('Notification Action', url('/'))
+                    ->line('Thank you for using our application!');
+    }
 
     /**
      * Get the array representation of the notification.
@@ -55,9 +61,10 @@ class PushNotification extends Notification
 
     public function toApn($notifiable)
     {
-         return ApnMessage::create()
-            ->badge(1)
-            ->title('Título de Notificación')
-            ->body('Este es un mensaje de prueba para notificaciones push.');
+    return ApnMessage::create()
+        ->badge(1)
+        ->title('Titulo de Notificación')
+        ->body('Este es un mensaje de prueba push')
+        ->custom('user_id', $notifiable->id);
     }
 }
