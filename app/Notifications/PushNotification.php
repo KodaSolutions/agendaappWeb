@@ -3,8 +3,6 @@
 namespace App\Notifications;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Notifications\Messages\MailMessage;  
 use Illuminate\Notifications\Notification;
 use NotificationChannels\Apn\ApnChannel;
 use NotificationChannels\Apn\ApnMessage;
@@ -63,10 +61,9 @@ class PushNotification extends Notification
 
     public function toApn($notifiable)
     {
-        return ApnMessage::create()
-            ->badge(1) // Número en la insignia de la app (en el ícono)
-            ->title('Prueba') // Título de la notificación
-            ->body('Este es un mensaje de prueba para notificaciones push') // Cuerpo del mensaje
-            ->custom('custom_data_key', 'custom_data_value'); // Puedes añadir datos personalizados
+         return ApnMessage::create()
+            ->badge(1)
+            ->title('Título de Notificación')
+            ->body('Este es un mensaje de prueba para notificaciones push.');
     }
 }
