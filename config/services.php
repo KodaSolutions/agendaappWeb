@@ -36,7 +36,7 @@ return [
         'team_id' => '4DTG6D2N48', // Aquí coloca el ID de tu equipo
         'app_bundle_id' => 'com.example.beauteApp', // Aquí coloca tu Bundle ID
         'private_key' => base_path('AuthKey_RS9Q55GH9X.p8'), // Ruta completa al archivo .p8 que descargaste
-        'production' => false, // Cambia a true cuando estés listo para producción
+        'production' => true, // Cambia a true cuando estés listo para producción
     ],
 
 
