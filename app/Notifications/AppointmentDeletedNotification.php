@@ -19,9 +19,10 @@ class AppointmentDeletedNotification extends Notification
         $this->appointmentDate = $appointmentDate;
     }
 
+    // Elimina el método 'via' o devuelve un array vacío si no se usa.
     public function via($notifiable)
     {
-        return ['fcm'];
+        return [];
     }
 
     public function toFcm($notifiable)
@@ -35,7 +36,7 @@ class AppointmentDeletedNotification extends Notification
 
         $message = CloudMessage::withTarget('token', $token)
             ->withNotification(FCMNotification::create('Appointment Eliminado', 'Se ha eliminado un appointment programado para ' . $this->appointmentDate))
-            ->withData(['appointment_date' => $this->appointmentDate]);
+            ->withData(['extra_info' => $this->appointmentDate]);
 
         try {
             $messaging->send($message);
@@ -51,4 +52,5 @@ class AppointmentDeletedNotification extends Notification
         ];
     }
 }
+
 
