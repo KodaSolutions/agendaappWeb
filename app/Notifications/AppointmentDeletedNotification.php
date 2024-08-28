@@ -4,6 +4,8 @@ namespace App\Notifications;
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
+use NotificationChannels\Apn\ApnChannel;
+use NotificationChannels\Apn\ApnMessage;
 use Kreait\Firebase\Factory;
 use Kreait\Firebase\Messaging\CloudMessage;
 use Kreait\Firebase\Messaging\Notification as FCMNotification;
@@ -27,8 +29,8 @@ class AppointmentDeletedNotification extends Notification
 
     public function toFcm($notifiable)
     {
-        //$token = $notifiable->fcm_token;
-        $token = $notifiable->routeNotificationFor('fcm');
+        $token = $notifiable->fcm_token;
+        
 
         $factory = (new Factory)
             ->withServiceAccount(base_path('config/serverkey.json'));
