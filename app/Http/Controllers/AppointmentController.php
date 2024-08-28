@@ -99,17 +99,18 @@ class AppointmentController extends Controller
                     // Obtener el usuario (doctor) asociado al appointment
                     $doctor = User::find($doctorId);
 
-                    if ($doctor && $doctor->fcm_token) {
-                        // Enviar notificación al doctor
-                        Notification::send($doctor, new AppointmentDeletedNotification($appointmentDate));
+                if ($doctor && $doctor->fcm_token) {
+                    // Crear una instancia de la notificación y enviar la notificación directamente
+                    $notification = new AppointmentDeletedNotification($appointmentDate);
+                    $notification->toFcm($doctor);  // Llamada directa
 
-                        // Incluir el token FCM en la respuesta
-                        return response()->json([
-                            'message' => 'Appointment eliminado con éxito',
-                            'appointment' => $appt,
-                            'fcm_token' => $doctor->fcm_token, // Token FCM agregado aquí
-                        ], 200);
-                    }
+                    return response()->json([
+                        'message' => 'Appointment eliminado con éxito',
+                        'appointment' => $appt,
+                        'fcm_token' => $doctor->fcm_token,
+                    ], 200);
+                }
+
 
                     // Si el doctor no tiene un token FCM
                     return response()->json([
