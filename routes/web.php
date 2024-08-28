@@ -29,8 +29,6 @@ Route::get('/send-test-notification', function () {
 });
 Route::get('/send-fcm-notification', function () {
     $fcmToken = 'dvjVhgkBhkygr2vbhaVgbC:APA91bGJf2svB7B6atCxhJMH4eagZW9u6p9j7rRu_r0VHQrsG2sq91k04nnaCAPaqv290TqoYLF7wtvugQlWBGzkeFGPWAqoGJ769WRyR0VpXm5dYsrT2MrKmtjzaH3oQFcw_CWid79Y';
-
-    // Crear una clase anónima (notificable temporal) que use el trait Notifiable
     $notifiable = new class {
         use Notifiable;
 
@@ -41,11 +39,7 @@ Route::get('/send-fcm-notification', function () {
 
         public $fcmToken;
     };
-
-    // Asignar el token FCM al objeto notifiable
     $notifiable->fcmToken = $fcmToken;
-
-    // Enviar la notificación FCM manualmente
     $notification = new \App\Notifications\PushNotification();
     $notification->toFcm($notifiable);
 
