@@ -16,8 +16,11 @@ class AuthController extends Controller
             if (!$token = JWTAuth::attempt($credentials)) {
                 return response()->json(['error' => 'invalid_credentials'], 401);
             }
-
             $user = auth()->user();
+            if ($request->has('fcm_token')) {
+                $user->fcm_token = $request->input('fcm_token');
+                $user->save();
+            }
         } catch (JWTException $e) {
             return response()->json(['error' => 'could_not_create_token'], 500);
         }
