@@ -28,7 +28,7 @@ Route::get('/send-test-notification', function () {
     return "Notificación de prueba enviada.";
 });
 Route::get('/send-fcm-notification', function () {
-    $fcmToken = 'fymY5Pd9R0jXmETfwn7zPk:APA91bGTXyDMgVGOu0CjM524ys3zqtiSS1srEIP9rXcgNUYEjxYyGR1zhGBPlswT9PYwt0QhVNQyi3pQcOIESd7oXTzi0Gjg6HF5fI7rYev6zFK8dUTloIm1XCt_mIhPSHwMvBl6z6UV';
+    $fcmToken = 'dvjVhgkBhkygr2vbhaVgbC:APA91bGJf2svB7B6atCxhJMH4eagZW9u6p9j7rRu_r0VHQrsG2sq91k04nnaCAPaqv290TqoYLF7wtvugQlWBGzkeFGPWAqoGJ769WRyR0VpXm5dYsrT2MrKmtjzaH3oQFcw_CWid79Y';
 
     // Crear una clase anónima (notificable temporal) que use el trait Notifiable
     $notifiable = new class {
