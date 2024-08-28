@@ -86,7 +86,8 @@ class AppointmentController extends Controller
         }
         return response()->json(['appointments' => $appointments]);
     }
-    public function deleteAppoinment($id){
+    public function deleteAppoinment($id)
+    {
         try {
             $appt = Appointment::find($id);
 
@@ -101,9 +102,20 @@ class AppointmentController extends Controller
                     if ($doctor && $doctor->fcm_token) {
                         // Enviar notificación al doctor
                         Notification::send($doctor, new AppointmentDeletedNotification($appointmentDate));
+
+                        // Incluir el token FCM en la respuesta
+                        return response()->json([
+                            'message' => 'Appointment eliminado con éxito',
+                            'appointment' => $appt,
+                            'fcm_token' => $doctor->fcm_token, // Token FCM agregado aquí
+                        ], 200);
                     }
 
-                    return response()->json(['message' => 'Appointment eliminado con éxito', 'appointment' => $appt], 200);
+                    // Si el doctor no tiene un token FCM
+                    return response()->json([
+                        'message' => 'Appointment eliminado, pero el doctor no tiene un token FCM registrado',
+                        'appointment' => $appt,
+                    ], 200);
                 }
             }
 
@@ -116,6 +128,7 @@ class AppointmentController extends Controller
             ], 500);
         }
     }
+
 
     public function editAppoinment(Request $request, $id){
         try {
