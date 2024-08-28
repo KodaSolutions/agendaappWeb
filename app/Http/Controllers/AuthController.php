@@ -34,7 +34,14 @@ class AuthController extends Controller
             ]
         ]);
     }
-
+    public function logout(Request $request){
+        try {
+            JWTAuth::invalidate(JWTAuth::getToken());
+            return response()->json(['message' => 'Cierre de sesion Excioso']);
+        } catch (\Tymon\JWTAuth\Exceptions\JWTException $e) {
+            return response()->json(['error' => 'Fallo al cerrar sesion, intente nuevamente'], 500);
+        }
+    }
     public function getUser(Request $request){
         try {
             if (!$user = JWTAuth::parseToken()->authenticate()) {
