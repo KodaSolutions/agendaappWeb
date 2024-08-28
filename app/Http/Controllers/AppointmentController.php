@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Models\Appointment;
 use Auth;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Notification;
+use App\Notifications\AppointmentDeletedNotification;
 class AppointmentController extends Controller
 {
     public function store(Request $request){
@@ -84,16 +86,36 @@ class AppointmentController extends Controller
         return response()->json(['appointments' => $appointments]);
     }
     public function deleteAppoinment($id){
-        $appt = Appointment::find($id);
-        if($appt->delete()){
-            return response()->json(['message' => 'Appointment eliminado con exito', 'appointment' => $appt], 200);
-        }else{
+        try {
+            $appt = Appointment::find($id);
+
+            if ($appt) {
+                $doctorId = $appt->doctor_id; // Extraer el ID del doctor
+                $appointmentDate = $appt->appointment_date;
+
+                if ($appt->delete()) {
+                    // Obtener el usuario (doctor) asociado al appointment
+                    $doctor = User::find($doctorId);
+
+                    if ($doctor && $doctor->fcm_token) {
+                        // Enviar notificación al doctor
+                        Notification::send($doctor, new AppointmentDeletedNotification($appointmentDate));
+                    }
+
+                    return response()->json(['message' => 'Appointment eliminado con éxito', 'appointment' => $appt], 200);
+                }
+            }
+
+            return response()->json(['message' => 'Appointment no encontrado'], 404);
+
+        } catch (\Exception $e) {
             return response()->json([
                 'message' => 'Error al eliminar appointment',
                 'error' => $e->getMessage()
             ], 500);
         }
     }
+
     public function editAppoinment(Request $request, $id){
         try {
             $validatedData = $request->validate([
