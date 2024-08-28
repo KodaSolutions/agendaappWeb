@@ -27,16 +27,20 @@ class AppointmentDeletedNotification extends Notification
 
     public function toFcm($notifiable)
     {
-        $token = $notifiable->fcm_token;
+        //$token = $notifiable->fcm_token;
+        $token = $notifiable->routeNotificationFor('fcm');
 
         $factory = (new Factory)
             ->withServiceAccount(base_path('config/serverkey.json'));
-
         $messaging = $factory->createMessaging();
 
-        $message = CloudMessage::withTarget('token', $token)
+        /*$message = CloudMessage::withTarget('token', $token)
             ->withNotification(FCMNotification::create('Appointment Eliminado', 'Se ha eliminado un appointment programado para ' . $this->appointmentDate))
-            ->withData(['extra_info' => $this->appointmentDate]);
+            ->withData(['extra_info' => $this->appointmentDate]); */
+        $message = CloudMessage::withTarget('token', $token)
+            ->withNotification(FCMNotification::create('Appointment Eliminado', 'Se ha eliminado un appointment programado para '))
+            // Puedes omitir los datos adicionales si no son necesarios
+            ->withData(['extra_info' => 'Hay chance que chambees?']);
 
         try {
             $messaging->send($message);
