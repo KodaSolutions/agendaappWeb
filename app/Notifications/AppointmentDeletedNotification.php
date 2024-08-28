@@ -29,7 +29,7 @@ class AppointmentDeletedNotification extends Notification
         $token = $notifiable->fcm_token;
 
         $factory = (new Factory)
-            ->withServiceAccount(base_path('config/firebase_credentials.json'));
+            ->withServiceAccount(base_path('config/serverkey.json'));
 
         $messaging = $factory->createMessaging();
 
