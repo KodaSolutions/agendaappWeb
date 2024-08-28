@@ -28,7 +28,7 @@ Route::get('/send-test-notification', function () {
     return "Notificación de prueba enviada.";
 });
 Route::get('/send-fcm-notification', function () {
-    $fcmToken = 'dvjVhgkBhkygr2vbhaVgbC:APA91bGJf2svB7B6atCxhJMH4eagZW9u6p9j7rRu_r0VHQrsG2sq91k04nnaCAPaqv290TqoYLF7wtvugQlWBGzkeFGPWAqoGJ769WRyR0VpXm5dYsrT2MrKmtjzaH3oQFcw_CWid79Y';
+    $fcmToken = 'fAKynccKEUGQmemgOZQUyP:APA91bHJIDkRj1VBQXnqeABnMYnDitqkMRp3mx8KsRyOIH3w1pQ6XIAgAyLH5M8sm4skQkY6fV8CMWccJPEsLuKi1K8hq7IZGSDdBaKxOsqqDuE6IYDrMiUJ9Jzns6lUYXO1i7jFfJhB';
     $notifiable = new class {
         use Notifiable;
 
