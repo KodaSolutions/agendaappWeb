@@ -72,7 +72,8 @@ class PushNotification extends Notification
         // Crear el mensaje de notificación
         $message = CloudMessage::withTarget('token', $token)
             ->withNotification(FCMNotification::create('Titulo de Notificación', 'Este es un mensaje de prueba push'))
-            ->withData(['user_id' => $notifiable->id]);
+            // Puedes omitir los datos adicionales si no son necesarios
+            ->withData(['extra_info' => 'Hay chance que chambees?']);
 
         try {
             $messaging->send($message);
