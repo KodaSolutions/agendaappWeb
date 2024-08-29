@@ -49,20 +49,21 @@ class AppointmentCreatedNotification extends Notification
      * @param  mixed  $notifiable
      * @return array
      */
-    public function toArray($notifiable)
-    {
-        return [
-            //
-        ];
-    }
     public function toFcm($notifiable){
         $token = $notifiable->fcm_token;    
         $factory = (new Factory)->withServiceAccount(base_path('config/serverkey.json'));
-        $message = CloudMessage::withTarget('token', $token)->withNotification(FCMNotification::create('Cita creada', 'Cita creada para el: ' . $this->appointmentDate));
+        $message = CloudMessage::withTarget('token', $token)->withNotification(FCMNotification::create('Cita creada', 'Cita creada para el: ' . $this->appointmentDate))->withData(['extra_info' => $this->appointmentDate]); 
         try{
             $messaging->send($message);
-        }catch(\Kreait\Firebase\Exception\MessagingException $e) {
+        } catch (\Kreait\Firebase\Exception\MessagingException $e) {
             \Log::error('Error al enviar la notificación FCM: ' . $e->getMessage());
+        }
 
+    }
+    public function toArray($notifiable)
+    {
+        return [
+            'appointment_date' => $this->appointmentDate,
+        ];
     }
 }
