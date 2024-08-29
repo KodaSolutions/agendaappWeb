@@ -52,6 +52,7 @@ class AppointmentCreatedNotification extends Notification
     public function toFcm($notifiable){
         $token = $notifiable->fcm_token;    
         $factory = (new Factory)->withServiceAccount(base_path('config/serverkey.json'));
+        $messaging = $factory->createMessaging();
         $message = CloudMessage::withTarget('token', $token)->withNotification(FCMNotification::create('Cita creada', 'Cita creada para el: ' . $this->appointmentDate))->withData(['extra_info' => $this->appointmentDate]); 
         try{
             $messaging->send($message);
