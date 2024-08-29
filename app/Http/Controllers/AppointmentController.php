@@ -48,10 +48,10 @@ class AppointmentController extends Controller
             $appointment->save();
             $appt = Appointment::where('doctor_id', $doctor_id)->orderBy('created_at', 'desc')->get();
             if($appt){
-                $doctorId = $appt->doctor_id; // Extraer el ID del doctor
+                //$doctorId = $appt->doctor_id; // Extraer el ID del doctor
                 $appointmentDate = $appt->appointment_date;
                     // Obtener el usuario (doctor) asociado al appointment
-                    $doctor = User::find($doctorId);
+                    $doctor = User::find($doctor_id);
 
                 if ($doctor && $doctor->fcm_token) {
                     // Crear una instancia de la notificación y enviar la notificación directamente
