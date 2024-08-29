@@ -10,6 +10,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Notification;
 use App\Notifications\AppointmentDeletedNotification;
 use App\Notifications\AppointmentCreatedNotification;
+use App\Notifications\AppointmentEditedNotification;
 class AppointmentController extends Controller
 {
     public function store(Request $request){
@@ -170,6 +171,20 @@ class AppointmentController extends Controller
                     'message' => 'Cita no encontrada',
                     'error' => 'No se encontró una cita con el ID proporcionado.'
                 ], 404);
+            }
+            if ($appt) {
+                $doctorId = $appt->doctor_id; // Extraer el ID del doctor
+                $appointmentDate = $appt->appointment_date;
+
+                    // Obtener el usuario (doctor) asociado al appointment
+                    $doctor = User::find($doctorId);
+
+                if ($doctor && $doctor->fcm_token) {
+                    // Crear una instancia de la notificación y enviar la notificación directamente
+                    $notification = new AppointmentEditedNotification($appointmentDate);
+                    $notification->toFcm($doctor);  // Llamada directa
+
+                }
             }
             $appt->appointment_date = $dateTime;
             $appt->save();
