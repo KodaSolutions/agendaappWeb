@@ -9,6 +9,7 @@ use Auth;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Notification;
 use App\Notifications\AppointmentDeletedNotification;
+use App\Notifications\AppointmentCreatedNotification;
 class AppointmentController extends Controller
 {
     public function store(Request $request){
