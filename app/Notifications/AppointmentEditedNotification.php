@@ -9,6 +9,7 @@ use NotificationChannels\Apn\ApnMessage;
 use Kreait\Firebase\Factory;
 use Kreait\Firebase\Messaging\CloudMessage;
 use Kreait\Firebase\Messaging\Notification as FCMNotification;
+use Carbon\Carbon;
 
 class AppointmentEditedNotification extends Notification
 {
