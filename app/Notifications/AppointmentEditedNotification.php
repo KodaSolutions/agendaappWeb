@@ -44,28 +44,38 @@ class AppointmentEditedNotification extends Notification
      * @param  mixed  $notifiable
      * @return \Illuminate\Notifications\Messages\MailMessage
      */
-    public function toFcm($notifiable)
-    {
-        $token = $notifiable->fcm_token;
+public function toFcm($notifiable)
+{
+    $token = $notifiable->fcm_token;
 
-        $factory = (new Factory)
-            ->withServiceAccount(base_path('config/serverkey.json'));
-        $messaging = $factory->createMessaging();
-        $formattedOriginalDate = Carbon::parse($this->originalDate)->translatedFormat('l j');
-        $formattedNewDate = Carbon::parse($this->newDate)->translatedFormat('l j');
-        if(Carbon::parse($this->originalDate)->isSameDay(Carbon::parse($this->newDate))){
-            $formattedNewTime = Carbon::parse($this->newDate)->format('g:i A');
-            $messageText = "La cita del $formattedOriginalDate ha cambiado a las $formattedNewTime.";
-        }else{
-            $messageText = "Se ha movido la cita del $formattedOriginalDate al $formattedNewDate";   
-        }
-        $message = CloudMessage::withTarget('token', $token)->withNotification(FCMNotification::create('Cita modificada!', $messageText)->withSound('default'))->withData(['original_date' => $this->originalDate, 'new_date' => $this->newDate]);
-        try {
-            $messaging->send($message);
-        } catch (\Kreait\Firebase\Exception\MessagingException $e) {
-            \Log::error('Error al enviar la notificación FCM: ' . $e->getMessage());
-        }
+    $factory = (new Factory)
+        ->withServiceAccount(base_path('config/serverkey.json'));
+    $messaging = $factory->createMessaging();
+
+    // Formatear las fechas
+    $formattedOriginalDate = Carbon::parse($this->originalDate)->translatedFormat('l j');
+    $formattedNewDate = Carbon::parse($this->newDate)->translatedFormat('l j');
+
+    // Compara si ambas fechas son el mismo día
+    if (Carbon::parse($this->originalDate)->isSameDay(Carbon::parse($this->newDate))) {
+        $formattedNewTime = Carbon::parse($this->newDate)->format('g:i A');
+        $messageText = "La cita del $formattedOriginalDate ha cambiado a las $formattedNewTime.";
+    } else {
+        $messageText = "Se ha movido la cita del $formattedOriginalDate al $formattedNewDate.";
     }
+
+    $message = CloudMessage::withTarget('token', $token)
+        ->withNotification(FCMNotification::create('Cita modificada!', $messageText)
+        ->withSound('default'))  // Añadir el sonido aquí
+        ->withData(['original_date' => $this->originalDate, 'new_date' => $this->newDate]);
+
+    try {
+        $messaging->send($message);
+    } catch (\Kreait\Firebase\Exception\MessagingException $e) {
+        \Log::error('Error al enviar la notificación FCM: ' . $e->getMessage());
+    }
+}
+
 
     /**
      * Get the array representation of the notification.
