@@ -47,7 +47,7 @@ class AppointmentController extends Controller
             $appointment->payment_method = 'Tarjeta'; 
             $appointment->client_name = $validatedData['name']; 
             $appointment->save();
-            $appt = Appointment::where('doctor_id', $doctor_id)->orderBy('created_at', 'desc')->get();
+            $appt = Appointment::where('doctor_id', $doctor_id)->orderBy('created_at', 'desc')->first();
             if($appt){
                 //$doctorId = $appt->doctor_id; // Extraer el ID del doctor
                 $appointmentDate = $appt->appointment_date;
