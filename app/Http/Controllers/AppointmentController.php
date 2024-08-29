@@ -46,11 +46,36 @@ class AppointmentController extends Controller
             $appointment->payment_method = 'Tarjeta'; 
             $appointment->client_name = $validatedData['name']; 
             $appointment->save();
+            $appt = Appointment::where('doctor_id', $doctor_id)->orderBy('created_at', 'desc')->get();
+            if($appt){
+                $doctorId = $appt->doctor_id; // Extraer el ID del doctor
+                $appointmentDate = $appt->appointment_date;
+                    // Obtener el usuario (doctor) asociado al appointment
+                    $doctor = User::find($doctorId);
+
+                if ($doctor && $doctor->fcm_token) {
+                    // Crear una instancia de la notificación y enviar la notificación directamente
+                    $notification = new AppointmentCreatedNotification($appointmentDate);
+                    $notification->toFcm($doctor);  // Llamada directa
+
+                    
+                    return response()->json([
+                        'message' => 'Appointment creado correctamente',
+                        'appointment' => $appointment
+                    ], 201);
+                }
+
+
+                    // Si el doctor no tiene un token FCM
+                    return response()->json([
+                        'message' => 'Appointment eliminado, pero el doctor no tiene un token FCM registrado',
+                        'appointment' => $appt,
+                    ], 200);
+            }
             return response()->json([
                 'message' => 'Appointment creado correctamente',
                 'appointment' => $appointment
             ], 201);
-
         } catch (\Illuminate\Validation\ValidationException $e) {
             return response()->json([
                 'message' => 'Error de validación',
