@@ -20,8 +20,6 @@ class AppointmentDeletedNotification extends Notification
     {
         $this->appointmentDate = $appointmentDate;
     }
-
-    // Elimina el método 'via' o devuelve un array vacío si no se usa.
     public function via($notifiable)
     {
         return [];
@@ -30,8 +28,6 @@ class AppointmentDeletedNotification extends Notification
     public function toFcm($notifiable)
     {
         $token = $notifiable->fcm_token;
-
-
         $factory = (new Factory)
             ->withServiceAccount(base_path('config/serverkey.json'));
         $messaging = $factory->createMessaging();

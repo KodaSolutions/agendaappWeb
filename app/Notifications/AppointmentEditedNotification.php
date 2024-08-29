@@ -51,17 +51,12 @@ class AppointmentEditedNotification extends Notification
         $factory = (new Factory)
             ->withServiceAccount(base_path('config/serverkey.json'));
         $messaging = $factory->createMessaging();
-
-        // Formatear las fechas
         $formattedOriginalDate = Carbon::parse($this->originalDate)->translatedFormat('l j');
         $formattedNewDate = Carbon::parse($this->newDate)->translatedFormat('l j');
 
         $messageText = "Se ha movido la cita del $formattedOriginalDate al $formattedNewDate";
 
-        $message = CloudMessage::withTarget('token', $token)
-            ->withNotification(FCMNotification::create('Cita modificada!', $messageText))
-            ->withData(['original_date' => $this->originalDate, 'new_date' => $this->newDate]);
-
+        $message = CloudMessage::withTarget('token', $token)->withNotification(FCMNotification::create('Cita modificada!', $messageText))->withData(['original_date' => $this->originalDate, 'new_date' => $this->newDate]);
         try {
             $messaging->send($message);
         } catch (\Kreait\Firebase\Exception\MessagingException $e) {

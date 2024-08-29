@@ -31,7 +31,6 @@ class AppointmentController extends Controller
             if($id === 3){
                 $doctor_id = $validatedData['dr_id'];
             }else{
-                //$doctor_id = Auth::user();
                 $doctor_id = $user->id;
             }
             $appointment = new Appointment;
@@ -50,29 +49,16 @@ class AppointmentController extends Controller
             $appointment->save();
             $appt = Appointment::where('doctor_id', $doctor_id)->orderBy('created_at', 'desc')->first();
             if($appt){
-                //$doctorId = $appt->doctor_id; // Extraer el ID del doctor
                 $appointmentDate = $appt->appointment_date;
-                    // Obtener el usuario (doctor) asociado al appointment
                     $doctor = User::find($doctor_id);
-
                 if ($doctor && $doctor->fcm_token) {
-                    // Crear una instancia de la notificación y enviar la notificación directamente
                     $notification = new AppointmentCreatedNotification($appointmentDate);
-                    $notification->toFcm($doctor);  // Llamada directa
-
-                    
+                    $notification->toFcm($doctor);
                     return response()->json([
                         'message' => 'Appointment creado correctamente',
                         'appointment' => $appointment
                     ], 201);
                 }
-
-
-                    // Si el doctor no tiene un token FCM
-                    return response()->json([
-                        'message' => 'Appointment eliminado, pero el doctor no tiene un token FCM registrado',
-                        'appointment' => $appt,
-                    ], 200);
             }
             return response()->json([
                 'message' => 'Appointment creado correctamente',
@@ -117,38 +103,28 @@ class AppointmentController extends Controller
     {
         try {
             $appt = Appointment::find($id);
-
             if ($appt) {
-                $doctorId = $appt->doctor_id; // Extraer el ID del doctor
+                $doctorId = $appt->doctor_id;
                 $appointmentDate = $appt->appointment_date;
 
                 if ($appt->delete()) {
-                    // Obtener el usuario (doctor) asociado al appointment
                     $doctor = User::find($doctorId);
-
                 if ($doctor && $doctor->fcm_token) {
-                    // Crear una instancia de la notificación y enviar la notificación directamente
                     $notification = new AppointmentDeletedNotification($appointmentDate);
-                    $notification->toFcm($doctor);  // Llamada directa
-
+                    $notification->toFcm($doctor);
                     return response()->json([
                         'message' => 'Appointment eliminado con éxito',
                         'appointment' => $appt,
                         'fcm_token' => $doctor->fcm_token,
                     ], 200);
                 }
-
-
-                    // Si el doctor no tiene un token FCM
                     return response()->json([
                         'message' => 'Appointment eliminado, pero el doctor no tiene un token FCM registrado',
                         'appointment' => $appt,
                     ], 200);
                 }
             }
-
             return response()->json(['message' => 'Appointment no encontrado'], 404);
-
         } catch (\Exception $e) {
             return response()->json([
                 'message' => 'Error al eliminar appointment',
@@ -172,22 +148,15 @@ class AppointmentController extends Controller
                 'error' => 'No se encontró una cita con el ID proporcionado.'
             ], 404);
         }
-        
-        $doctorId = $appt->doctor_id; // Extraer el ID del doctor
+        $doctorId = $appt->doctor_id;
         $originalDate = $appt->appointment_date;
-
         $appt->appointment_date = $dateTime;
         $appt->save();
-
-        // Obtener el usuario (doctor) asociado al appointment
         $doctor = User::find($doctorId);
-
         if ($doctor && $doctor->fcm_token) {
-            // Crear una instancia de la notificación y enviar la notificación directamente
             $notification = new AppointmentEditedNotification($originalDate, $dateTime);
-            $notification->toFcm($doctor);  // Llamada directa
+            $notification->toFcm($doctor);
         }
-
         return response()->json([
             'message' => 'Cita actualizada correctamente',
             'appointment' => $appt
