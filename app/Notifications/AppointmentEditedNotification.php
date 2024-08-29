@@ -13,15 +13,17 @@ use Kreait\Firebase\Messaging\Notification as FCMNotification;
 class AppointmentEditedNotification extends Notification
 {
     use Queueable;
-    protected $appointmentDate;
+   protected $originalDate;
+    protected $newDate;
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct($appointmentDate)
+    public function __construct($originalDate, $newDate)
     {
-        $this->appointmentDate = $appointmentDate;
+        $this->originalDate = $originalDate;
+        $this->newDate = $newDate;
     }
 
     /**
@@ -45,14 +47,19 @@ class AppointmentEditedNotification extends Notification
     {
         $token = $notifiable->fcm_token;
 
-
         $factory = (new Factory)
             ->withServiceAccount(base_path('config/serverkey.json'));
         $messaging = $factory->createMessaging();
 
+        // Formatear las fechas
+        $formattedOriginalDate = Carbon::parse($this->originalDate)->translatedFormat('l j');
+        $formattedNewDate = Carbon::parse($this->newDate)->translatedFormat('l j');
+
+        $messageText = "Se ha movido la cita del $formattedOriginalDate al $formattedNewDate";
+
         $message = CloudMessage::withTarget('token', $token)
-            ->withNotification(FCMNotification::create('Cita modificada!', 'Se ha movido la cita del:' . $this->appointmentDate))
-            ->withData(['extra_info' => $this->appointmentDate]); 
+            ->withNotification(FCMNotification::create('Cita modificada!', $messageText))
+            ->withData(['original_date' => $this->originalDate, 'new_date' => $this->newDate]);
 
         try {
             $messaging->send($message);
@@ -69,8 +76,9 @@ class AppointmentEditedNotification extends Notification
      */
     public function toArray($notifiable)
     {
-       return [
-            'appointment_date' => $this->appointmentDate,
+        return [
+            'original_date' => $this->originalDate,
+            'new_date' => $this->newDate,
         ];
     }
 }

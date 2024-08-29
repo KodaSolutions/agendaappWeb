@@ -158,7 +158,7 @@ class AppointmentController extends Controller
     }
 
 
-    public function editAppoinment(Request $request, $id){
+    public function editAppointment(Request $request, $id){
         try {
             $validatedData = $request->validate([
                 'date' => 'required|date',
@@ -172,22 +172,21 @@ class AppointmentController extends Controller
                     'error' => 'No se encontró una cita con el ID proporcionado.'
                 ], 404);
             }
-            if ($appt) {
-                $doctorId = $appt->doctor_id; // Extraer el ID del doctor
-                $appointmentDate = $appt->appointment_date;
+            
+            $doctorId = $appt->doctor_id; // Extraer el ID del doctor
+            $originalDate = $appt->appointment_date;
 
-                    // Obtener el usuario (doctor) asociado al appointment
-                    $doctor = User::find($doctorId);
-
-                if ($doctor && $doctor->fcm_token) {
-                    // Crear una instancia de la notificación y enviar la notificación directamente
-                    $notification = new AppointmentEditedNotification($appointmentDate);
-                    $notification->toFcm($doctor);  // Llamada directa
-
-                }
-            }
             $appt->appointment_date = $dateTime;
             $appt->save();
+
+            // Obtener el usuario (doctor) asociado al appointment
+            $doctor = User::find($doctorId);
+
+            if ($doctor && $doctor->fcm_token) {
+                // Crear una instancia de la notificación y enviar la notificación directamente
+                $notification = new AppointmentEditedNotification($originalDate, $dateTime);
+                $notification->toFcm($doctor);  // Llamada directa
+            }
 
             return response()->json([
                 'message' => 'Cita actualizada correctamente',
@@ -205,6 +204,7 @@ class AppointmentController extends Controller
             ], 500);
         }
     }
+
     public function notificationRead($id) {
         try{
             $appt = Appointment::find($id);
