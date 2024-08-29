@@ -65,9 +65,12 @@ public function toFcm($notifiable)
     }
 
     $message = CloudMessage::withTarget('token', $token)
-        ->withNotification(FCMNotification::create('Cita modificada!', $messageText)
-        ->withSound('default'))  // Añadir el sonido aquí
-        ->withData(['original_date' => $this->originalDate, 'new_date' => $this->newDate]);
+        ->withNotification(FCMNotification::create('Cita modificada!', $messageText))
+        ->withData([
+            'original_date' => $this->originalDate,
+            'new_date' => $this->newDate,
+            'sound' => 'default'  // Especificar el sonido aquí
+        ]);
 
     try {
         $messaging->send($message);
