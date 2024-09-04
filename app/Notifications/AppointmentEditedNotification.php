@@ -22,7 +22,7 @@ class AppointmentEditedNotification extends Notification
      *
      * @return void
      */
-    public function __construct($originalDate, $newDate)
+    public function __construct($originalDate, $newDate, $px)
     {
         $this->originalDate = $originalDate;
         $this->newDate = $newDate;
