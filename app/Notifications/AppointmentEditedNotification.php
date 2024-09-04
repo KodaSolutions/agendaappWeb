@@ -16,6 +16,7 @@ class AppointmentEditedNotification extends Notification
     use Queueable;
    protected $originalDate;
     protected $newDate;
+    protected $px;
     /**
      * Create a new notification instance.
      *
@@ -25,6 +26,7 @@ class AppointmentEditedNotification extends Notification
     {
         $this->originalDate = $originalDate;
         $this->newDate = $newDate;
+        $this->px = $px;
     }
 
     /**
@@ -51,13 +53,14 @@ class AppointmentEditedNotification extends Notification
         $factory = (new Factory)
             ->withServiceAccount(base_path('config/serverkey.json'));
         $messaging = $factory->createMessaging();
+        $px = $this->px;
         $formattedOriginalDate = Carbon::parse($this->originalDate)->translatedFormat('l j');
         $formattedNewDate = Carbon::parse($this->newDate)->translatedFormat('l j');
         if(Carbon::parse($this->originalDate)->isSameDay(Carbon::parse($this->newDate))){
             $formattedNewTime = Carbon::parse($this->newDate)->format('g:i A');
-            $messageText = "La cita del $formattedOriginalDate ha cambiado a las $formattedNewTime.";
+            $messageText = "La cita de $px del $formattedOriginalDate ha cambiado a las $formattedNewTime.";
         }else{
-            $messageText = "Se ha movido la cita del $formattedOriginalDate al $formattedNewDate";   
+            $messageText = "Se ha movido la cita de $px del $formattedOriginalDate al $formattedNewDate";   
         }
         $message = CloudMessage::withTarget('token', $token)->withNotification(FCMNotification::create('Cita modificada!', $messageText))->withData([
             'original_date' => $this->originalDate,

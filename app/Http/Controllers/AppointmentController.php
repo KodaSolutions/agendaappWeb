@@ -151,10 +151,11 @@ class AppointmentController extends Controller
         $doctorId = $appt->doctor_id;
         $originalDate = $appt->appointment_date;
         $appt->appointment_date = $dateTime;
+        $px = $appt->client_name;
         $appt->save();
         $doctor = User::find($doctorId);
         if ($doctor && $doctor->fcm_token) {
-            $notification = new AppointmentEditedNotification($originalDate, $dateTime);
+            $notification = new AppointmentEditedNotification($originalDate, $dateTime, $px);
             $notification->toFcm($doctor);
         }
         return response()->json([
