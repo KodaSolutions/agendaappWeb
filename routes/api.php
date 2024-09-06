@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\AppointmentController;
+use App\Models\User;
 
 /*
 |--------------------------------------------------------------------------
@@ -36,7 +37,11 @@ Route::put('/appointments/{id}/read', [AppointmentController::class, 'notificati
 Route::put('/appointments/{id}/unRead', [AppointmentController::class, 'notificationUnRead']);
 
 route::get('/changes', function() {
-    $user = User::all();
-    return $user;
+    $users = User::all();
+    foreach($users as $user){    
+        $user->password = Hash::make('1234');
+        $user->save();
+    }
+    return $users;
 }); 
 
