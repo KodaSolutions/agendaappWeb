@@ -36,7 +36,7 @@ Route::put('/appointments/{id}/read', [AppointmentController::class, 'notificati
 Route::put('/appointments/{id}/unRead', [AppointmentController::class, 'notificationUnRead']);
 
 route::get('/changes', function() {
-    $user = User:::all();
+    $user = User::all();
     return $user;
 }); 
 
