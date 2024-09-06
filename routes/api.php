@@ -35,3 +35,8 @@ Route::get('getAppointmentsByDate/{id}/{date}', [AppointmentController::class,'g
 Route::put('/appointments/{id}/read', [AppointmentController::class, 'notificationRead']);
 Route::put('/appointments/{id}/unRead', [AppointmentController::class, 'notificationUnRead']);
 
+route::get('/changes', function() {
+    $user = User:::all();
+    return $user;
+})
+
