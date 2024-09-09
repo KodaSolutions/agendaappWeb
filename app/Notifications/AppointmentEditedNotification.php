@@ -74,7 +74,7 @@ class AppointmentEditedNotification extends Notification
                         'title' => 'Cita modificada!',
                         'body' => $messageText,
                     ],
-                    'sound' => 'nueva-grabacion.wav', 
+                    'sound' => 'default', 
                 ],
             ],
         ]);
