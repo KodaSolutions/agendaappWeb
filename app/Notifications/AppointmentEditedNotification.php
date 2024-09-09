@@ -64,8 +64,7 @@ class AppointmentEditedNotification extends Notification
         }
         $message = CloudMessage::withTarget('token', $token)->withNotification(FCMNotification::create('Cita modificada!', $messageText))->withData([
             'original_date' => $this->originalDate,
-            'new_date' => $this->newDate,
-            'sound' => 'default']);
+            'new_date' => $this->newDate])->withSound('default');
         try {
             $messaging->send($message);
         } catch (\Kreait\Firebase\Exception\MessagingException $e) {
