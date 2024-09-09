@@ -62,9 +62,9 @@ class AppointmentEditedNotification extends Notification
         }else{
             $messageText = "Se ha movido la cita de $px del $formattedOriginalDate al $formattedNewDate";   
         }
-        $message = CloudMessage::withTarget('token', $token)->withNotification(FCMNotification::create('Cita modificada!', $messageText))->withData([
+        $message = CloudMessage::withTarget('token', $token)->withNotification(FCMNotification::create('Cita modificada!', $messageText))->withSound('default')->withData([
             'original_date' => $this->originalDate,
-            'new_date' => $this->newDate])->withSound('default');
+            'new_date' => $this->newDate]);
         try {
             $messaging->send($message);
         } catch (\Kreait\Firebase\Exception\MessagingException $e) {
