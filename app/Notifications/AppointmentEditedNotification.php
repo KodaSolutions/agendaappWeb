@@ -62,7 +62,7 @@ class AppointmentEditedNotification extends Notification
         }else{
             $messageText = "Se ha movido la cita de $px del $formattedOriginalDate al $formattedNewDate";   
         }
-        $message = CloudMessage::withTarget('token', $token)->withNotification(FCMNotification::create('Cita modificada!', $messageText))->withSound('default')->withData([
+        $message = CloudMessage::withTarget('token', $token)->withNotification(FCMNotification::create('Cita modificada!', $messageText, null, 'default'))->withData([
             'original_date' => $this->originalDate,
             'new_date' => $this->newDate]);
         try {
