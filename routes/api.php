@@ -29,7 +29,10 @@ Route::post('createClient', [ClientController::class, 'createClient']);
 Route::get('clientsAll', [ClientController::class, 'getClients']);
 Route::post('createAppoinment', [AppointmentController::class, 'store']);
 Route::post('deleteAppoinment/{id}', [AppointmentController::class, 'deleteAppoinment']);
+//funcion de prueba
 Route::put('editAppoinment/{id}', [AppointmentController::class, 'editAppoinment']);
+Route::post('editUserInfo/{id}', [AuthController::class, 'editUserInfo']);
+
 Route::get('getAppoinments/{id}', [AppointmentController::class, 'getAppoinments']);
 Route::get('getAppoinmentsAssit', [AppointmentController::class, 'getAppoinmentsAssit']);
 Route::get('getAppointmentsByDate/{id}/{date}', [AppointmentController::class,'getNotifications']);

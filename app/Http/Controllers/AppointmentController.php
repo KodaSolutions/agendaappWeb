@@ -135,45 +135,45 @@ class AppointmentController extends Controller
 
 
     public function editAppoinment(Request $request, $id){
-    try {
-        $validatedData = $request->validate([
-            'date' => 'required|date',
-            'time' => 'required|date_format:H:i:s',
-        ]);
-        $dateTime = $validatedData['date'] . ' ' . $validatedData['time'];
-        $appt = Appointment::find($id);
-        if (!$appt) {
+        try {
+            $validatedData = $request->validate([
+                'date' => 'required|date',
+                'time' => 'required|date_format:H:i:s',
+            ]);
+            $dateTime = $validatedData['date'] . ' ' . $validatedData['time'];
+            $appt = Appointment::find($id);
+            if (!$appt) {
+                return response()->json([
+                    'message' => 'Cita no encontrada',
+                    'error' => 'No se encontró una cita con el ID proporcionado.'
+                ], 404);
+            }
+            $doctorId = $appt->doctor_id;
+            $originalDate = $appt->appointment_date;
+            $appt->appointment_date = $dateTime;
+            $px = $appt->client_name;
+            $appt->save();
+            $doctor = User::find($doctorId);
+            if ($doctor && $doctor->fcm_token) {
+                $notification = new AppointmentEditedNotification($originalDate, $dateTime, $px);
+                $notification->toFcm($doctor);
+            }
             return response()->json([
-                'message' => 'Cita no encontrada',
-                'error' => 'No se encontró una cita con el ID proporcionado.'
-            ], 404);
+                'message' => 'Cita actualizada correctamente',
+                'appointment' => $appt
+            ], 200);
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return response()->json([
+                'message' => 'Error de validación',
+                'errors' => $e->errors()
+            ], 422);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Error al actualizar la cita',
+                'error' => $e->getMessage()
+            ], 500);
         }
-        $doctorId = $appt->doctor_id;
-        $originalDate = $appt->appointment_date;
-        $appt->appointment_date = $dateTime;
-        $px = $appt->client_name;
-        $appt->save();
-        $doctor = User::find($doctorId);
-        if ($doctor && $doctor->fcm_token) {
-            $notification = new AppointmentEditedNotification($originalDate, $dateTime, $px);
-            $notification->toFcm($doctor);
-        }
-        return response()->json([
-            'message' => 'Cita actualizada correctamente',
-            'appointment' => $appt
-        ], 200);
-    } catch (\Illuminate\Validation\ValidationException $e) {
-        return response()->json([
-            'message' => 'Error de validación',
-            'errors' => $e->errors()
-        ], 422);
-    } catch (\Exception $e) {
-        return response()->json([
-            'message' => 'Error al actualizar la cita',
-            'error' => $e->getMessage()
-        ], 500);
     }
-}
     public function notificationRead($id) {
         try{
             $appt = Appointment::find($id);
