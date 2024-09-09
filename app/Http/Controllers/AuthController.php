@@ -70,7 +70,34 @@ class AuthController extends Controller
         return response()->json(compact('user'));
     }
     public function editUserInfo(Request $request, $id){
-        return response()->json(['message' => 'todo bien'], 200);
+        try {
+            $validatedData = $request->all();
+            $user = User::find($id);
+            if (!$user) {
+                return response()->json([
+                    'message' => 'Usuario no encontrado',
+                    'error' => 'No se encontró un usuario con el ID proporcionado.'
+                ], 404);
+            }
+            $user->name = $validatedData['name'];
+            $user->number = $validatedData['number'];
+            $user->email = $validatedData['email'];
+            $user->save();
+            return response()->json([
+                'message' => 'Cliente actualizado correctamente',
+                'cliente' => $user
+            ], 200);
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return response()->json([
+                'message' => 'Error de validación',
+                'errors' => $e->errors()
+            ], 422);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Error al actualizar cliente',
+                'error' => $e->getMessage()
+            ], 500);
+        }
     }
 }
 
