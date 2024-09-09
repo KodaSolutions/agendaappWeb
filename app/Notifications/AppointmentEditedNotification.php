@@ -66,7 +66,7 @@ class AppointmentEditedNotification extends Notification
         }
         $apnsConfig = ApnsConfig::fromArray([
             'headers' => [
-                'apns-priority' => '10', // Define alta prioridad
+                'apns-priority' => '10', 
             ],
             'payload' => [
                 'aps' => [
@@ -74,7 +74,7 @@ class AppointmentEditedNotification extends Notification
                         'title' => 'Cita modificada!',
                         'body' => $messageText,
                     ],
-                    'sound' => 'default', // Define el sonido aquí
+                    'sound' => 'nueva-grabacion.wav', 
                 ],
             ],
         ]);
