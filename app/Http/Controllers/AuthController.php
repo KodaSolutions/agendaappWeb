@@ -69,7 +69,7 @@ class AuthController extends Controller
         $user = User::all();
         return response()->json(compact('user'));
     }
-    public function AuthController(Request $request, $id){
+    public function editUserInfo(Request $request, $id){
         return response()->json(['message' => 'todo bien'], 200);
     }
 }
