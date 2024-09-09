@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\Client;
 use Illuminate\Http\Request;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use Tymon\JWTAuth\Exceptions\JWTException;
@@ -72,7 +73,7 @@ class AuthController extends Controller
     public function editUserInfo(Request $request, $id){
         try {
             $validatedData = $request->all();
-            $user = User::find($id);
+            $user = Client::find($id);
             if (!$user) {
                 return response()->json([
                     'message' => 'Usuario no encontrado',
