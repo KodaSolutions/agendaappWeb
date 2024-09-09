@@ -10,6 +10,9 @@ use Kreait\Firebase\Factory;
 use Kreait\Firebase\Messaging\CloudMessage;
 use Kreait\Firebase\Messaging\Notification as FCMNotification;
 use Carbon\Carbon;
+use Kreait\Firebase\Messaging\ApnsConfig;
+use Kreait\Firebase\Messaging\ApnsPayload;
+use Kreait\Firebase\Messaging\Notification;
 
 class AppointmentEditedNotification extends Notification
 {
@@ -62,9 +65,23 @@ class AppointmentEditedNotification extends Notification
         }else{
             $messageText = "Se ha movido la cita de $px del $formattedOriginalDate al $formattedNewDate";   
         }
-        $message = CloudMessage::withTarget('token', $token)->withNotification(FCMNotification::create('Cita modificada!', $messageText, null, 'default'))->withData([
+        $apnsConfig = ApnsConfig::fromArray([
+            'headers' => [
+                'apns-priority' => '10', // Define alta prioridad
+            ],
+            'payload' => [
+                'aps' => [
+                    'alert' => [
+                        'title' => 'Cita modificada!',
+                        'body' => $messageText,
+                    ],
+                    'sound' => 'default', // Define el sonido aquí
+                ],
+            ],
+        ]);
+        $message = CloudMessage::withTarget('token', $token)->withNotification(FCMNotification::create('Cita modificada!', $messageText))->withData([
             'original_date' => $this->originalDate,
-            'new_date' => $this->newDate]);
+            'new_date' => $this->newDate])->withApnsConfig($apnsConfig);
         try {
             $messaging->send($message);
         } catch (\Kreait\Firebase\Exception\MessagingException $e) {
