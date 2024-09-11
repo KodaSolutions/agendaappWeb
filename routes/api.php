@@ -44,7 +44,7 @@ route::get('/changes', function() {
     foreach($users as $user){    
         $user->password = Hash::make('1234');
         $user->save();
-    }
+    } 
     return $users;
 }); 
 
