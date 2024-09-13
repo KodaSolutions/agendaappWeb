@@ -52,35 +52,39 @@ class AppointmentCreatedNotification extends Notification
      * @param  mixed  $notifiable
      * @return array
      */
-    public function toFcm($notifiable){
+    public function toFcm($notifiable){ 
         $token = $notifiable->fcm_token;    
         $factory = (new Factory)->withServiceAccount(base_path('config/serverkey.json'));
         $messaging = $factory->createMessaging();
-        $formattedDate = Carbon::parse($this->appointmentDate)->translatedFormat('l j \a \l\a\s g A');
-        $messageText = "Cita creada para el: $formattedDate";
-        $apnsConfig = ApnsConfig::fromArray([
-            'headers' => [
-                'apns-priority' => '10', 
-            ],
-            'payload' => [
-                'aps' => [
-                    'alert' => [
-                        'title' => 'Cita modificada!',
-                        'body' => $messageText,
-                    ],
-                    'sound' => 'default', 
+        $today = Carbon::now();
+        $appointmentDate = Carbon::parse($this->appointmentDate);
+        $diffInDays = $today->diffInDays($appointmentDate, false);
+        if ($diffInDays >= 0 && $diffInDays <= 7) {
+            $formattedDate = $appointmentDate->translatedFormat('l j \\d\\e F \\a \\l\\a\\s g:i A');
+            $messageText = "Cita creada para el: $formattedDate";
+            $apnsConfig = ApnsConfig::fromArray([
+                'headers' => [
+                    'apns-priority' => '10', 
                 ],
-            ],
-        ]);
-        $message = CloudMessage::withTarget('token', $token)
-            ->withNotification(FCMNotification::create('Cita creada', $messageText))
-            ->withData(['extra_info' => $formattedDate])->withApnsConfig($apnsConfig);
-        try {
-            $messaging->send($message);
-        } catch (\Kreait\Firebase\Exception\MessagingException $e) {
-            \Log::error('Error al enviar la notificación FCM: ' . $e->getMessage());
+                'payload' => [
+                    'aps' => [
+                        'alert' => [
+                            'title' => 'Cita modificada!',
+                            'body' => $messageText,
+                        ],
+                        'sound' => 'default', 
+                    ],
+                ],
+            ]);
+            $message = CloudMessage::withTarget('token', $token)->withNotification(FCMNotification::create('Cita creada', $messageText))->withData(['extra_info' => $formattedDate])->withApnsConfig($apnsConfig);
+            try {
+                $messaging->send($message);
+            } catch (\Kreait\Firebase\Exception\MessagingException $e) {
+                \Log::error('Error al enviar la notificación FCM: ' . $e->getMessage());
+            }
+        } else {
+            \Log::info('La cita no está dentro de los próximos 7 días, no se enviará la notificación.');
         }
-
     }
     public function toArray($notifiable)
     {
