@@ -23,14 +23,12 @@ class AppointmentController extends Controller
                 'name' => 'required|string',
                 'dr_id' => 'nullable',
             ]);
-
-            $dateTime = $validatedData['date'] . ' ' . $validatedData['time'];
+            $dateTime = $validatedData['date'].' '.$validatedData['time'];
             $user = Auth::user();
-            $id = $user->id;
-            $id = (int) $id;
+            $id = (int) $user->id;
             if($id === 3){
                 $doctor_id = $validatedData['dr_id'];
-            }else{
+            } else {
                 $doctor_id = $user->id;
             }
             $appointment = new Appointment;
@@ -47,19 +45,17 @@ class AppointmentController extends Controller
             $appointment->payment_method = 'Tarjeta'; 
             $appointment->client_name = $validatedData['name']; 
             $appointment->save();
-            $appt = Appointment::where('doctor_id', $doctor_id)->orderBy('created_at', 'desc')->first();
-            if($appt){
-                $appointmentDate = $appt->appointment_date;
-                    $doctor = User::find($doctor_id);
-                if ($doctor && $doctor->fcm_token) {
-                    $notification = new AppointmentCreatedNotification($appointmentDate);
-                    $notification->toFcm($doctor);
-                    return response()->json([
-                        'message' => 'Appointment creado correctamente',
-                        'appointment' => $appointment
-                    ], 201);
-                }
+            $doctor = User::find($doctor_id);
+            if ($doctor && $doctor->fcm_token) {
+                $notification = new AppointmentCreatedNotification($appointment->appointment_date);
+                $notification->toFcm($doctor);
+
+                return response()->json([
+                    'message' => 'Appointment creado correctamente',
+                    'appointment' => $appointment
+                ], 201);
             }
+
             return response()->json([
                 'message' => 'Appointment creado correctamente',
                 'appointment' => $appointment
@@ -76,6 +72,7 @@ class AppointmentController extends Controller
             ], 500);
         }
     }
+
     public function getAppoinments($id){
         $id = (int) $id;
         if ($id === 3) {

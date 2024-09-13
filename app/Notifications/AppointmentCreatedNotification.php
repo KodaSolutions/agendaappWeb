@@ -69,7 +69,7 @@ class AppointmentCreatedNotification extends Notification
                 'payload' => [
                     'aps' => [
                         'alert' => [
-                            'title' => 'Cita modificada!',
+                            'title' => 'Cita creada!',
                             'body' => $messageText,
                         ],
                         'sound' => 'default', 
@@ -80,10 +80,10 @@ class AppointmentCreatedNotification extends Notification
             try {
                 $messaging->send($message);
             } catch (\Kreait\Firebase\Exception\MessagingException $e) {
-                \Log::error('Error al enviar la notificación FCM: ' . $e->getMessage());
+                \Log::error('Error al enviar la notificacion FCM: ' . $e->getMessage());
             }
         } else {
-            \Log::info('La cita no está dentro de los próximos 7 días, no se enviará la notificación.');
+            \Log::info('La cita no esta dentro de los próximos 7 días, no se enviará la notificacion');
         }
     }
     public function toArray($notifiable)
