@@ -25,7 +25,7 @@ class AppointmentCreatedNotification extends Notification
      */
     public function __construct($appointmentDate)
     {
-        $this->appointmentDate;
+        $this->appointmentDate = $appointmentDate;
     }
 
     /**
