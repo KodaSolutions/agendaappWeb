@@ -11,6 +11,8 @@ use Kreait\Firebase\Factory;
 use Kreait\Firebase\Messaging\CloudMessage;
 use Kreait\Firebase\Messaging\Notification as FCMNotification;
 use Carbon\Carbon;
+use Kreait\Firebase\Messaging\ApnsConfig;
+use Kreait\Firebase\Messaging\ApnsPayload;
 
 class AppointmentCreatedNotification extends Notification
 {
@@ -55,9 +57,24 @@ class AppointmentCreatedNotification extends Notification
         $factory = (new Factory)->withServiceAccount(base_path('config/serverkey.json'));
         $messaging = $factory->createMessaging();
         $formattedDate = Carbon::parse($this->appointmentDate)->translatedFormat('l j \a \l\a\s g A');
+        $messageText = "Cita creada para el: $formattedDate";
+        $apnsConfig = ApnsConfig::fromArray([
+            'headers' => [
+                'apns-priority' => '10', 
+            ],
+            'payload' => [
+                'aps' => [
+                    'alert' => [
+                        'title' => 'Cita modificada!',
+                        'body' => $messageText,
+                    ],
+                    'sound' => 'default', 
+                ],
+            ],
+        ]);
         $message = CloudMessage::withTarget('token', $token)
-            ->withNotification(FCMNotification::create('Cita creada', 'Cita creada para el: ' . $formattedDate))
-            ->withData(['extra_info' => $formattedDate]);
+            ->withNotification(FCMNotification::create('Cita creada', $messageText))
+            ->withData(['extra_info' => $formattedDate])->withApnsConfig($apnsConfig);
         try {
             $messaging->send($message);
         } catch (\Kreait\Firebase\Exception\MessagingException $e) {
