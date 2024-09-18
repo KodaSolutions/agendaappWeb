@@ -32,19 +32,20 @@ class SendDailyNotifications extends Command
      * @return int
      */
     public function handle()
-    {
-        $today = Carbon::today();
-        $appointments = Appointment::whereDate('appointment_date', $today)->get();
-        $appointmentsByDoctor = $appointments->groupBy('doctor_id');
-        
-        foreach ($appointmentsByDoctor as $doctorId => $doctorAppointments) {
-            $doctor = User::find($doctorId);
-            if ($doctor && $doctor->fcm_token) {
-                $appointmentCount = $doctorAppointments->count();
-                $notification = new AppointmentScheduleNotification($appointmentCount);
-                $notification->toFcm($doctor);
+        {
+            $today = Carbon::today();
+            $appointments = Appointment::whereDate('appointment_date', $today)->get();
+            $appointmentsByDoctor = $appointments->groupBy('doctor_id');
+            
+            foreach ($appointmentsByDoctor as $doctorId => $doctorAppointments) {
+                $doctor = User::find($doctorId);
+                if ($doctor && $doctor->fcm_token) {
+                    $appointmentCount = $doctorAppointments->count();
+                    $notification = new AppointmentScheduleNotification($appointmentCount);
+                    $notification->toFcm($doctor);
+                }
             }
-        }
 
-        $this->info('Recordatorios diarios enviados correctamente.');
+            $this->info('Recordatorios diarios enviados correctamente.');
+        }
     }
