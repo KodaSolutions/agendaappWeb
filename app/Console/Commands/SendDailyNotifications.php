@@ -5,7 +5,7 @@ namespace App\Console\Commands;
 use Illuminate\Console\Command;
 use App\Models\Appointment; 
 use App\Models\User;
-use App\Notifications\AppointmentCreatedNotification;
+use App\Notifications\AppointmentScheduleNotification;
 use Carbon\Carbon;
 
 class SendDailyNotifications extends Command
@@ -32,7 +32,8 @@ class SendDailyNotifications extends Command
      * @return int
      */
     public function handle()
-        {
+    {
+        try {
             $today = Carbon::today();
             $appointments = Appointment::whereDate('appointment_date', $today)->get();
             $appointmentsByDoctor = $appointments->groupBy('doctor_id');
@@ -46,6 +47,11 @@ class SendDailyNotifications extends Command
                 }
             }
 
-            $this->info('Recordatorios diarios enviados correctamente.');
+            $this->info('Recordatorios diarios enviados correctamente');
+        } catch (\Exception $e) {
+            \Log::error('Error en el comando notifications:daily: ' . $e->getMessage());
+            $this->error('Hubo un error al enviar los recordatorios diarios');
         }
+    }
+
     }
