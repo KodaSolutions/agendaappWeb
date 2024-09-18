@@ -12,7 +12,6 @@ class AuthController extends Controller
 {
     public function login(Request $request) {
         $credentials = $request->only('email', 'password');
-
         try {
             if (!$token = JWTAuth::attempt($credentials)) {
                 return response()->json(['error' => 'invalid_credentials'], 401);
@@ -98,6 +97,14 @@ class AuthController extends Controller
                 'message' => 'Error al actualizar cliente',
                 'error' => $e->getMessage()
             ], 500);
+        }
+    }
+    public function refresh(){
+        try {
+            $newToken = JWTAuth::refresh(JWTAuth::getToken());
+            return response()->json(['token' => $newToken]);
+        } catch (JWTException $e) {
+            return response()->json(['error' => 'No se pudo refrescar el token'], 500);
         }
     }
 }
