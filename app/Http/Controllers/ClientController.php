@@ -26,6 +26,21 @@ class ClientController extends Controller
         return response()->json(['message' => 'Client creado correctamente', 'client' => $client], 201);
     }
 
+    public function deleteClient($id){
+        try {
+            $client = Client::find($id);
+            if($client){
+                if($client->delete()){
+                    return response()->json(['message' => 'Cliente eliminado con exito', 'client' => $client], 200);
+                }
+            }else{
+                return response()->json(['message' => 'Cliente no encontrado'], 404);
+            }
+        } catch (Exception $e) {
+            return response()->json(['message'=> 'Error al eliminar cliente', 'error' => $->getMessage()], 500);
+        }
+    }
+
     public function getClients(){
         $clients = Client::all();
         return response()->json(compact('clients'));

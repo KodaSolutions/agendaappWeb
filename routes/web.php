@@ -21,27 +21,4 @@ Route::get('/', function () {
     return view('welcome');
 });
 Route::get('userAll', [AuthController::class, 'userAll']);
-Route::get('/send-test-notification', function () {
-    $users = User::all();
-    $user->notify(new PushNotification());
 
-    return "Notificación de prueba enviada.";
-});
-Route::get('/send-fcm-notification', function () {
-    $fcmToken = 'fAKynccKEUGQmemgOZQUyP:APA91bHJIDkRj1VBQXnqeABnMYnDitqkMRp3mx8KsRyOIH3w1pQ6XIAgAyLH5M8sm4skQkY6fV8CMWccJPEsLuKi1K8hq7IZGSDdBaKxOsqqDuE6IYDrMiUJ9Jzns6lUYXO1i7jFfJhB';
-    $notifiable = new class {
-        use Notifiable;
-
-        public function routeNotificationForFcm()
-        {
-            return $this->fcmToken;
-        }
-
-        public $fcmToken;
-    };
-    $notifiable->fcmToken = $fcmToken;
-    $notification = new \App\Notifications\PushNotification();
-    $notification->toFcm($notifiable);
-
-    return "Notificación FCM enviada.";
-});

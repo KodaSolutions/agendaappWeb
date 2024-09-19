@@ -25,21 +25,23 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::post('login', [AuthController::class, 'login']);
 Route::post('logout', [AuthController::class, 'logout']);
 Route::get('user', [AuthController::class, 'getUser'])->middleware('jwt.auth');
+Route::post('editUserInfo/{id}', [AuthController::class, 'editUserInfo']);
 Route::post('refresh', [AuthController::class, 'refresh']);
+//controladores clientes
 Route::post('createClient', [ClientController::class, 'createClient']);
 Route::get('clientsAll', [ClientController::class, 'getClients']);
+Route::post('deleteClient/{id}', [ClientController::class, 'deleteClient']);
 Route::post('createAppoinment', [AppointmentController::class, 'store']);
 Route::post('deleteAppoinment/{id}', [AppointmentController::class, 'deleteAppoinment']);
-//funcion de prueba
+//controladores appointment
 Route::put('editAppoinment/{id}', [AppointmentController::class, 'editAppoinment']);
-Route::post('editUserInfo/{id}', [AuthController::class, 'editUserInfo']);
-
 Route::get('getAppoinments/{id}', [AppointmentController::class, 'getAppoinments']);
 Route::get('getAppoinmentsAssit', [AppointmentController::class, 'getAppoinmentsAssit']);
 Route::get('getAppointmentsByDate/{id}/{date}', [AppointmentController::class,'getNotifications']);
 Route::put('/appointments/{id}/read', [AppointmentController::class, 'notificationRead']);
 Route::put('/appointments/{id}/unRead', [AppointmentController::class, 'notificationUnRead']);
 
+//ruta provicional cambiar contrasenas
 route::get('/changes', function() {
     $users = User::all();
     foreach($users as $user){    
