@@ -37,7 +37,7 @@ class ClientController extends Controller
                 return response()->json(['message' => 'Cliente no encontrado'], 404);
             }
         } catch (Exception $e) {
-            return response()->json(['message'=> 'Error al eliminar cliente', 'error' => $->getMessage()], 500);
+            return response()->json(['message'=> 'Error al eliminar cliente', 'error' => $e->getMessage()], 500);
         }
     }
 
