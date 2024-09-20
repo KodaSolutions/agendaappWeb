@@ -37,7 +37,7 @@ class AlertMessageNotification extends Notification
      */
     public function via($notifiable)
     {
-        return [''];
+        return [];
     }
 
     public function toFmc($notifiable)
@@ -53,7 +53,7 @@ class AlertMessageNotification extends Notification
             'payload' => [
                 'aps' => [
                     'alert' => [
-                        'title' => 'Cita modificada!',
+                        'title' => 'Importante!',
                         'body' => $msg,
                     ],
                     'sound' => 'default', 
@@ -67,7 +67,7 @@ class AlertMessageNotification extends Notification
         try {
             $messaging->send($message);
         } catch (\Kreait\Firebase\Exception\MessagingException $e) {
-            \Log::error('Error al enviar la notificación FCM: ' . $e->getMessage() . ' para el usuario con token: ' . $token);
+            \Log::error('Error al enviar la notificación FCM: ' . $e->getMessage());
         }
     }
 
