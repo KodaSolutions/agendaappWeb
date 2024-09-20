@@ -18,12 +18,13 @@ class AlertMessageNotification extends Notification
 {
     use Queueable;
     protected $msg;
+
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($msg)
     {
         $this->msg = $msg;
     }
@@ -39,7 +40,8 @@ class AlertMessageNotification extends Notification
         return [''];
     }
 
-    public function toFmc($notifiable){
+    public function toFmc($notifiable)
+    {
         $token = $notifiable->fcm_token;
         $factory = (new Factory)->withServiceAccount(base_path('config/serverkey.json'));
         $messaging = $factory->createMessaging();
@@ -58,14 +60,17 @@ class AlertMessageNotification extends Notification
                 ],
             ],
         ]);
-        $message = CloudMessage::withTarget('token', $token)->withNotification(FCMNotification::create('Importante!', $msg))->withData([
-            'msg' => $this->mg])->withApnsConfig($apnsConfig);
+        $message = CloudMessage::withTarget('token', $token)
+            ->withNotification(FCMNotification::create('Importante!', $msg))
+            ->withData(['msg' => $this->msg])
+            ->withApnsConfig($apnsConfig);
         try {
             $messaging->send($message);
         } catch (\Kreait\Firebase\Exception\MessagingException $e) {
-            \Log::error('Error al enviar la notificación FCM: ' . $e->getMessage());
+            \Log::error('Error al enviar la notificación FCM: ' . $e->getMessage() . ' para el usuario con token: ' . $token);
         }
     }
+
     /**
      * Get the array representation of the notification.
      *
@@ -75,7 +80,7 @@ class AlertMessageNotification extends Notification
     public function toArray($notifiable)
     {
         return [
-            //
+            'msg' => $this->msg,
         ];
     }
 }
