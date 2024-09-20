@@ -24,7 +24,7 @@ class NotificationController extends Controller
             }
             if($doctor->fcm_token){
                 $notification = new AlertMessageNotification($msg);
-                $notification->toFcm($doctor);
+                $notification->toFmc($doctor);
                 return response()->json(['message' => 'Notificación enviada exitosamente'], 200);
             }else {
                 return response()->json([
