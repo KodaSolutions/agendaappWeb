@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\AppointmentController;
+use App\Http\Controllers\NotificationController;
 use App\Models\User;
 
 /*
@@ -37,9 +38,11 @@ Route::post('deleteAppoinment/{id}', [AppointmentController::class, 'deleteAppoi
 Route::put('editAppoinment/{id}', [AppointmentController::class, 'editAppoinment']);
 Route::get('getAppoinments/{id}', [AppointmentController::class, 'getAppoinments']);
 Route::get('getAppoinmentsAssit', [AppointmentController::class, 'getAppoinmentsAssit']);
-Route::get('getAppointmentsByDate/{id}/{date}', [AppointmentController::class,'getNotifications']);
 Route::put('/appointments/{id}/read', [AppointmentController::class, 'notificationRead']);
 Route::put('/appointments/{id}/unRead', [AppointmentController::class, 'notificationUnRead']);
+Route::get('getAppointmentsByDate/{id}/{date}', [AppointmentController::class,'getNotifications']);
+//ruta envio notificacion personalizada
+Route::post('sendNotification/{id}', [NotificationController::class, 'sendNotification']);
 
 //ruta provicional cambiar contrasenas
 route::get('/changes', function() {
