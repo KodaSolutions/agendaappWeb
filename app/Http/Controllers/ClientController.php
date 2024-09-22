@@ -6,9 +6,8 @@ use Illuminate\Http\Request;
 
 class ClientController extends Controller
 {
-    public function createClient(Request $request)
-    {
-        $validatedData = $request->validate([
+    public function createClient(Request $request){
+        $validator = \Validator::make($request->all(), [
             'name' => 'required',
             'number' => 'required|unique:clients,number',
             'email' => 'required|email'
@@ -16,16 +15,23 @@ class ClientController extends Controller
             'number.unique' => 'Este número ya existe para otro cliente',
         ]);
 
+        if ($validator->fails() && $validator->errors()->has('number')) {
+            return response()->json([
+                'message' => 'Por favor verifica que este contacto no se encuentra ya registrado',
+            ], 422); 
+        }
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), 422);
+        }
         $client = new Client;
-        $client->name = $validatedData['name'];
-        $client->number = $validatedData['number'];
-        $client->email = $validatedData['email'];
+        $client->name = $request->name;
+        $client->number = $request->number;
+        $client->email = $request->email;
         $client->visit_count = 0;
         $client->save();
         
         return response()->json(['message' => 'Client creado correctamente', 'client' => $client], 201);
     }
-
     public function deleteClient($id){
         try {
             $client = Client::find($id);
