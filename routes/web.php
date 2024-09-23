@@ -33,7 +33,7 @@ Route::get('/insert-client', function () {
     if (!$client) {
         $client = new Client([
             'id' => 1, // Forzar el ID
-            'name' => 'Cliente ',
+            'name' => 'Cliente Generico',
             'number' => '0000000000',
             'email' => 'cliente@cliente.com',
             'visit_count' => 0,
