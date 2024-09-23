@@ -32,30 +32,26 @@ class ClientController extends Controller
         
         return response()->json(['message' => 'Client creado correctamente', 'client' => $client], 201);
     }
-public function deleteClient($id)
-{
-    try {
-        // Verifica si el cliente existe
-        $client = Client::find($id);
+    public function deleteClient($id){
+        try {
+            if($id === 1){
+                return response()->json(['message' => 'Este cliente es generico y no puede eliminarse'], 302);
 
-        // Validar que el cliente no sea el cliente genérico
-        if ($id === 1) {
-            return response()->json(['message' => 'Este cliente es genérico y no puede eliminarse.'], 403);
-        }
+            }else{
 
-        // Verifica si el cliente existe
-        if ($client) {
-            // Eliminar el cliente
-            $client->delete();
-            return response()->json(['message' => 'Cliente eliminado con éxito.', 'client' => $client], 200);
-        } else {
-            return response()->json(['message' => 'Cliente no encontrado.'], 404);
+                $client = Client::find($id);
+                if($client){
+                    if($client->delete()){
+                        return response()->json(['message' => 'Cliente eliminado con exito', 'client' => $client], 200);
+                    }
+                }else{
+                    return response()->json(['message' => 'Cliente no encontrado'], 404);
+                }
+            }
+        } catch (Exception $e) {
+            return response()->json(['message'=> 'Error al eliminar cliente', 'error' => $e->getMessage()], 500);
         }
-    } catch (\Exception $e) {
-        return response()->json(['message' => 'Error al eliminar el cliente.', 'error' => $e->getMessage()], 500);
     }
-}
-
 
     public function getClients(){
         $clients = Client::all();
