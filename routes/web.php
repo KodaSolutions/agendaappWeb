@@ -48,7 +48,8 @@ Route::get('/insert-client', function () {
         'user_id' => $client->id, // Usar el ID del cliente
         'age' => 0, // Ajusta según sea necesario
         'phone' => '000-000-0000', // Valor por defecto
-        'gender' => 'no especificado', // Valor por defecto
+        'gender' => 'no especificado',
+        'birthday' => '000-000-0000' // Valor por defecto
     ]);
 
     return response()->json([
