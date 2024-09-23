@@ -24,38 +24,43 @@ Route::get('userAll', [AuthController::class, 'userAll']);
 
 use App\Models\Client;
 use App\Models\UserDetail;
+use Illuminate\Support\Facades\DB;
 
 Route::get('/insert-client', function () {
-    // Intentar obtener el cliente con ID 1
+    // Verificar si el cliente ya existe
     $client = Client::find(1);
 
     // Si no existe, crear uno nuevo con ID 1
     if (!$client) {
-        $client = new Client([
-            'id' => 1, // Forzar el ID
-            'name' => 'Cliente Generico',
-            'number' => '0000000000',
-            'email' => 'cliente@cliente.com',
-            'visit_count' => 0,
+        DB::insert('insert into clients (id, name, number, email, visit_count, created_at, updated_at) values (?, ?, ?, ?, ?, ?, ?)', [
+            1,
+            'Cliente Generico',
+            '0000000000',
+            'cliente@cliente.com',
+            0,
+            now(),
+            now(),
         ]);
-        $client->save();
+    } else {
+        return response()->json(['message' => 'Cliente ya existe.'], 400);
     }
 
     // Insertar en la tabla user_details
     $userDetail = UserDetail::create([
         'name' => 'Nombre por defecto',
-        'role_id' => 1, // Ajusta este valor según sea necesario
-        'user_id' => $client->id, // Usar el ID del cliente
-        'age' => 0, // Ajusta según sea necesario
-        'phone' => '000-000-0000', // Valor por defecto
+        'role_id' => 1,
+        'user_id' => 1, // Usar el ID del cliente
+        'age' => 0,
+        'phone' => '000-000-0000',
         'gender' => 'no especificado',
-        'birthday' => '000-000-0000' // Valor por defecto
+        'birthday' => '0000-00-00', // Valor por defecto
     ]);
 
     return response()->json([
-        'client' => $client,
+        'client' => ['id' => 1, 'name' => 'Cliente Generico'],
         'userDetail' => $userDetail,
     ]);
 });
+
 
 
