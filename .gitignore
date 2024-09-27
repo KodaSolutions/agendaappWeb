@@ -18,3 +18,4 @@ yarn-error.log
 /.vscode
 /database/seeders/UsersTableSeeder.php
 /AuthKey_*.p8
+/config/database.php

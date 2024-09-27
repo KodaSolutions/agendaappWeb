@@ -54,3 +54,14 @@ route::get('/changes', function() {
     return $users;
 }); 
 
+//rutas inventario
+use App\Http\Controllers\Inventory\ProductoController;
+use App\Http\Controllers\Inventory\StockController;
+use App\Http\Controllers\Inventory\MovimientosStockController;
+use App\Http\Controllers\Inventory\CategoryController;
+
+Route::apiResource('productos', ProductoController::class);
+Route::apiResource('stock', StockController::class);
+Route::apiResource('movimientos_stock', MovimientosStockController::class);
+Route::apiResource('categories', CategoryController::class);
+//Route::post('categories', [CategoryController::class, 'store']);
