@@ -16,7 +16,7 @@ class UsersTableSeeder extends Seeder
         $user1 = User::create([
             'name' => 'Doctor Uno',
             'email' => 'doctor1@test.com',
-            'password' => Hash::make('123456'),
+            'password' => Hash::make('1234'),
         ]);
         UserDetail::create([
             'user_id' => $user1->id,
@@ -30,7 +30,7 @@ class UsersTableSeeder extends Seeder
         $user2 = User::create([
             'name' => 'Doctor Dos',
             'email' => 'doctor2@test.com',
-            'password' => Hash::make('123456'), 
+            'password' => Hash::make('1234'), 
         ]);
         UserDetail::create([
             'user_id' => $user2->id,
@@ -44,7 +44,7 @@ class UsersTableSeeder extends Seeder
         $user3 = User::create([
             'name' => 'Dulce',
             'email' => 'dulce@test.com',
-            'password' => Hash::make('123456'), 
+            'password' => Hash::make('1234'), 
         ]);
         UserDetail::create([
             'user_id' => $user3->id,
