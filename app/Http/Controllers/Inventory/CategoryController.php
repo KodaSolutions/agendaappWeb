@@ -18,7 +18,7 @@ class CategoryController extends Controller
     }
     public function store(Request $request){
         // Validar los datos
-        dd(env('DROPBOX_AUTH_TOKEN'));
+        
         $request->validate([
             'nombre' => 'required|string|max:255',
             'foto' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
