@@ -8,8 +8,15 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\ProductoResource;
 class ProductoController extends Controller
 {
-    public function index(){
-        return ProductoResource::collection(Producto::with('stock')->get());
+    public function index(Request $request){
+        $category_id = $request->query('category_id');
+        if ($category_id) {
+            $productos = Producto::where('category_id', $category_id)->with('stock')->get();
+        } else {
+            $productos = Producto::with('stock')->get();
+        }
+
+        return ProductoResource::collection($productos);
     }
     public function store(Request $request){
         $request->headers->set('Accept', 'application/json');
@@ -19,7 +26,8 @@ class ProductoController extends Controller
             'codigo_barras' => 'required|unique:productos,codigo_barras',
             'descripcion' => 'nullable|string',
             'category_id' => 'nullable|integer',
-        ], [
+        ], 
+        [
             'nombre.required' => 'El nombre del producto es obligatorio',
             'precio.required' => 'El precio es obligatorio',
             'precio.numeric' => 'El precio debe ser un número',
@@ -28,15 +36,14 @@ class ProductoController extends Controller
             'descripcion.string' => 'La descripción debe ser un texto',
             'category_id.integer' => 'El ID de la categoría debe ser un número entero',
         ]);
-        try {
+        try{
             $producto = Producto::create($validatedData);
-
             return response()->json([
                 'success' => true,
                 'message' => 'Producto creado exitosamente',
                 'data' => $producto
             ], 201);
-        } catch (\Exception $e) {
+        }catch (\Exception $e){
             return response()->json([
                 'success' => false,
                 'message' => 'Error al crear el producto: ' . $e->getMessage(),
