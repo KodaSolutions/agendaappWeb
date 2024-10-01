@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Resources\CategoryResource;
 use App\Models\Inventory\Category;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Storage;
 
 class CategoryController extends Controller
 {
@@ -15,24 +16,36 @@ class CategoryController extends Controller
         $categories = Category::skip($offset)->take($limit)->get();
         return CategoryResource::collection($categories);
     }
-
     public function store(Request $request){
-        $request->headers->set('Accept', 'application/json');
+        // Validar los datos
         $request->validate([
             'nombre' => 'required|string|max:255',
             'foto' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
+
         $data = [
             'nombre' => $request->nombre,
         ];
-        if($request->hasFile('foto')){
-            $image = $request->file('foto');
-            $imageName = time() . '.' . $image->getClientOriginalExtension();
-            $image->move(public_path('categories'), $imageName);
-            $data['foto'] = 'categories/' . $imageName;
-        } else{
-            $data['foto'] = 'images/default.jpg'; 
+
+        // Procesar la imagen si fue subida
+        if ($request->hasFile('foto')) {
+            // Obtener el archivo subido
+            $file = $request->file('foto');
+
+            // Subir a Dropbox
+            $path = Storage::disk('dropbox')->putFile('categories', $file);
+
+            // Obtener la URL pública del archivo
+            $link = Storage::disk('dropbox')->getDriver()->createSharedLinkWithSettings($path);
+
+            // Guardar la URL en la base de datos
+            $data['foto'] = str_replace('dl=0', 'raw=1', $link['url']);
+        } else {
+            // Asignar una imagen predeterminada
+            $data['foto'] = 'https://example.com/default.jpg';
         }
+
+        // Crear la categoría
         $category = Category::create($data);
 
         return response()->json($category, 201);
