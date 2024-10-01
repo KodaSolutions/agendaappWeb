@@ -18,44 +18,27 @@ class CategoryController extends Controller
         return CategoryResource::collection($categories);
     }
 
-public function store(Request $request)
-{
-    // Validar los datos
-    $request->validate([
-        'nombre' => 'required|string|max:255',
-        'foto' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-    ]);
+    public function store(Request $request){
+        $request->validate([
+            'nombre' => 'required|string|max:255',
+            'foto' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+        ]);
+        $data = [
+            'nombre' => $request->nombre,
+        ];
+        if($request->hasFile('foto')){
+            $file = $request->file('foto');
+            $path = Storage::disk('dropbox')->putFile('categories', $file);
+            $dropboxClient = new DropboxClient(env('DROPBOX_AUTH_TOKEN'));
+            $sharedLink = $dropboxClient->createSharedLinkWithSettings($path);
+            $data['foto'] = str_replace('dl=0', 'raw=1', $sharedLink['url']);
+        }else{
+            $data['foto'] = 'https://example.com/default.jpg';
+        }
+        $category = Category::create($data);
 
-    $data = [
-        'nombre' => $request->nombre,
-    ];
-
-    // Procesar la imagen si fue subida
-    if ($request->hasFile('foto')) {
-        // Obtener el archivo subido
-        $file = $request->file('foto');
-
-        // Subir a Dropbox
-        $path = Storage::disk('dropbox')->putFile('categories', $file);
-
-        // Obtener el cliente de Dropbox directamente
-        $dropboxClient = new DropboxClient(env('DROPBOX_AUTH_TOKEN'));
-
-        // Crear un enlace compartido
-        $sharedLink = $dropboxClient->createSharedLinkWithSettings($path);
-
-        // Guardar la URL en la base de datos
-        $data['foto'] = str_replace('dl=0', 'raw=1', $sharedLink['url']);
-    } else {
-        // Asignar una imagen predeterminada
-        $data['foto'] = 'https://example.com/default.jpg';
+        return response()->json($category, 201);
     }
-
-    // Crear la categoría
-    $category = Category::create($data);
-
-    return response()->json($category, 201);
-}
 
 
     public function show($id){
