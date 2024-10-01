@@ -17,34 +17,44 @@ class AppointmentController extends Controller
     public function store(Request $request){
         try {
             $validatedData = $request->validate([
-                'client_id' => 'required',
+                'client_id' => 'required|integer',
                 'date' => 'required|date',
                 'time' => 'required', 
                 'treatment' => 'required|string',
                 'name' => 'required|string',
-                'dr_id' => 'nullable',
+                'dr_id' => 'nullable|integer',
             ]);
-            $dateTime = $validatedData['date'].' '.$validatedData['time'];
+            $dateTime = $validatedData['date'] . ' ' . $validatedData['time'];
             $user = Auth::user();
             $id = (int) $user->id;
-            if($id === 3){
+            if ($id === 3) {
                 $doctor_id = $validatedData['dr_id'];
             } else {
                 $doctor_id = $user->id;
             }
             $appointment = new Appointment;
-            $clientZero = $validatedData['client_id'];
-            if($clientZero === 0){
+            $clientZero = (int) $validatedData['client_id'];
+            if($clientZero !== 0){
+                $client = Client::find($clientZero);
+                if($client){
+                    $client->visit_count += 1;
+                    $client->save();
+                } else {
+                    return response()->json([
+                        'message' => 'Cliente no encontrado',
+                    ], 404);
+                }
+            } else {
                 $clientZero = 1;
             }
             $appointment->client_id = $clientZero;
             $appointment->created_by = $user->id;
             $appointment->doctor_id = $doctor_id;
-            $appointment->appointment_date = $dateTime; 
+            $appointment->appointment_date = $dateTime;
             $appointment->treatment_type = $validatedData['treatment'];
-            $appointment->status = 'Upcoming'; 
-            $appointment->payment_method = 'Tarjeta'; 
-            $appointment->client_name = $validatedData['name']; 
+            $appointment->status = 'Upcoming';
+            $appointment->payment_method = 'Tarjeta';
+            $appointment->client_name = $validatedData['name'];
             $appointment->save();
             $doctor = User::find($doctor_id);
             if ($doctor && $doctor->fcm_token) {
@@ -61,6 +71,7 @@ class AppointmentController extends Controller
                 'message' => 'Appointment creado correctamente',
                 'appointment' => $appointment
             ], 201);
+
         } catch (\Illuminate\Validation\ValidationException $e) {
             return response()->json([
                 'message' => 'Error de validación',
@@ -73,6 +84,7 @@ class AppointmentController extends Controller
             ], 500);
         }
     }
+
     public function getAppoinmentsByUser($id){
         $id = (int) $id;
         $client = Client::find($id);
