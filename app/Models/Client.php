@@ -15,4 +15,7 @@ class Client extends Model
         'email',
         'visit_count'
     ];
+    public function getVisitCountAttribute(){
+        return $this->attributes['visit_count'];
+    }
 }

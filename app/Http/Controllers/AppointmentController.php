@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Appointment;
 use App\Models\User;
+use App\Models\Client;
 use Auth;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Notification;
@@ -72,7 +73,25 @@ class AppointmentController extends Controller
             ], 500);
         }
     }
-
+    public function getAppoinmentsByUser($id){
+        $id = (int) $id;
+        $client = Client::find($id);
+        if (!$client) {
+            return response()->json(['message' => 'Cliente no encontrado'], 404);
+        }
+        $appointment = Appointment::where('client_id', $id)->whereDate('appointment_date', '>=', now())->orderBy('appointment_date', 'asc')->first();
+        if($appointment){
+            $formattedDate = \Carbon\Carbon::parse($appointment->appointment_date)->isoFormat('DD [de] MMMM [de] YYYY');
+            return response()->json([
+                'appointment_id' => $appointment->id,
+                'client_id' => $client->id,
+                'appointment_date' => $formattedDate,
+                'visit_count' => $client->visit_count
+            ]);
+        }else{
+            return response()->json(['message' => 'No hay citas próximas'], 404);
+        }
+    }
     public function getAppoinments($id){
         $id = (int) $id;
         if ($id === 3) {
