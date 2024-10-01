@@ -13,11 +13,33 @@ class ProductoController extends Controller
     }
     public function store(Request $request){
         $request->validate([
-            'nombre'=> 'required',
-            'precio' => 'required|integer',
-            'codigo_barras' => 'required|']);
-        $producto = Producto::create($request->all());
-        return response()->json($producto, 200);
+            'nombre' => 'required',
+            'precio' => 'required|numeric',
+            'codigo_barras' => 'required|unique:productos,codigo_barras',
+            'descripcion' => 'nullable|string',
+            'category_id' => 'nullable|integer',
+        ], [
+            'nombre.required' => 'El nombre del producto es obligatorio',
+            'precio.required' => 'El precio es obligatorio',
+            'precio.numeric' => 'El precio debe ser un número',
+            'codigo_barras.required' => 'El código de barras es obligatorio',
+            'codigo_barras.unique' => 'El código de barras ya está registrado, debe ser único',
+            'descripcion.string' => 'La descripción debe ser un texto',
+            'category_id.integer' => 'El ID de la categoría debe ser un número entero',
+        ]);
+        try {
+            $producto = Producto::create($request->all());
+            return response()->json([
+                'success' => true,
+                'message' => 'Producto creado exitosamente',
+                'data' => $producto
+            ], 200);
+        } catch(\Exception $e){
+            return response()->json([
+                'success' => false,
+                'message' => 'Error al crear el producto: ' . $e->getMessage(),
+            ], 500);
+        }
     }
     public  function show($id){
         $id = (int) $id;
