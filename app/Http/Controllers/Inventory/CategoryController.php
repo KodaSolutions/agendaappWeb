@@ -17,6 +17,7 @@ class CategoryController extends Controller
     }
 
     public function store(Request $request){
+        $request->headers->set('Accept', 'application/json');
         $request->validate([
             'nombre' => 'required|string|max:255',
             'foto' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
@@ -33,7 +34,7 @@ class CategoryController extends Controller
             $data['foto'] = 'images/default.jpg'; 
         }
         $category = Category::create($data);
-        
+
         return response()->json($category, 201);
     }
 
