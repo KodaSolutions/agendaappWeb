@@ -18,11 +18,25 @@ class CategoryController extends Controller
 
     public function store(Request $request){
         $request->validate([
-            'nombre' => 'required|string|max:255']);
-        $category = Category::create($request->all());
-
+            'nombre' => 'required|string|max:255',
+            'foto' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+        ]);
+        $data = [
+            'nombre' => $request->nombre,
+        ];
+        if($request->hasFile('foto')){
+            $image = $request->file('foto');
+            $imageName = time() . '.' . $image->getClientOriginalExtension();
+            $image->move(public_path('categories'), $imageName);
+            $data['foto'] = 'categories/' . $imageName;
+        } else{
+            $data['foto'] = 'images/default.jpg'; 
+        }
+        $category = Category::create($data);
+        
         return response()->json($category, 201);
     }
+
     public function show($id){
         $category = Category::findOrFail($id);
 
