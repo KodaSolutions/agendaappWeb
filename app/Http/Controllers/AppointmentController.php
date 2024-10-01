@@ -57,7 +57,7 @@ class AppointmentController extends Controller
             $appointment->client_name = $validatedData['name'];
             $appointment->save();
             $doctor = User::find($doctor_id);
-            if ($doctor->fcm_token {
+            if ($doctor->fcm_token) {
                 $notification = new AppointmentCreatedNotification($appointment->appointment_date);
                 $notification->toFcm($doctor);
 
