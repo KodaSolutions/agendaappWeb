@@ -12,7 +12,8 @@ class ProductoController extends Controller
         return ProductoResource::collection(Producto::with('stock')->get());
     }
     public function store(Request $request){
-        $request->validate([
+        $request->headers->set('Accept', 'application/json');
+        $validatedData = $request->validate([
             'nombre' => 'required',
             'precio' => 'required|numeric',
             'codigo_barras' => 'required|unique:productos,codigo_barras',
@@ -28,19 +29,21 @@ class ProductoController extends Controller
             'category_id.integer' => 'El ID de la categoría debe ser un número entero',
         ]);
         try {
-            $producto = Producto::create($request->all());
+            $producto = Producto::create($validatedData);
+
             return response()->json([
                 'success' => true,
                 'message' => 'Producto creado exitosamente',
                 'data' => $producto
-            ], 200);
-        } catch(\Exception $e){
+            ], 201);
+        } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
                 'message' => 'Error al crear el producto: ' . $e->getMessage(),
             ], 500);
         }
     }
+
     public  function show($id){
         $id = (int) $id;
         $producto = Producto::findOrFail($id);
