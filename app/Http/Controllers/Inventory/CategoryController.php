@@ -14,9 +14,15 @@ class CategoryController extends Controller
     public function index(Request $request){
         $limit = $request->get('limit', 6);
         $offset = $request->get('offset', 0);
-        $categories = Category::skip($offset)->take($limit)->get();
+        $categories = Category::skip($offset)->take($limit + 1)->get();
+        if($categories->count() > $limit){
+            $categories->pop();
+        }
+        $categories->push(new Category());
+
         return CategoryResource::collection($categories);
     }
+
 
     public function store(Request $request){
         $request->validate([
