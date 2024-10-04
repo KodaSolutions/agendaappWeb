@@ -53,7 +53,7 @@ route::get('/changes', function() {
         $user->password = Hash::make('1234');
         $user->save();
     } */
-    foreach ($user as $user) {
+    foreach ($users as $user) {
         $user->category_id = 23;
         $user->save();
     }
