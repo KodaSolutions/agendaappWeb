@@ -7,7 +7,7 @@ use App\Http\Controllers\ClientController;
 use App\Http\Controllers\AppointmentController;
 use App\Http\Controllers\NotificationController;
 use App\Models\User;
-use App\Models\Inventory\Produto;
+use App\Models\Inventory\Producto;
 
 /*
 |--------------------------------------------------------------------------
