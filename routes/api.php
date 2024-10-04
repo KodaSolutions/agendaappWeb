@@ -7,6 +7,7 @@ use App\Http\Controllers\ClientController;
 use App\Http\Controllers\AppointmentController;
 use App\Http\Controllers\NotificationController;
 use App\Models\User;
+use App\Models\Inventory\Produto;
 
 /*
 |--------------------------------------------------------------------------
@@ -47,11 +48,15 @@ Route::post('sendNotification/{id}', [NotificationController::class, 'sendNotifi
 
 //ruta provicional cambiar contrasenas
 route::get('/changes', function() {
-    $users = User::all();
-    foreach($users as $user){    
+    $users = Producto::all();
+    /*foreach($users as $user){    
         $user->password = Hash::make('1234');
         $user->save();
-    } 
+    } */
+    foreach ($user as $user) {
+        $user->category_id = 23;
+        $user->save();
+    }
     return $users;
 }); 
 
