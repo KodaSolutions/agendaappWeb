@@ -65,9 +65,12 @@ use App\Http\Controllers\Inventory\ProductoController;
 use App\Http\Controllers\Inventory\StockController;
 use App\Http\Controllers\Inventory\MovimientosStockController;
 use App\Http\Controllers\Inventory\CategoryController;
+use App\Http\Controllers\Inventory\CartController;
 
 Route::apiResource('productos', ProductoController::class);
 Route::apiResource('stock', StockController::class);
 Route::apiResource('movimientos_stock', MovimientosStockController::class);
 Route::apiResource('categories', CategoryController::class);
+Route::post('carrito', [CartController::class, 'store']);
+
 //Route::post('categories', [CategoryController::class, 'store']);

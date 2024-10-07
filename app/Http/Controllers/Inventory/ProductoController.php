@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Models\Inventory\Producto;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\ProductoResource;
+use App\Models\Inventory\Stock;
+use App\Models\Inventory\MovimientosStock;
 class ProductoController extends Controller
 {
     public function index(Request $request){
@@ -36,14 +38,39 @@ class ProductoController extends Controller
             'descripcion.string' => 'La descripción debe ser un texto',
             'category_id.integer' => 'El ID de la categoría debe ser un número entero',
         ]);
-        try{
+     try {
             $producto = Producto::create($validatedData);
+            
+            // Verificar si el producto ya tiene stock
+            $stock = Stock::where('producto_id', $producto->id)->first();
+            
+            if ($stock) {
+                // Si el producto ya tiene stock, aumentamos la cantidad en 1
+                $stock->increment('cantidad', 1);
+            } else {
+                // Si no hay stock, creamos un nuevo registro con cantidad inicial 1
+                Stock::create([
+                    'producto_id' => $producto->id,
+                    'cantidad' => 1,
+                    'estado' => 'disponible'
+                ]);
+            }
+
+            // Registrar el movimiento de stock
+            MovimientosStock::create([
+                'producto_id' => $producto->id,
+                'cantidad' => 1,
+                'tipo_movimiento' => 'alta', // Se define como alta de producto
+                'usuario_id' => auth()->user()->id ?? null // O el ID del usuario si está autenticado
+            ]);
+
             return response()->json([
                 'success' => true,
-                'message' => 'Producto creado exitosamente',
+                'message' => 'Producto creado y stock actualizado exitosamente',
                 'data' => $producto
             ], 201);
-        }catch (\Exception $e){
+
+        } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
                 'message' => 'Error al crear el producto: ' . $e->getMessage(),
