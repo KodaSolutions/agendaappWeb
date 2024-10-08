@@ -13,33 +13,58 @@ class StockController extends Controller
     public function index(){
         return StockResource::collection(Stock::with('producto')->get());
     }
-  public function store(Request $request)
+    public function store(Request $request)
     {
         $request->validate([
             'producto_id' => 'required|exists:productos,id',
             'cantidad' => 'required|integer',
             'estado' => 'nullable|string'
         ]);
-
-        // Actualizar el stock del producto o crearlo si no existe
         $stock = Stock::where('producto_id', $request->producto_id)->first();
-        
-        if ($stock) {
-            $stock->increment('cantidad', $request->cantidad);
-        } else {
-            $stock = Stock::create($request->all());
+        if($stock){
+            if($request->cantidad > 0){
+                $stock->increment('cantidad', $request->cantidad);
+                MovimientosStock::create([
+                    'producto_id' => $request->producto_id,
+                    'cantidad' => $request->cantidad,
+                    'tipo_movimiento' => 'alta',
+                    'usuario_id' => auth()->user()->id ?? null
+                ]);
+            }else{
+                $abs_cant = abs($request->cantidad);
+                if ($stock->cantidad >= $abs_cant) {
+                    $stock->decrement('cantidad', $abs_cant);
+                    MovimientosStock::create([
+                        'producto_id' => $request->producto_id,
+                        'cantidad' => $abs_cant,
+                        'tipo_movimiento' => 'baja',
+                        'usuario_id' => auth()->user()->id ?? null,
+                        'estatus' => 'pendiente'
+                    ]);
+                }else{
+                    return response()->json([
+                        'success' => false,
+                        'message' => 'No hay suficiente stock para realizar esta baja'
+                    ], 400);
+                }
+            }
+        }else{
+            $stock = Stock::create([
+                'producto_id' => $request->producto_id,
+                'cantidad' => max($request->cantidad, 0),
+                'estado' => $request->estado ?? 'disponible'
+            ]);
+            MovimientosStock::create([
+                'producto_id' => $request->producto_id,
+                'cantidad' => $request->cantidad,
+                'tipo_movimiento' => 'alta',
+                'usuario_id' => auth()->user()->id ?? null
+            ]);
         }
-
-        // Registrar el movimiento
-        MovimientosStock::create([
-            'producto_id' => $request->producto_id,
-            'cantidad' => $request->cantidad,
-            'tipo_movimiento' => 'alta',  // En este caso se registraría como alta
-            'usuario_id' => auth()->user()->id ?? null
-        ]);
 
         return response()->json($stock, 201);
     }
+
 
     public function show($id)
     {

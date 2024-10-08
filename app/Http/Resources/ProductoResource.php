@@ -20,7 +20,7 @@ class ProductoResource extends JsonResource
             'descripcion' => $this->descripcion,
             'precio' => $this->precio,
             'codigo_barras' => $this->codigo_barras,
-            'stock' => $this->stock->sum('cantidad'), 
+            'stock' => $this->stock, 
             'category_id' => $this->category_id,
             'created_at' => $this->created_at->toDateTimeString(),
             'updated_at' => $this->updated_at->toDateTimeString(),

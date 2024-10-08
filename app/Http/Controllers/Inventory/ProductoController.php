@@ -12,9 +12,9 @@ class ProductoController extends Controller
 {
     public function index(Request $request){
         $category_id = $request->query('category_id');
-        if ($category_id) {
+        if($category_id){
             $productos = Producto::where('category_id', $category_id)->with('stock')->get();
-        } else {
+        } else{
             $productos = Producto::with('stock')->get();
         }
 
@@ -38,39 +38,31 @@ class ProductoController extends Controller
             'descripcion.string' => 'La descripción debe ser un texto',
             'category_id.integer' => 'El ID de la categoría debe ser un número entero',
         ]);
-     try {
+        try{
             $producto = Producto::create($validatedData);
-            
-            // Verificar si el producto ya tiene stock
             $stock = Stock::where('producto_id', $producto->id)->first();
-            
-            if ($stock) {
-                // Si el producto ya tiene stock, aumentamos la cantidad en 1
+            if($stock){
                 $stock->increment('cantidad', 1);
-            } else {
-                // Si no hay stock, creamos un nuevo registro con cantidad inicial 1
+            }else{
                 Stock::create([
                     'producto_id' => $producto->id,
                     'cantidad' => 1,
                     'estado' => 'disponible'
                 ]);
             }
-
-            // Registrar el movimiento de stock
             MovimientosStock::create([
                 'producto_id' => $producto->id,
                 'cantidad' => 1,
-                'tipo_movimiento' => 'alta', // Se define como alta de producto
-                'usuario_id' => auth()->user()->id ?? null // O el ID del usuario si está autenticado
+                'tipo_movimiento' => 'alta',
+                'usuario_id' => auth()->user()->id ?? null
             ]);
-
             return response()->json([
                 'success' => true,
                 'message' => 'Producto creado y stock actualizado exitosamente',
                 'data' => $producto
             ], 201);
 
-        } catch (\Exception $e) {
+        } catch(\Exception $e){
             return response()->json([
                 'success' => false,
                 'message' => 'Error al crear el producto: ' . $e->getMessage(),
@@ -80,17 +72,97 @@ class ProductoController extends Controller
 
     public  function show($id){
         $id = (int) $id;
-        $producto = Producto::findOrFail($id);
-        return response()->json($producto);
+        $producto = Producto::with('stock')->findOrFail($id);
+         return response()->json(['success' => true,
+            'data' => [
+                'id' => $producto->id,
+                'nombre' => $producto->nombre,
+                'descripcion' => $producto->descripcion,
+                'precio' => $producto->precio,
+                'codigo_barras' => $producto->codigo_barras,
+                'category_id' => $producto->category_id,
+                'stock' => [
+                    'cantidad' => $producto->stock->cantidad ?? 0,
+                    'estado' => $producto->stock->estado ?? 'no disponible'
+                ]
+            ]
+        ]);
     }
     public function update(Request $request, $id){
+        $request->headers->set('Accept', 'application/json');
+        $validatedData = $request->validate([
+            'nombre' => 'required',
+            'precio' => 'required|numeric',
+            'codigo_barras' => 'required|unique:productos,codigo_barras,' . $id,
+            'descripcion' => 'nullable|string',
+            'category_id' => 'required|integer',
+            'cant' => 'nullable|integer'
+        ], 
+        [
+            'nombre.required' => 'El nombre del producto es obligatorio',
+            'precio.required' => 'El precio es obligatorio',
+            'precio.numeric' => 'El precio debe ser un número',
+            'codigo_barras.required' => 'El código de barras es obligatorio',
+            'codigo_barras.unique' => 'El código de barras ya está registrado, debe ser único',
+            'descripcion.string' => 'La descripción debe ser un texto',
+            'category_id.integer' => 'El ID de la categoría debe ser un número entero',
+        ]);
         $id = (int) $id;
-        $request->validate([
-            'nombre' => 'required']);
-        $producto = Producto::findOrFail($id);
-        $producto->update($request->all());
-        return response()->json($producto);
+        try{
+            $producto = Producto::findOrFail($id);
+            $cant = $request->input('cant');
+            $stock = Stock::where('producto_id', $producto->id)->first();
+            if(!$stock){
+                $stock = Stock::create([
+                    'producto_id' => $producto->id,
+                    'cantidad' => 0,
+                    'estado' => 'disponible'
+                ]);
+            }
+            if($cant){
+                if($cant > 0){
+                    $stock->increment('cantidad', $cant);
+                    MovimientosStock::create([
+                        'producto_id' => $producto->id,
+                        'cantidad' => $cant,
+                        'tipo_movimiento' => 'alta',
+                        'usuario_id' => auth()->user()->id ?? null
+                    ]);
+                }else{
+                    $abs_cant = abs($cant);
+                    if($stock->cantidad >= $abs_cant){
+                        $stock->decrement('cantidad', $abs_cant);
+                        MovimientosStock::create([
+                            'producto_id' => $producto->id,
+                            'cantidad' => $abs_cant,
+                            'tipo_movimiento' => 'baja',
+                            'usuario_id' => auth()->user()->id ?? null,
+                            'status' => 'pendiente'
+                        ]);
+                    } else {
+                        return response()->json([
+                            'success' => false,
+                            'message' => 'No hay suficiente stock para realizar esta baja'
+                        ], 400);
+                    }
+                }
+            }
+            $producto->update($validatedData);
+        }catch(\Exception $e){
+            return response()->json([
+                'success' => false,
+                'message' => 'Error al editar el producto: ' . $e->getMessage(),
+            ], 500);
+        }
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Producto actualizado y stock generado',
+            'data' => $producto
+        ]);
     }
+
+
     public function destroy($id){
         $producto = Producto::findOrFail($id);
         $producto->delete();

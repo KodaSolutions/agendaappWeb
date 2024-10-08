@@ -12,7 +12,7 @@ class Producto extends Model
     protected $fillable = ['nombre', 'descripcion', 'precio', 'codigo_barras', 'category_id'];
 
    public function stock(){
-        return $this->hasMany(Stock::class);
+        return $this->hasOne(Stock::class, 'producto_id');
     }
     public function movimientos(){
         return $this->hasMany(MovimientosStock::class);

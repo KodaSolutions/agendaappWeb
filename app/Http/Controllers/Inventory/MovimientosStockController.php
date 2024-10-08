@@ -36,7 +36,6 @@ class MovimientosStockController extends Controller
 
     public function update(Request $request, $id)
     {
-        // Validar y actualizar un movimiento
         $request->validate([
             'cantidad' => 'required|integer',
             'tipo_movimiento' => 'required|string'
@@ -50,7 +49,6 @@ class MovimientosStockController extends Controller
 
     public function destroy($id)
     {
-        // Eliminar un movimiento de stock
         $movimiento = MovimientosStock::findOrFail($id);
         $movimiento->delete();
 
