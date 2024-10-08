@@ -10,6 +10,48 @@ use App\Http\Controllers\Controller;
 class MovimientosStockController extends Controller
 {
     public function index(){
-        return MovimientosResource::collection(MovimientosStock::with(['producto', 'usuario'])->get());
+      $movimientos = MovimientosStock::with(['producto', 'usuario'])->get();
+        return response()->json($movimientos, 200);
+    }
+
+    public function store(Request $request)
+    {
+        $request->validate([
+            'producto_id' => 'required|exists:productos,id',
+            'cantidad' => 'required|integer',
+            'tipo_movimiento' => 'required|string',
+            'usuario_id' => 'nullable|exists:users,id'
+        ]);
+
+        $movimiento = MovimientosStock::create($request->all());
+
+        return response()->json($movimiento, 201);
+    }
+
+    public function show($id)
+    {
+        $movimiento = MovimientosStock::with(['producto', 'usuario'])->findOrFail($id);
+        return response()->json($movimiento, 200);
+    }
+
+    public function update(Request $request, $id)
+    {
+        $request->validate([
+            'cantidad' => 'required|integer',
+            'tipo_movimiento' => 'required|string'
+        ]);
+
+        $movimiento = MovimientosStock::findOrFail($id);
+        $movimiento->update($request->all());
+
+        return response()->json($movimiento, 200);
+    }
+
+    public function destroy($id)
+    {
+        $movimiento = MovimientosStock::findOrFail($id);
+        $movimiento->delete();
+
+        return response()->json(null, 204);
     }
 }
