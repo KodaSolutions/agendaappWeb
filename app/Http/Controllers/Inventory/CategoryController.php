@@ -11,19 +11,21 @@ use Spatie\Dropbox\Client as DropboxClient;
 
 class CategoryController extends Controller
 {
-    public function index(Request $request){
+    public function index(Request $request)
+    {
         $limit = $request->get('limit', 6);
         $offset = $request->get('offset', 0);
         $categories = Category::skip($offset)->take($limit + 1)->get();
         if($categories->count() > $limit){
             $categories->pop();
         }
-        $categories->push(new Category());
-
+        $categories->push(new Category(['nombre' => 'addCat']));
         return CategoryResource::collection($categories);
     }
 
+
     public function store(Request $request){
+        $request->headers->set('Accept', 'application/json');
         $request->validate([
             'nombre' => 'required|string|max:255',
             'foto' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
@@ -53,6 +55,7 @@ class CategoryController extends Controller
     }
 
     public function update(Request $request, $id){
+        $request->headers->set('Accept', 'application/json');
         $request->validate([
             'nombre' => 'required|string|max:255'
         ]);
@@ -63,6 +66,7 @@ class CategoryController extends Controller
     }
 
     public function destroy($id){
+        $request->headers->set('Accept', 'application/json');
         $category = Category::findOrFail($id);
         $category->delete();
 
