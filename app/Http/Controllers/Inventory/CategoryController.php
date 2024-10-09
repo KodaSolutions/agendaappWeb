@@ -65,7 +65,7 @@ class CategoryController extends Controller
         return response()->json($category);
     }
 
-    public function destroy($id){
+    public function destroy(Request $request, $id){
         $request->headers->set('Accept', 'application/json');
         $category = Category::findOrFail($id);
         $category->delete();
