@@ -54,7 +54,7 @@ route::get('/changes', function() {
         $user->save();
     } */
     foreach ($users as $user) {
-        $user->stock = 10;
+        $user->category_id = 63;
         $user->save();
     }
     return $users;
