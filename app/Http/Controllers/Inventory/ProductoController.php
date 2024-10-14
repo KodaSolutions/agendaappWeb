@@ -121,11 +121,12 @@ class ProductoController extends Controller
             }
             if($cant){
                 if($cant > 0){
-                    $stock->increment('cantidad', $cant);
+                    //$stock->increment('cantidad', $cant);
+                    $stock->cantidad = $cant;
                     MovimientosStock::create([
                         'producto_id' => $producto->id,
                         'cantidad' => $cant,
-                        'tipo_movimiento' => 'alta',
+                        'tipo_movimiento' => 'ajuste',
                         'usuario_id' => auth()->user()->id ?? null
                     ]);
                 }else{
@@ -135,7 +136,7 @@ class ProductoController extends Controller
                         MovimientosStock::create([
                             'producto_id' => $producto->id,
                             'cantidad' => $abs_cant,
-                            'tipo_movimiento' => 'baja',
+                            'tipo_movimiento' => 'ajuste',
                             'usuario_id' => auth()->user()->id ?? null,
                             'status' => 'pendiente'
                         ]);
