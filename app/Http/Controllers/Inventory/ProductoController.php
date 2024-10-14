@@ -123,6 +123,7 @@ class ProductoController extends Controller
                 if($cant > 0){
                     //$stock->increment('cantidad', $cant);
                     $stock->cantidad = $cant;
+                    $stock->save();
                     MovimientosStock::create([
                         'producto_id' => $producto->id,
                         'cantidad' => $cant,
