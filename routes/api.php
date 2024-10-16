@@ -72,5 +72,6 @@ Route::apiResource('stock', StockController::class);
 Route::apiResource('movimientos_stock', MovimientosStockController::class);
 Route::apiResource('categories', CategoryController::class);
 Route::post('carrito', [CartController::class, 'store']);
-
+Route::get('ventas/carrito', [CartController::class, 'getVentasPorCarrito']);
+Route::get('ventas/producto', [CartController::class, 'getVentasPorProducto']);
 //Route::post('categories', [CategoryController::class, 'store']);
