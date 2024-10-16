@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::table('ventas', function (Blueprint $table) {
             $table->decimal('descuento', 10, 2)->nullable()->after('precio_venta');
             $table->date('fecha_entrega')->nullable()->after('descuento');
-            $table->foreignId('usuario_id')->nullable()->constrained('users')->change(); 
+            //$table->foreignId('usuario_id')->nullable()->constrained('users')->change(); 
         });
     }
 
