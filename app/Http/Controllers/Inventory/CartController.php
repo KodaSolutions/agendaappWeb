@@ -72,17 +72,17 @@ class CartController extends Controller
 
     }
     public function getVentasPorCarrito(Request $request){
-        $fechaInicio = $request->input('fecha_inicio') 
-                       ? Carbon::parse($request->input('fecha_inicio'))->startOfDay() 
-                       : now()->startOfDay();
-        $fechaFin = $request->input('fecha_fin') 
-                    ? Carbon::parse($request->input('fecha_fin'))->endOfDay() 
-                    : now()->endOfDay();
-        if($fechaInicio){
-            $ventas = Venta::with('detalles.producto')->whereBetween('created_at', [$fechaInicio, $fechaFin])->get();
-        }else{
+      //  $fechaInicio = $request->input('fecha_inicio') 
+      //                 ? Carbon::parse($request->input('fecha_inicio'))->startOfDay() 
+       //                : now()->startOfDay();
+       // $fechaFin = $request->input('fecha_fin') 
+        //            ? Carbon::parse($request->input('fecha_fin'))->endOfDay() 
+         //           : now()->endOfDay();
+        //if($fechaInicio){
+        //    $ventas = Venta::with('detalles.producto')->whereBetween('created_at', [$fechaInicio, $fechaFin])->get();
+       // }else{
             $ventas = Venta::with('detalles.producto')->get();
-        }
+        //}
 
         return response()->json($ventas);
     }
