@@ -78,7 +78,11 @@ class CartController extends Controller
         $fechaFin = $request->input('fecha_fin') 
                     ? Carbon::parse($request->input('fecha_fin'))->endOfDay() 
                     : now()->endOfDay();
-        $ventas = Venta::with('detalles.producto')->whereBetween('created_at', [$fechaInicio, $fechaFin])->get();
+        if($fechaInicio){
+            $ventas = Venta::with('detalles.producto')->whereBetween('created_at', [$fechaInicio, $fechaFin])->get();
+        }else{
+            $ventas = Venta::with('detalles.producto')->get();
+        }
 
         return response()->json($ventas);
     }
