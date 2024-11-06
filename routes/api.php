@@ -74,4 +74,5 @@ Route::apiResource('categories', CategoryController::class);
 Route::post('carrito', [CartController::class, 'store']);
 Route::get('ventas/carrito', [CartController::class, 'getVentasPorCarrito']);
 Route::get('ventas/producto', [CartController::class, 'getVentasPorProducto']);
+Route::get('/search', [ProductoController::class, 'search']);
 //Route::post('categories', [CategoryController::class, 'store']);

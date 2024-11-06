@@ -8,6 +8,8 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\ProductoResource;
 use App\Models\Inventory\Stock;
 use App\Models\Inventory\MovimientosStock;
+use App\Models\Inventory\Category;
+use App\Http\Resources\CategoryResource;
 class ProductoController extends Controller
 {
     public function index(Request $request){
@@ -170,5 +172,14 @@ class ProductoController extends Controller
         $producto->delete();
 
         return response()->json(null, 204);
+    }
+    public function search(Request $request){
+        $searchQuery = $request->query('q', '');
+        $categories = Category::where('nombre', 'LIKE', $searchQuery . '%')->get();
+        $productos = Producto::where('nombre', 'LIKE', $searchQuery . '%')->get();    
+        return response()->json([
+            'categories' => CategoryResource::collection($categories),
+            'productos' => ProductoResource::collection($productos),
+        ]);
     }
 }
