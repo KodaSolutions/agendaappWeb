@@ -175,8 +175,9 @@ class ProductoController extends Controller
     }
     public function search(Request $request){
         $searchQuery = $request->query('q', '');
-        $categories = Category::where('nombre', 'LIKE', .'%' . $searchQuery . '%')->get();
-        $productos = Producto::where('nombre', 'LIKE', . '%' . $searchQuery . '%')->get();    
+        $categories = Category::where('nombre', 'LIKE', '%' . $searchQuery . '%')->get();
+        $productos = Producto::where('nombre', 'LIKE', '%' . $searchQuery . '%')->get();
+
         return response()->json([
             'categories' => CategoryResource::collection($categories),
             'productos' => ProductoResource::collection($productos),
