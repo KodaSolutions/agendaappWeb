@@ -22,6 +22,12 @@ class ProductoController extends Controller
 
         return ProductoResource::collection($productos);
     }
+    public function searchByBCode(Request $request){
+        $barCode = $request->query('barCode');
+        $producto = Producto::where('codigo_barras', $barCode)->with('stock')->get();
+
+        return ProductoResource::collection($producto);
+    }
     public function store(Request $request){
         $request->headers->set('Accept', 'application/json');
         $validatedData = $request->validate([

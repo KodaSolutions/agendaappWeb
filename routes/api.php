@@ -75,4 +75,5 @@ Route::post('carrito', [CartController::class, 'store']);
 Route::get('ventas/carrito', [CartController::class, 'getVentasPorCarrito']);
 Route::get('ventas/producto', [CartController::class, 'getVentasPorProducto']);
 Route::get('/search', [ProductoController::class, 'search']);
+Route::get('/searchByBCode', [ProductoController::class, 'searchByBCode']);
 //Route::post('categories', [CategoryController::class, 'store']);
