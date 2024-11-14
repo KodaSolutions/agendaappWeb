@@ -83,8 +83,10 @@ class CartController extends Controller
        // }else{
             $ventas = Venta::with('detalles.producto')->get();
         //}
-
-        return response()->json($ventas);
+        //date_default_timezone_set('America/Mexico_City');
+        //$currentTimezone = date_default_timezone_get();
+        $fecha = now();
+        return response()->json($fecha);
     }
     public function getVentasPorProducto(Request $request){
         $fechaInicio = $request->input('fecha_inicio') 

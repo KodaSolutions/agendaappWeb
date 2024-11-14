@@ -21,5 +21,6 @@ Route::get('/', function () {
     return view('welcome');
 });
 Route::get('userAll', [AuthController::class, 'userAll']);
+Route::get('/database-schema', [AuthController::class, 'getSchema']);
 
 
