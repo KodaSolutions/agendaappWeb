@@ -7,6 +7,7 @@ use App\Models\Client;
 use Illuminate\Http\Request;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use Tymon\JWTAuth\Exceptions\JWTException;
+use Illuminate\Support\Facades\DB;
 
 class AuthController extends Controller
 {
@@ -107,5 +108,41 @@ class AuthController extends Controller
             return response()->json(['error' => 'No se pudo refrescar el token'], 500);
         }
     }
+public function getSchema()
+{
+    // Array para almacenar la estructura de la base de datos
+    $databaseSchema = [];
+
+    // Obtener todas las tablas de la base de datos
+    $tables = DB::select("SELECT table_name FROM information_schema.tables WHERE table_schema = DATABASE()");
+
+    // Recorrer cada tabla y obtener sus columnas
+    foreach ($tables as $table) {
+        $tableName = $table->table_name;
+
+        // Obtener las columnas de la tabla actual
+        $columns = DB::select("SELECT column_name, data_type, character_maximum_length, column_default 
+                               FROM information_schema.columns 
+                               WHERE table_schema = DATABASE() AND table_name = ?", [$tableName]);
+
+        $columnData = [];
+        foreach ($columns as $column) {
+            $columnData[] = [
+                'name' => $column->column_name,
+                'type' => $column->data_type,
+                'length' => $column->character_maximum_length,
+                'default' => $column->column_default,
+            ];
+        }
+
+        $databaseSchema[$tableName] = $columnData;
+    }
+
+    // Retornar la información en formato JSON
+    return response()->json($databaseSchema);
+}
+
+
+
 }
 
