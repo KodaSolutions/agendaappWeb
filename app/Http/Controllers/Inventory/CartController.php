@@ -72,21 +72,23 @@ class CartController extends Controller
 
     }
     public function getVentasPorCarrito(Request $request){
-      //  $fechaInicio = $request->input('fecha_inicio') 
-      //                 ? Carbon::parse($request->input('fecha_inicio'))->startOfDay() 
-       //                : now()->startOfDay();
-       // $fechaFin = $request->input('fecha_fin') 
-        //            ? Carbon::parse($request->input('fecha_fin'))->endOfDay() 
-         //           : now()->endOfDay();
-        //if($fechaInicio){
-        //    $ventas = Venta::with('detalles.producto')->whereBetween('created_at', [$fechaInicio, $fechaFin])->get();
-       // }else{
-            $ventas = Venta::with('detalles.producto')->get();
-        //}
+      $fechaInicio = $request->input('fecha_inicio') 
+                     ? Carbon::parse($request->input('fecha_inicio'))->startOfDay() 
+                     : now()->startOfDay();
+
+
+      $fechaFin = $request->input('fecha_fin') 
+                  ? Carbon::parse($request->input('fecha_fin'))->endOfDay() 
+                 : now()->endOfDay();
+      if($fechaInicio){
+          $ventas = Venta::with('detalles.producto')->whereBetween('created_at', [$fechaInicio, $fechaFin])->get();
+      }else{
+        $ventas = Venta::with('detalles.producto')->get();
+        }
         //date_default_timezone_set('America/Mexico_City');
         //$currentTimezone = date_default_timezone_get();
-        $fecha = now();
-        return response()->json($fecha);
+        //$fecha = now();
+        return response()->json($ventas);
     }
     public function getVentasPorProducto(Request $request){
         $fechaInicio = $request->input('fecha_inicio') 
