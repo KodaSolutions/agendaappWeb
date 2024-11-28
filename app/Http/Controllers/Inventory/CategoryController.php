@@ -57,13 +57,27 @@ class CategoryController extends Controller
     public function update(Request $request, $id){
         $request->headers->set('Accept', 'application/json');
         $request->validate([
-            'nombre' => 'required|string|max:255'
+            'nombre' => 'required|string|max:255',
+            'foto' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
         $category = Category::findOrFail($id);
-        $category->update($request->all());
+        $category->nombre = $request->nombre;
+        if($request->hasFile('foto')){
+            if ($category->foto && filter_var($category->foto, FILTER_VALIDATE_URL)) {
+                $existingPath = str_replace('https://www.dropbox.com/', '', str_replace('?raw=1', '', $category->foto));
+                Storage::disk('dropbox')->delete($existingPath);
+            }
+            $file = $request->file('foto');
+            $path = Storage::disk('dropbox')->putFile('categories', $file);
+            $dropboxClient = new DropboxClient(env('DROPBOX_AUTH_TOKEN'));
+            $sharedLink = $dropboxClient->createSharedLinkWithSettings($path);
+            $category->foto = str_replace('dl=0', 'raw=1', $sharedLink['url']);
+        }
+        $category->save();
 
         return response()->json($category);
     }
+
 
     public function destroy(Request $request, $id){
         $request->headers->set('Accept', 'application/json');
