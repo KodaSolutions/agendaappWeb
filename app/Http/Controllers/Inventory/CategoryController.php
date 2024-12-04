@@ -62,7 +62,7 @@ class CategoryController extends Controller
         $request->validate(
             [
                 'nombre' => 'required|string|max:255',
-                'foto' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+                'foto' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:4096',
             ],
             [
                 'nombre.required' => 'El campo "nombre" es obligatorio.',
@@ -70,13 +70,11 @@ class CategoryController extends Controller
                 'nombre.max' => 'El campo "nombre" no puede exceder los 255 caracteres.',
                 'foto.image' => 'El archivo de "foto" debe ser una imagen.',
                 'foto.mimes' => 'El archivo de "foto" debe ser de tipo jpeg, png, jpg o gif.',
-                'foto.max' => 'El archivo de "foto" no debe superar los 2048 KB.',
+                'foto.max' => 'El archivo de "foto" no debe superar los 4096 KB.',
             ]
         );
 
         $category = Category::findOrFail($id);
-        \Log::info('Categoría encontrada:', $category->toArray());
-
         if ($request->filled('nombre')) {
             \Log::info('Actualizando nombre:', ['nombre' => $request->nombre]);
             $category->nombre = $request->nombre;
@@ -95,8 +93,7 @@ class CategoryController extends Controller
                 $category->foto = str_replace('dl=0', 'raw=1', $sharedLink['url']);
                 \Log::info('Foto actualizada en Dropbox:', ['foto' => $category->foto]);
             } catch (\Exception $e) {
-                \Log::error('Error al procesar la foto:', ['message' => $e->getMessage()]);
-                return response()->json(['error' => 'Hubo un problema al actualizar la foto.'], 500);
+                return response()->json(['error' => 'Hubo un problema al actualizar la foto'], 500);
             }
         }
 
