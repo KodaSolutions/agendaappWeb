@@ -14,7 +14,7 @@ class VentaDetalle extends Model
         return $this->belongsTo(Venta::class);
     }
 
-    public function producto() {
-        return $this->belongsTo(Producto::class);
+    public function producto(){
+        return $this->belongsTo(Producto::class)->withDefault();
     }
 }
