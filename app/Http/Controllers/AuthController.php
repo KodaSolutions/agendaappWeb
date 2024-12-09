@@ -12,11 +12,13 @@ use Illuminate\Support\Facades\DB;
 class AuthController extends Controller
 {
     public function login(Request $request) {
-        $credentials = $request->only('email', 'password');
+        $credentials = $request->only('identification', 'password');
+        
         try {
             if (!$token = JWTAuth::attempt($credentials)) {
                 return response()->json(['error' => 'invalid_credentials'], 401);
             }
+            
             $user = auth()->user();
             if ($request->has('fcm_token')) {
                 $user->fcm_token = $request->input('fcm_token');
@@ -30,8 +32,10 @@ class AuthController extends Controller
             'token' => $token,
             'user' => [
                 'id' => $user->id,
+                'identification' => $user->identification,
                 'email' => $user->email,
-                'nombre' => $user->name,
+                'name' => $user->name,
+                'role' => $user->role ? $user->role->name : null
             ]
         ]);
     }
@@ -108,41 +112,36 @@ class AuthController extends Controller
             return response()->json(['error' => 'No se pudo refrescar el token'], 500);
         }
     }
-public function getSchema()
-{
-    // Array para almacenar la estructura de la base de datos
-    $databaseSchema = [];
-
-    // Obtener todas las tablas de la base de datos
-    $tables = DB::select("SELECT table_name FROM information_schema.tables WHERE table_schema = DATABASE()");
-
-    // Recorrer cada tabla y obtener sus columnas
-    foreach ($tables as $table) {
-        $tableName = $table->table_name;
-
-        // Obtener las columnas de la tabla actual
-        $columns = DB::select("SELECT column_name, data_type, character_maximum_length, column_default 
-                               FROM information_schema.columns 
-                               WHERE table_schema = DATABASE() AND table_name = ?", [$tableName]);
-
-        $columnData = [];
-        foreach ($columns as $column) {
-            $columnData[] = [
-                'name' => $column->column_name,
-                'type' => $column->data_type,
-                'length' => $column->character_maximum_length,
-                'default' => $column->column_default,
-            ];
+    public function store(Request $request){
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users',
+            'password' => 'required|string|min:4',
+            'role_id' => 'required|exists:roles,id'
+        ]);
+        try {
+            $user = new User();
+            $user->name = $request->input('name');
+            $user->email = $request->input('email');
+            $user->password = bcrypt($request->input('password'));
+            $user->role_id = $request->input('role_id');
+            $user->save();
+            return response()->json([
+                'message' => 'Usuario creado exitosamente',
+                'user' => [
+                    'id' => $user->id,
+                    'name' => $user->name,
+                    'email' => $user->email,
+                    'identification' => $user->identification,
+                    'role' => $user->role->name
+                ]
+            ], 201);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Error al crear usuario',
+                'error' => $e->getMessage()
+            ], 500);
         }
-
-        $databaseSchema[$tableName] = $columnData;
     }
-
-    // Retornar la información en formato JSON
-    return response()->json($databaseSchema);
-}
-
-
-
 }
 
