@@ -26,6 +26,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 /*rutas para uso Flutter*/
 Route::post('login', [AuthController::class, 'login']);
 Route::post('logout', [AuthController::class, 'logout']);
+Route::post('storeUser', [AuthController::class, 'store']);
 Route::get('user', [AuthController::class, 'getUser'])->middleware('jwt.auth');
 Route::post('editUserInfo/{id}', [AuthController::class, 'editUserInfo']);
 Route::post('refresh', [AuthController::class, 'refresh']);
