@@ -27,7 +27,6 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::post('login', [AuthController::class, 'login']);
 Route::post('logout', [AuthController::class, 'logout']);
 Route::post('storeUser', [AuthController::class, 'store']);
-Route::get('user', [AuthController::class, 'getUser'])->middleware('jwt.auth');
 Route::post('editUserInfo/{id}', [AuthController::class, 'editUserInfo']);
 Route::post('refresh', [AuthController::class, 'refresh']);
 //controladores clientes
@@ -46,7 +45,10 @@ Route::put('/appointments/{id}/unRead', [AppointmentController::class, 'notifica
 Route::get('getAppointmentsByDate/{id}/{date}', [AppointmentController::class,'getNotifications']);
 //ruta envio notificacion personalizada
 Route::post('sendNotification/{id}', [NotificationController::class, 'sendNotification']);
-
+//rutas usuarios 
+Route::delete('/deleteUser/{userId}', [AuthController::class, 'deleteUser']);
+Route::post('/resetPassword/{userId}', [AuthController::class, 'changePassword']);
+Route::get('user', [AuthController::class, 'getUser'])->middleware('jwt.auth');
 //ruta provicional cambiar contrasenas
 route::get('/changes', function() {
     $users = Producto::all();
