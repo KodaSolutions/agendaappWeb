@@ -19,3 +19,4 @@ yarn-error.log
 /database/seeders/UsersTableSeeder.php
 /AuthKey_*.p8
 /config/database.php
+!/public/css/
