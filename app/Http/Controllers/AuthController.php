@@ -143,5 +143,62 @@ class AuthController extends Controller
             ], 500);
         }
     }
+    public function deleteUser($userId){
+        try {
+            $user = User::find($userId);
+
+            if (!$user) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Usuario no encontrado'
+                ], 404);
+            }
+
+            $user->delete();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Usuario eliminado exitosamente'
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error al eliminar usuario',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
+    public function changePassword(Request $request, $userId){
+        $request->validate([
+            'password' => 'required|string|min:4',
+        ]);
+
+        try {
+            $user = User::find($userId);
+
+            if (!$user) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Usuario no encontrado'
+                ], 404);
+            }
+
+            $user->password = bcrypt($request->input('password'));
+            $user->save();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Contraseña actualizada exitosamente'
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error al actualizar contraseña',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
+
+
 }
 
