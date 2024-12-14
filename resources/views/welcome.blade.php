@@ -13,7 +13,7 @@
         <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
         <link href="{{asset('resources/css/app.css')}}"/>
 	    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-        <link rel="preload" as="style" src="{{asset('/build/assets/app-BEmGdVaN.css')}}" /><link rel="stylesheet" src="{{asset('/build/assets/app-BEmGdVaN.css')}}" />
+        <link rel="preload" as="style" href="{{asset('/build/assets/app-BEmGdVaN.css')}}" /><link rel="stylesheet" href="{{asset('/build/assets/app-BEmGdVaN.css')}}" />
 
         <!-- TITLE -->
         <title> Crear citas - Cliente </title>
