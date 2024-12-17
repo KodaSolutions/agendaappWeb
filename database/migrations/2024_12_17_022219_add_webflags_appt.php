@@ -28,7 +28,7 @@ return new class extends Migration
     public function down()
     {
         Schema::table('appointments', function (Blueprint $table) {
-            $table->dropColumn('is_web_appointment');
+            $table->dropColumn('is_web');
             $table->dropColumn('is_approved');
             $table->unsignedBigInteger('doctor_id')->change();
         });
