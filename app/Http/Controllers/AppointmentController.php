@@ -256,5 +256,8 @@ class AppointmentController extends Controller
             ], 500);
         }
     }
-
+    public function getPendingAppointments(){
+        $appointments = Appointment::all();
+        return response()->json(['appointments' => $appointments]);
+    }
 }
