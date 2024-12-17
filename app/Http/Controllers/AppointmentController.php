@@ -257,7 +257,10 @@ class AppointmentController extends Controller
         }
     }
     public function getPendingAppointments(){
-        $appointments = Appointment::all();
+        $appointments = Appointment::where('is_web_appointment', true)
+                                 ->where('is_approved', null)
+                                 ->orderBy('appointment_date', 'asc')
+                                 ->get();
         return response()->json(['appointments' => $appointments]);
     }
 }
