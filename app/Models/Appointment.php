@@ -16,7 +16,7 @@ class Appointment extends Model
         'treatment_type',
         'status',
         'notification_read',
-        'is_web_appointment',
+        'is_web',
         'is_approved'
     ];
 }
