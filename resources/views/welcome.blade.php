@@ -340,8 +340,6 @@
                 contact_number: formData.get('contact_number')
             };
 
-            alert(JSON.stringify(appointmentData));
-
             fetch('/api/createAppoinment', {
                 method: 'POST',
                 headers: {
