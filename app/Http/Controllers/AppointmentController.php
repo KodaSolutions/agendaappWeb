@@ -40,7 +40,7 @@ class AppointmentController extends Controller
                     $doctor_id = null;
                     $is_approved = null;
                 } else {
-                    $doctor_id = ($id === 3) ? $validatedData['dr_id'] : $user->id;
+                    $doctor_id = $validatedData['dr_id'];
                     $is_approved = true;
                 }
                 $created_by = $user->id;
