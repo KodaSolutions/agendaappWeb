@@ -23,14 +23,24 @@ class AppointmentController extends Controller
                 'treatment' => 'required|string',
                 'name' => 'required|string',
                 'dr_id' => 'nullable|integer',
+                'is_web' => 'nullable|bool',
+                'pet_name' => 'required|string',    
+                'species' => 'required|in:perro,gato', 
+                'contact_number' => 'required|string'
             ]);
             $dateTime = $validatedData['date'] . ' ' . $validatedData['time'];
             $user = Auth::user();
-            $id = (int) $user->id;
-            if ($id === 3) {
-                $doctor_id = $validatedData['dr_id'];
+            if ($user === null) {
+                $doctor_id = null;
+                $created_by = 1; 
             } else {
-                $doctor_id = $user->id;
+                $id = (int) $user->id;
+                if (isset($validatedData['is_web']) && $validatedData['is_web'] === true) {
+                    $doctor_id = null;
+                } else {
+                    $doctor_id = ($id === 3) ? $validatedData['dr_id'] : $user->id;
+                }
+                $created_by = $user->id;
             }
             $appointment = new Appointment;
             $clientZero = (int) $validatedData['client_id'];
@@ -48,19 +58,23 @@ class AppointmentController extends Controller
                 $clientZero = 1;
             }
             $appointment->client_id = $clientZero;
-            $appointment->created_by = $user->id;
+            $appointment->created_by = $created_by; 
             $appointment->doctor_id = $doctor_id;
             $appointment->appointment_date = $dateTime;
             $appointment->treatment_type = $validatedData['treatment'];
             $appointment->status = 'Upcoming';
             $appointment->payment_method = 'Tarjeta';
             $appointment->client_name = $validatedData['name'];
+            $appointment->is_web = $validatedData['is_web'];
+            $appointment->pet_name = $validatedData['pet_name'] ?? null;
+            $appointment->species = $validatedData['species'] ?? null;
+            $appointment->contact_number = $validatedData['contact_number'] ?? null;
             $appointment->save();
             $doctor = User::find($doctor_id);
             if ($doctor && $doctor->fcm_token) {
-                $notification = new AppointmentCreatedNotification($appointment->appointment_date);
+               /* $notification = new AppointmentCreatedNotification($appointment->appointment_date);
                 $notification->toFcm($doctor);
-
+*/
                 return response()->json([
                     'message' => 'Appointment creado correctamente',
                     'appointment' => $appointment
@@ -107,9 +121,9 @@ class AppointmentController extends Controller
     public function getAppoinments($id){
         $id = (int) $id;
         if ($id === 3) {
-            $appointments = Appointment::all();
+            $appointments = Appointment::where('is_approved', 1)->get();
         } else {
-            $appointments = Appointment::where('doctor_id', $id)->get();
+            $appointments = Appointment::where('doctor_id', $id)->where('is_approved', 1)->get();
         }
         return response()->json(['appointments' => $appointments]);
     }
@@ -256,5 +270,40 @@ class AppointmentController extends Controller
             ], 500);
         }
     }
+    public function getPendingAppointments(){
+        $appointments = Appointment::where('is_web', true)
+                             ->where('is_approved', null)
+                             ->get();
+        return response()->json(['appointments' => $appointments]);
+    }
+    public function approveAppointment(Request $request, $appointmentId){
+        try {
+            $validatedData = $request->validate([
+                'doctor_id' => 'required|integer'
+            ]);
 
+            $appointment = Appointment::find($appointmentId);
+            
+            if (!$appointment) {
+                return response()->json([
+                    'message' => 'Cita no encontrada'
+                ], 404);
+            }
+
+            $appointment->is_approved = 1;
+            $appointment->doctor_id = $validatedData['doctor_id'];
+            $appointment->save();
+
+            return response()->json([
+                'message' => 'Cita aprobada y asignada correctamente',
+                'appointment' => $appointment
+            ], 200);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Error al aprobar la cita',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
 }
