@@ -32,13 +32,16 @@ class AppointmentController extends Controller
             $user = Auth::user();
             if ($user === null) {
                 $doctor_id = null;
-                $created_by = 1; 
+                $created_by = 1;
+                $is_approved = null;
             } else {
                 $id = (int) $user->id;
                 if (isset($validatedData['is_web']) && $validatedData['is_web'] === true) {
                     $doctor_id = null;
+                    $is_approved = null;
                 } else {
-                    $doctor_id = ($id === 3) ? $validatedData['dr_id'] : $user->id;
+                    $doctor_id = $validatedData['dr_id'];
+                    $is_approved = true;
                 }
                 $created_by = $user->id;
             }
@@ -66,6 +69,7 @@ class AppointmentController extends Controller
             $appointment->payment_method = 'Tarjeta';
             $appointment->client_name = $validatedData['name'];
             $appointment->is_web = $validatedData['is_web'];
+            $appointment->is_approved = $is_approved;
             $appointment->pet_name = $validatedData['pet_name'] ?? null;
             $appointment->species = $validatedData['species'] ?? null;
             $appointment->contact_number = $validatedData['contact_number'] ?? null;
