@@ -17,6 +17,9 @@ class Appointment extends Model
         'status',
         'notification_read',
         'is_web',
-        'is_approved'
+        'is_approved',
+        'pet_name',
+        'species',
+        'contact_number'
     ];
 }
