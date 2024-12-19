@@ -161,33 +161,41 @@
                                         </div>
                                     </div>
                                     <div class="box-body">
-                                        <div class="grid grid-cols-12 sm:gap-x-6 sm:gap-y-4">
+                                        <form id="appointmentForm" class="grid grid-cols-12 sm:gap-x-6 sm:gap-y-4">
                                             <div class="md:col-span-6 col-span-12 mb-4">
-                                                <label class="form-label">Nombre completo</label>
-                                                <input type="text" class="form-control placeholder:text-textmuted" placeholder="Nombre completo"
-                                                    aria-label="First name">
+                                                <label class="form-label">Nombre del paciente (mascota)</label>
+                                                <input type="text" name="pet_name" class="form-control placeholder:text-textmuted" 
+                                                    placeholder="Nombre de la mascota" required>
                                             </div>
                                             <div class="md:col-span-6 col-span-12 mb-4">
-                                                <label class="form-label">Nombre mascota</label>
-                                                <input type="text" class="form-control placeholder:text-textmuted" placeholder="Nombre mascota"
-                                                    aria-label="Last name">
+                                                <label class="form-label">Especie</label>
+                                                <select name="species" class="form-control placeholder:text-textmuted" required>
+                                                    <option value="">Seleccione una especie</option>
+                                                    <option value="perro">Perro</option>
+                                                    <option value="gato">Gato</option>
+                                                </select>
                                             </div>
                                             <div class="md:col-span-6 col-span-12 mb-4">
-                                                <label class="form-label">Correo electrónico</label>
-                                                <input type="email" class="form-control placeholder:text-textmuted" placeholder="Correo electrónico"
-                                                aria-label="email">
+                                                <label class="form-label">Nombre del propietario</label>
+                                                <input type="text" name="name" class="form-control placeholder:text-textmuted" 
+                                                    placeholder="Nombre completo del propietario" required>
                                             </div>
                                             <div class="md:col-span-6 col-span-12 mb-4">
                                                 <label class="form-label">Número de contacto</label>
-                                                <input type="number" class="form-control placeholder:text-textmuted" placeholder="Número de contacto"
-                                                    aria-label="Phone number">
+                                                <input type="text" name="contact_number" class="form-control placeholder:text-textmuted" 
+                                                    placeholder="Número de contacto" required>
+                                            </div>
+                                            <div class="md:col-span-6 col-span-12 mb-4">
+                                                <label class="form-label">Motivo de consulta</label>
+                                                <textarea name="treatment" class="form-control placeholder:text-textmuted" 
+                                                    placeholder="Describa el motivo de la consulta" required></textarea>
                                             </div>
                                             <div class="md:col-span-6 col-span-12 mb-4">
                                                 <label class="form-label">Fecha de cita</label>
                                                 <div class="form-group">
                                                     <div class="input-group">
                                                         <div class="input-group-text text-[#8c9097]"> <i class="ri-calendar-line"></i> </div>
-                                                        <input type="date" class="form-control !border-s-0" id="datetime" placeholder="Choose date with time">
+                                                        <input type="date" name="date" class="form-control !border-s-0" required>
                                                     </div>
                                                 </div>
                                             </div>
@@ -196,14 +204,14 @@
                                                 <div class="form-group">
                                                     <div class="input-group">
                                                         <div class="input-group-text text-[#8c9097]"> <i class="ri-time-line"></i> </div>
-                                                        <input type="time" class="form-control !border-s-0" id="timepikcr" placeholder="Choose time">
+                                                        <input type="time" name="time" class="form-control !border-s-0" required>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="md:col-span-12 col-span-12 flex justify-center">
-                                                <button type="button" class="ti-btn ti-btn-primary-full !mb-1">Agendar cita</button>
+                                                <button type="submit" class="ti-btn ti-btn-primary-full !mb-1">Agendar cita</button>
                                             </div>
-                                        </div>
+                                        </form>
                                     </div>
                                     <div class="box-footer hidden border-t-0">
                                     </div>
@@ -246,4 +254,44 @@
     <script src="{{ asset('/js/assets/switch.js') }}"></script>
     <script src="{{ asset('/js/assets/libs/simplebar/simplebar.min.js') }}"></script>
     <script src="{{ asset('/js/assets/libs/preline/preline.js') }}"></script>
+    <script>
+document.getElementById('appointmentForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    const formData = new FormData(this);
+    const appointmentData = {
+        client_id: 0,
+        is_web: true, 
+        date: formData.get('date'),
+        time: formData.get('time'),
+        treatment: formData.get('treatment'),
+        name: formData.get('name'),
+        pet_name: formData.get('pet_name'),
+        species: formData.get('species'),
+        contact_number: formData.get('contact_number')
+    };
+
+    fetch('/api/createAppoinment', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+        },
+        body: JSON.stringify(appointmentData)
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.message === 'Appointment creado correctamente') {
+            alert('Cita agendada correctamente');
+            this.reset();
+        } else {
+            alert('Error al agendar la cita: ' + data.message);
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('Error al procesar la solicitud');
+    });
+});
+</script>
 </html>
