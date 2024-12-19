@@ -7,6 +7,21 @@
         <meta name="csrf-token" content="{{ csrf_token() }}">
         <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
         <title>{{ config('app.name', 'Inventorio') }}</title>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+        <style>
+            .flatpickr-calendar .flatpickr-day.disabled {
+                background-color: #f0f0f0 !important;
+                color: #d3d3d3 !important;
+                cursor: not-allowed !important;
+                opacity: 0.6 !important;
+            }
+        
+            .flatpickr-calendar .flatpickr-day.disabled:hover {
+                background-color: #f0f0f0 !important;
+                color: #d3d3d3 !important;
+            }
+        </style>
+        <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
@@ -64,7 +79,7 @@
 
         <div class="page">
             <!-- Main-Header -->
-            <header class="app-header">
+            <header class="app-header" style="border: none; background-color: transparent !important; box-shadow: none !important;">
 					<nav class="main-header" aria-label="Global">
 						<div class="main-header-container !px-[0.85rem]">
 
@@ -132,31 +147,28 @@
 				<div class="main-content">
                   @yield('content')
                   <!-- Page Header -->
-                  <div class="md:flex block items-center justify-between mb-6 mt-[2rem]  page-header-breadcrumb">
-                    <div style="display: flex; align-items: center;">
-                        <span class="avatar avatar-xxl avatar-rounded me-4">
-                            <img src="{{asset('/css/assets/images/company-logos/8.png')}}" alt="">
-                        </span>
-                        <div class="my-auto">
-                            <h5 class="page-title text-[1.3125rem] font-medium text-defaulttextcolor mb-0">Clínica Veterinaria</h5>
-                            <h5 class="page-title text-[1.3125rem] font-medium text-defaulttextcolor mb-0">Peninsular</h5>
-                        </div>
-                    </div>
-                  </div>
+                  
                     <!-- Page Header Close -->
 
                     <!-- Start::row-1 -->
                     <div class="grid grid-cols-4 gap-x-6">
                         <div class="xxl:col-span-4 xl:col-span-12 col-span-12">
                             <div class="box overflow-hidden">
-                                <div class="box-body !p-0">
+                                <div class="box-body !p-0">                        
                                     <div class="sm:flex items-start !py-6 px-4 main-profile-cover">
                                         <div class="flex-grow main-profile-info">
-                                            <div class="flex items-center !justify-between">
-                                                <h5 class="font-semibold text-white" style="font-size: 1.5rem;">Agenda tu cita</h5>
-                                                <svg xmlns="http://www.w3.org/2000/svg" height="35" width="35" viewBox="0 0 24 24" fill="white">
-                                                    <path d="M19 4h-1V2h-2v2H8V2H6v2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2zm0 16H5V10h14v10zm0-12H5V6h14v2z"/>
-                                                </svg>
+                                            <div class="flex items-center !justify-between" style="margin-top: 0; padding-top: 10px; padding-bottom: 10px; padding-left: 20px;">
+                                                <div class="md:flex block items-center justify-between mb-2 mt-0 page-header-breadcrumb" style="margin: 0;">
+                                                    <div style="display: flex; align-items: center;">
+                                                        <span class="avatar avatar-xxl avatar-rounded me-4">
+                                                            <img src="{{asset('/css/assets/icons/CVP.png')}}" alt="">
+                                                        </span>
+                                                        <div class="my-auto">
+                                                            <h5 class="page-title text-[1.3125rem] font-medium text-defaulttextcolor mb-0">Clínica Veterinaria</h5>
+                                                            <h5 class="page-title text-[1.3125rem] font-medium text-defaulttextcolor mb-0">Peninsular</h5>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -186,16 +198,11 @@
                                                     placeholder="Número de contacto" required>
                                             </div>
                                             <div class="md:col-span-6 col-span-12 mb-4">
-                                                <label class="form-label">Motivo de consulta</label>
-                                                <textarea name="treatment" class="form-control placeholder:text-textmuted" 
-                                                    placeholder="Describa el motivo de la consulta" required></textarea>
-                                            </div>
-                                            <div class="md:col-span-6 col-span-12 mb-4">
                                                 <label class="form-label">Fecha de cita</label>
                                                 <div class="form-group">
                                                     <div class="input-group">
                                                         <div class="input-group-text text-[#8c9097]"> <i class="ri-calendar-line"></i> </div>
-                                                        <input type="date" name="date" class="form-control !border-s-0" required>
+                                                        <input type="text" id="date" name="date" class="form-control styled-calendar" placeholder="Selecciona una fecha" required>
                                                     </div>
                                                 </div>
                                             </div>
@@ -203,13 +210,25 @@
                                                 <label class="form-label">Hora de cita</label>
                                                 <div class="form-group">
                                                     <div class="input-group">
-                                                        <div class="input-group-text text-[#8c9097]"> <i class="ri-time-line"></i> </div>
-                                                        <input type="time" name="time" class="form-control !border-s-0" required>
+                                                        <div class="input-group-text text-[#8c9097]"><i class="ri-time-line"></i></div>
+                                                        <select id="timeDropdown" name="time" class="form-control" required>
+                                                            <option value="">Selecciona una hora</option>
+                                                        </select>
                                                     </div>
                                                 </div>
                                             </div>
+                                            <div class="md:col-span-6 col-span-12 mb-4">
+                                                <label class="form-label">Motivo de consulta</label>
+                                                <textarea name="treatment" class="form-control placeholder:text-textmuted" 
+                                                    placeholder="Describa el motivo de la consulta" required></textarea>
+                                            </div>
                                             <div class="md:col-span-12 col-span-12 flex justify-center">
-                                                <button type="submit" class="ti-btn ti-btn-primary-full !mb-1">Agendar cita</button>
+                                                <button 
+                                                    type="submit"
+                                                    class="ti-btn ti-btn-primary-full !mb-1"
+                                                    style="background-color: #59C2CB; color: white; border: none; padding: 10px 20px; border-radius: 5px;">
+                                                    Agendar cita
+                                                </button>
                                             </div>
                                         </form>
                                     </div>
@@ -241,6 +260,56 @@
          <div id="responsive-overlay"></div>
 
          <!-- popperjs -->
+
+         <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                // Flatpickr for date selection
+                flatpickr("#date", {
+                    minDate: "today", // Permitir citas desde hoy
+                    locale: {
+                        firstDayOfWeek: 1, // Inicia la semana en lunes
+                    },
+                    onReady: function(selectedDates, dateStr, instance) {
+                        // Encuentra todas las fechas deshabilitadas
+                        const disabledDays = instance.calendarContainer.querySelectorAll(".flatpickr-day.disabled");
+                        disabledDays.forEach(day => {
+                            day.style.backgroundColor = "#f0f0f0"; // Fondo gris
+                            day.style.color = "#d3d3d3"; // Texto gris
+                            day.style.cursor = "not-allowed"; // Cursor no permitido
+                            day.style.opacity = "0.6"; // Opacidad más baja
+                        });
+                    }
+                });
+
+                // Populate the time dropdown with hourly intervals
+                const timeDropdown = document.getElementById("timeDropdown");
+
+                // Set start and end hours for available time slots
+                const startHour = 8; // 8:00 AM
+                const endHour = 18; // 6:00 PM
+
+                for (let hour = startHour; hour <= endHour; hour++) {
+                    // Create options for both full hour and half-hour increments
+                    const fullHourOption = document.createElement("option");
+                    const halfHourOption = document.createElement("option");
+
+                    // Format the time as HH:mm
+                    const fullHourTime = `${hour.toString().padStart(2, '0')}:00`;
+                    const halfHourTime = `${hour.toString().padStart(2, '0')}:30`;
+
+                    // Set values and text for the dropdown options
+                    fullHourOption.value = fullHourTime;
+                    fullHourOption.textContent = fullHourTime;
+
+                    halfHourOption.value = halfHourTime;
+                    halfHourOption.textContent = halfHourTime;
+
+                    // Append options to the dropdown
+                    timeDropdown.appendChild(fullHourOption);
+                    timeDropdown.appendChild(halfHourOption);
+                }
+            });
+        </script>
        
         <!-- END SCRIPTS -->
 
@@ -255,43 +324,43 @@
     <script src="{{ asset('/js/assets/libs/simplebar/simplebar.min.js') }}"></script>
     <script src="{{ asset('/js/assets/libs/preline/preline.js') }}"></script>
     <script>
-document.getElementById('appointmentForm').addEventListener('submit', function(e) {
-    e.preventDefault();
-    
-    const formData = new FormData(this);
-    const appointmentData = {
-        client_id: 0,
-        is_web: true, 
-        date: formData.get('date'),
-        time: formData.get('time'),
-        treatment: formData.get('treatment'),
-        name: formData.get('name'),
-        pet_name: formData.get('pet_name'),
-        species: formData.get('species'),
-        contact_number: formData.get('contact_number')
-    };
+        document.getElementById('appointmentForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(this);
+            const appointmentData = {
+                client_id: 0,
+                is_web: true, 
+                date: formData.get('date'),
+                time: formData.get('time'),
+                treatment: formData.get('treatment'),
+                name: formData.get('name'),
+                pet_name: formData.get('pet_name'),
+                species: formData.get('species'),
+                contact_number: formData.get('contact_number')
+            };
 
-    fetch('/api/createAppoinment', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json'
-        },
-        body: JSON.stringify(appointmentData)
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.message === 'Appointment creado correctamente') {
-            alert('Cita agendada correctamente');
-            this.reset();
-        } else {
-            alert('Error al agendar la cita: ' + data.message);
-        }
-    })
-    .catch(error => {
-        console.error('Error:', error);
-        alert('Error al procesar la solicitud');
-    });
-});
-</script>
+            fetch('/api/createAppoinment', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify(appointmentData)
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.message === 'Appointment creado correctamente') {
+                    alert('Solicitud de cita enviada');
+                    this.reset();
+                } else {
+                    alert('Error al realizar la solicitud: ' + data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Error al procesar la solicitud');
+            });
+        });
+    </script>
 </html>
