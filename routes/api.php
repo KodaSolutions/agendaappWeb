@@ -44,6 +44,7 @@ Route::get('getAppoinmentsByUser/{id}', [AppointmentController::class, 'getAppoi
 Route::put('/appointments/{id}/read', [AppointmentController::class, 'notificationRead']);
 Route::put('/appointments/{id}/unRead', [AppointmentController::class, 'notificationUnRead']);
 Route::get('getAppointmentsByDate/{id}/{date}', [AppointmentController::class,'getNotifications']);
+Route::post('appointments/{id}/approve', [AppointmentController::class, 'approveAppointment']);
 //ruta envio notificacion personalizada
 Route::post('sendNotification/{id}', [NotificationController::class, 'sendNotification']);
 //rutas usuarios 
