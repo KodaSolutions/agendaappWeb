@@ -24,7 +24,7 @@ class AppointmentDeletedNotification extends Notification
     }
     public function via($notifiable)
     {
-        return ['fcm'];
+        return [];
     }
 public function toFcm($notifiable)
 {
