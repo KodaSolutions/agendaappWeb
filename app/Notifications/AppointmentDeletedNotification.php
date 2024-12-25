@@ -26,8 +26,48 @@ class AppointmentDeletedNotification extends Notification
     {
         return ['fcm'];
     }
+public function toFcm($notifiable)
+{
+    $token = $notifiable->fcm_token;
+    $factory = (new Factory)->withServiceAccount(base_path('config/serverkey.json'));
+    $messaging = $factory->createMessaging();
 
-    public function toFcm($notifiable)
+    $appointmentDate = Carbon::parse($this->appointmentDate);
+    $formattedDate = $appointmentDate->translatedFormat('l j \\d\\e F \\d\\e Y \\a \\l\\a\\s g:i A');
+
+    $messageText = "Se ha eliminado un appointment programado para el: $formattedDate";
+
+    try {
+        $message = CloudMessage::withTarget('token', $token)
+            ->withNotification(FCMNotification::create('Appointment Eliminado', $messageText))
+            ->withData([
+                'extra_info' => $formattedDate,
+            ])
+            ->withApnsConfig(
+                ApnsConfig::fromArray([
+                    'headers' => [
+                        'apns-priority' => '10', // Alta prioridad
+                    ],
+                    'payload' => ApnsPayload::create()
+                        ->withAlert([
+                            'title' => 'Appointment Eliminado',
+                            'body' => $messageText,
+                        ])
+                        ->withSound('default'), // Asegúrate de que haya un sonido configurado
+                ])
+            );
+
+        $messaging->send($message);
+
+        \Log::info('Notificación FCM enviada con éxito al token: ' . $token);
+    } catch (\Kreait\Firebase\Exception\MessagingException $e) {
+        \Log::error('Error al enviar la notificación FCM: ' . $e->getMessage());
+    } catch (\Exception $e) {
+        \Log::error('Error inesperado al enviar la notificación FCM: ' . $e->getMessage());
+    }
+}
+
+/*    public function toFcm($notifiable)
     {
         $token = $notifiable->fcm_token;
         $factory = (new Factory)->withServiceAccount(base_path('config/serverkey.json'));
@@ -55,7 +95,7 @@ class AppointmentDeletedNotification extends Notification
         return [
             'appointment_date' => $this->appointmentDate,
         ];
-    }
+    }*/
 }
 
 
