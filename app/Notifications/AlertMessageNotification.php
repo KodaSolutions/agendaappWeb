@@ -51,7 +51,6 @@ class AlertMessageNotification extends Notification
                 FCMNotification::create()
                     ->withTitle('Título de prueba')
                     ->withBody($this->msg) // Cambiado de $this->message a $this->msg
-                    ->withImageUrl(null)
             )
             ->withData([
                 'click_action' => 'FLUTTER_NOTIFICATION_CLICK',
