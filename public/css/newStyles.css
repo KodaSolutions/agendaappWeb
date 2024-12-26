@@ -1,0 +1,219 @@
+#widget-container {
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    height: 100%;
+}
+
+.widget.active {
+    opacity: 1;
+    visibility: visible;
+    left: 0;
+}
+
+.calendar-header {
+    text-align: left;
+    margin-bottom: 20px;
+    padding: 0 10px;
+}
+
+.calendar-title {
+    font-size: 1.25rem; /* Aproximadamente 20px */
+    font-weight: 500;
+    margin-bottom: 8px;
+    color: #1a1a1a;
+}
+
+#continueButton {
+    background-color: #59C2CB;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+#continueButton:hover {
+    background-color: #4BA1A9;
+}
+
+/* Mejorar la apariencia de los botones de acción */
+.button-group button {
+    flex: 1;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.button-group button.ti-btn-secondary-full {
+    background-color: #64748B;
+    color: white;
+}
+
+.button-group button.ti-btn-secondary-full:hover {
+    background-color: #475569;
+}
+
+.button-group button.ti-btn-primary-full {
+    background-color: #59C2CB;
+    color: white;
+}
+
+.button-group button.ti-btn-primary-full:hover {
+    background-color: #4BA1A9;
+}
+
+#selected-month {
+    text-align: center;
+    font-size: 1rem;
+    color: #4a5568;
+}
+.month-selector {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #475569;
+    color: white;
+    padding: 10px 16px;
+    border-radius: 6px;
+    margin-bottom: 20px;
+}
+
+.month-nav {
+    background: none;
+    border: none;
+    color: white;
+    cursor: pointer;
+    padding: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: opacity 0.2s;
+}
+
+.month-nav:hover {
+    opacity: 0.8;
+}
+
+.current-month {
+    font-size: 1rem;
+    font-weight: 500;
+}
+
+.current-month-day:hover {
+    background-color: #f7fafc;
+}
+
+.current-month-day.selected {
+    background-color: #59C2CB;
+    color: white;
+}
+
+.prev-month-day,
+.next-month-day {
+    color: #a0aec0;
+    background-color: #f8f9fa;
+    cursor: default;
+}
+
+.calendar-grid {
+    margin-bottom: 20px;
+}
+
+.weekdays {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    text-align: center;
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+
+#calendar-days {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 5px;
+    padding: 10px;
+}
+
+.calendar-day {
+    padding: 10px;
+    text-align: center;
+    cursor: pointer;
+    border: 1px solid #e2e8f0;
+    border-radius: 4px;
+    transition: background-color 0.2s;
+}
+
+.calendar-day:hover {
+    background-color: #f7fafc;
+}
+
+.calendar-day.selected {
+    background-color: #59C2CB;
+    color: white;
+}
+
+.calendar-day.disabled {
+    background-color: #f0f0f0;
+    color: #a0aec0;
+    cursor: not-allowed;
+}
+
+.time-slot:hover {
+    background-color: #f7fafc;
+}
+
+.button-group {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+    gap: 10px;
+}
+
+.button-group button {
+    flex: 1;
+}
+
+.calendar-day.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    pointer-events: none;
+    background-color: #f0f0f0;
+}
+
+.time-slot.disabled {
+    opacity: 0.5 !important;
+    pointer-events: none !important;
+    background-color: #f0f0f0 !important;
+    color: #a0aec0 !important;
+    cursor: not-allowed !important;
+    border-color: #e2e8f0 !important;
+}
+
+.time-slot {
+    padding: 10px;
+    border: 1px solid #e2e8f0;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.time-slot:not(.disabled):hover {
+    background-color: #f7fafc;
+}
+
+.time-slot.selected {
+    background-color: #59C2CB;
+    color: white;
+    border-color: #59C2CB;
+}
+
+.time-slot-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    padding: 15px;
+}
