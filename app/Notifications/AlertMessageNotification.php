@@ -42,46 +42,46 @@ class AlertMessageNotification extends Notification
 
     public function toFmc($notifiable)
     {
-            $token = $notifiable->fcm_token;    
-    $factory = (new Factory)->withServiceAccount(base_path('config/serverkey.json'));
-    $messaging = $factory->createMessaging();
+          $token = $notifiable->fcm_token;    
+        $factory = (new Factory)->withServiceAccount(base_path('config/serverkey.json'));
+        $messaging = $factory->createMessaging();
 
-    // Estructura similar a la de Firebase Console
-    $message = CloudMessage::withTarget('token', $token)
-        ->withNotification(
-            FCMNotification::create()
-                ->withTitle('Título de prueba')
-                ->withBody($this->message)
-                ->withImageUrl(null)
-        )
-        ->withData([
-            'click_action' => 'FLUTTER_NOTIFICATION_CLICK',
-            'priority' => 'high',
-            'channel_id' => 'high_importance_channel' // Importante para Android
-        ])
-        ->withAndroidConfig([
-            'notification' => [
+        $message = CloudMessage::withTarget('token', $token)
+            ->withNotification(
+                FCMNotification::create()
+                    ->withTitle('Título de prueba')
+                    ->withBody($this->msg) // Cambiado de $this->message a $this->msg
+                    ->withImageUrl(null)
+            )
+            ->withData([
+                'click_action' => 'FLUTTER_NOTIFICATION_CLICK',
+                'priority' => 'high',
                 'channel_id' => 'high_importance_channel'
-            ]
-        ])
-        ->withApnsConfig([
-            'headers' => [
-                'apns-priority' => '10',
-            ],
-            'payload' => [
-                'aps' => [
-                    'sound' => 'default',
-                    'badge' => 1,
+            ])
+            ->withAndroidConfig([
+                'notification' => [
+                    'channel_id' => 'high_importance_channel'
                 ]
-            ],
-        ]);
+            ])
+            ->withApnsConfig([
+                'headers' => [
+                    'apns-priority' => '10',
+                ],
+                'payload' => [
+                    'aps' => [
+                        'sound' => 'default',
+                        'badge' => 1,
+                    ]
+                ],
+            ]);
 
-    try {
-        $result = $messaging->send($message);
-        print_r($result); // Para ver qué devuelve Firebase
-    } catch (\Exception $e) {
-        print_r($e->getMessage());
-    }
+        try {
+            $result = $messaging->send($message);
+            return $result;
+        } catch (\Exception $e) {
+            throw $e;
+        }
+    
     /*    $token = $notifiable->fcm_token;
         $factory = (new Factory)->withServiceAccount(base_path('config/serverkey.json'));
         $messaging = $factory->createMessaging();
