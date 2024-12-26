@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use Auth;
 use App\Notifications\AlertMessageNotification;
-
+use Illuminate\Support\Facades\Log;
 class NotificationController extends Controller
 {
     public function sendNotification(Request $request, $id){
