@@ -13,7 +13,7 @@ use Kreait\Firebase\Messaging\Notification as FCMNotification;
 use Carbon\Carbon;
 use Kreait\Firebase\Messaging\ApnsConfig;
 use Kreait\Firebase\Messaging\ApnsPayload;
-use Illuminate\Support\Facades\Log;
+
 class AlertMessageNotification extends Notification
 {
     use Queueable;
