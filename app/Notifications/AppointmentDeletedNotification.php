@@ -26,7 +26,7 @@ class AppointmentDeletedNotification extends Notification
     {
         return [];
     }
-public function toFcm($notifiable)
+/*public function toFcm($notifiable)
 {
     $token = $notifiable->fcm_token;    
     $factory = (new Factory)->withServiceAccount(base_path('config/serverkey.json'));
@@ -81,9 +81,9 @@ public function toFcm($notifiable)
         \Log::info('La cita no está dentro de los próximos 7 días, no se enviará la notificación');
     }
 }
+*/
 
-
-/*    public function toFcm($notifiable)
+    public function toFcm($notifiable)
     {
         $token = $notifiable->fcm_token;
         $factory = (new Factory)->withServiceAccount(base_path('config/serverkey.json'));
@@ -105,7 +105,7 @@ public function toFcm($notifiable)
         }
 
     }
-*/
+
     public function toArray($notifiable)
     {
         return [
