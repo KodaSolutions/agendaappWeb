@@ -6,8 +6,9 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" content="{{ csrf_token() }}">
         <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
-        <title>{{ config('app.name', 'Inventorio') }}</title>
+        <title>{{ config('app.name', 'AgendaApp') }}</title>
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+        <link href="{{asset('/css/newStyles.css')}}" rel="stylesheet"/>
         <style>
             .flatpickr-calendar .flatpickr-day.disabled {
                 background-color: #f0f0f0 !important;
@@ -154,10 +155,10 @@
                     <div class="grid grid-cols-4 gap-x-6">
                         <div class="xxl:col-span-4 xl:col-span-12 col-span-12">
                             <div class="box overflow-hidden">
-                                <div class="box-body !p-0">                        
-                                    <div class="sm:flex items-start !py-6 px-4 main-profile-cover">
+                                <div class="box-body !p-0">
+                                    <div class="sm:flex items-start !py-6 px-4 main-profile-cover" style="background-color: #59C2CB !important">
                                         <div class="flex-grow main-profile-info">
-                                            <div class="flex items-center !justify-between" style="margin-top: 0; padding-top: 10px; padding-bottom: 10px; padding-left: 20px;">
+                                            <div class="flex items-center !justify-between" style="margin-top: 0; padding-top: 10px; padding-bottom: 10px; padding-left: 20px">
                                                 <div class="md:flex block items-center justify-between mb-2 mt-0 page-header-breadcrumb" style="margin: 0;">
                                                     <div style="display: flex; align-items: center;">
                                                         <span class="avatar avatar-xxl avatar-rounded me-4">
@@ -172,68 +173,106 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="box-body">
-                                        <form id="appointmentForm" class="grid grid-cols-12 sm:gap-x-6 sm:gap-y-4">
-                                            <div class="md:col-span-6 col-span-12 mb-4">
-                                                <label class="form-label">Nombre del paciente (mascota)</label>
-                                                <input type="text" name="pet_name" class="form-control placeholder:text-textmuted" 
-                                                    placeholder="Nombre de la mascota" required>
+                                    <div id="widget-container" class="box-body" style="background-color: white !important">
+                                        <div class="widget active" id="form-widget">
+                                            <form id="appointmentForm" class="grid grid-cols-12 sm:gap-x-6 sm:gap-y-4">
+                                                <div class="md:col-span-6 col-span-12 mb-4">
+                                                    <label class="form-label">Nombre del paciente (mascota)</label>
+                                                    <input type="text" name="pet_name" class="form-control placeholder:text-textmuted" 
+                                                        placeholder="Nombre de la mascota" required>
+                                                </div>
+                                                <div class="md:col-span-6 col-span-12 mb-4">
+                                                    <label class="form-label">Especie</label>
+                                                    <select name="species" class="form-control placeholder:text-textmuted" required>
+                                                        <option value="">Seleccione una especie</option>
+                                                        <option value="perro">Perro</option>
+                                                        <option value="gato">Gato</option>
+                                                    </select>
+                                                </div>
+                                                <div class="md:col-span-6 col-span-12 mb-4">
+                                                    <label class="form-label">Nombre del propietario</label>
+                                                    <input type="text" name="name" class="form-control placeholder:text-textmuted" 
+                                                        placeholder="Nombre completo del propietario" required>
+                                                </div>
+                                                <div class="md:col-span-6 col-span-12 mb-4">
+                                                    <label class="form-label">Número de contacto</label>
+                                                    <input type="text" name="contact_number" class="form-control placeholder:text-textmuted" 
+                                                        placeholder="Número de contacto" required>
+                                                </div>
+                                                <div class="md:col-span-6 col-span-12 mb-4">
+                                                    <label class="form-label">Motivo de consulta</label>
+                                                    <textarea name="treatment" class="form-control placeholder:text-textmuted" 
+                                                        placeholder="Describa el motivo de la consulta" required></textarea>
+                                                </div>
+                                                <div class="md:col-span-12 col-span-12 flex justify-center">
+                                                    <button 
+                                                        type="button"
+                                                        id="continueButton"
+                                                        class="ti-btn ti-btn-primary-full !mb-1"
+                                                        style="background-color: #59C2CB; color: white; border: none; padding: 10px 20px; border-radius: 5px;">
+                                                        Continuar
+                                                    </button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                        <div class="widget" id="calendar-widget" style="display: none;">
+                                            <div class="calendar-header">
+                                                <h3 class="calendar-title">Selecciona tu horario</h3>
+                                                <div class="month-selector">
+                                                    <button class="month-nav prev-month">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                            <polyline points="15 18 9 12 15 6"></polyline>
+                                                        </svg>
+                                                    </button>
+                                                    <span class="current-month">Abril 2024</span>
+                                                    <button class="month-nav next-month">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                            <polyline points="9 18 15 12 9 6"></polyline>
+                                                        </svg>
+                                                    </button>
+                                                </div>
                                             </div>
-                                            <div class="md:col-span-6 col-span-12 mb-4">
-                                                <label class="form-label">Especie</label>
-                                                <select name="species" class="form-control placeholder:text-textmuted" required>
-                                                    <option value="">Seleccione una especie</option>
-                                                    <option value="perro">Perro</option>
-                                                    <option value="gato">Gato</option>
-                                                </select>
-                                            </div>
-                                            <div class="md:col-span-6 col-span-12 mb-4">
-                                                <label class="form-label">Nombre del propietario</label>
-                                                <input type="text" name="name" class="form-control placeholder:text-textmuted" 
-                                                    placeholder="Nombre completo del propietario" required>
-                                            </div>
-                                            <div class="md:col-span-6 col-span-12 mb-4">
-                                                <label class="form-label">Número de contacto</label>
-                                                <input type="text" name="contact_number" class="form-control placeholder:text-textmuted" 
-                                                    placeholder="Número de contacto" required>
-                                            </div>
-                                            <div class="md:col-span-6 col-span-12 mb-4">
-                                                <label class="form-label">Fecha de cita</label>
-                                                <div class="form-group">
-                                                    <div class="input-group">
-                                                        <div class="input-group-text text-[#8c9097]"> <i class="ri-calendar-line"></i> </div>
-                                                        <input type="text" id="date" name="date" class="form-control styled-calendar" placeholder="Selecciona una fecha" required>
+                                            
+                                            <div class="calendar-body">
+                                                <div class="calendar-grid">
+                                                    <div class="weekdays">
+                                                        <div>Dom</div>
+                                                        <div>Lun</div>
+                                                        <div>Mar</div>
+                                                        <div>Mie</div>
+                                                        <div>Jue</div>
+                                                        <div>Vie</div>
+                                                        <div>Sab</div>
+                                                    </div>
+                                                    <div id="calendar-days"></div>
+                                                </div>
+                                                
+                                                <div class="time-slots">
+                                                    <div class="time-slot-grid">
+                                                        <button class="time-slot">8:00 A.M.</button>
+                                                        <button class="time-slot">9:00 A.M.</button>
+                                                        <button class="time-slot">11:30 A.M.</button>
+                                                        <button class="time-slot">12:00 P.M.</button>
+                                                        <button class="time-slot">3:00 P.M.</button>
+                                                        <button class="time-slot">4:00 P.M.</button>
+                                                        <button class="time-slot">4:30 P.M.</button>
+                                                        <button class="time-slot">6:00 P.M.</button>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="md:col-span-6 col-span-12 mb-4">
-                                                <label class="form-label">Hora de cita</label>
-                                                <div class="form-group">
-                                                    <div class="input-group">
-                                                        <div class="input-group-text text-[#8c9097]"><i class="ri-time-line"></i></div>
-                                                        <select id="timeDropdown" name="time" class="form-control" required>
-                                                            <option value="">Selecciona una hora</option>
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="md:col-span-6 col-span-12 mb-4">
-                                                <label class="form-label">Motivo de consulta</label>
-                                                <textarea name="treatment" class="form-control placeholder:text-textmuted" 
-                                                    placeholder="Describa el motivo de la consulta" required></textarea>
-                                            </div>
-                                            <div class="md:col-span-12 col-span-12 flex justify-center">
-                                                <button 
-                                                    type="submit"
-                                                    class="ti-btn ti-btn-primary-full !mb-1"
-                                                    style="background-color: #59C2CB; color: white; border: none; padding: 10px 20px; border-radius: 5px;">
-                                                    Agendar cita
+                                            
+                                            <div class="button-group">
+                                                <button type="button" id="backButton" class="ti-btn ti-btn-secondary-full">
+                                                    Regresar
+                                                </button>
+                                                <button type="submit" id="submitButton" class="ti-btn ti-btn-primary-full" style="background-color: #59C2CB;">
+                                                    Enviar
                                                 </button>
                                             </div>
-                                        </form>
+                                        </div>
                                     </div>
-                                    <div class="box-footer hidden border-t-0">
-                                    </div>
+                                <div class="box-footer hidden border-t-0">
+                            </div>
                     <!--End::row-1 -->
 				</div>
             </div>
@@ -262,52 +301,293 @@
          <!-- popperjs -->
 
          <script>
-            document.addEventListener("DOMContentLoaded", function () {
-                // Flatpickr for date selection
-                flatpickr("#date", {
-                    minDate: "today", // Permitir citas desde hoy
-                    locale: {
-                        firstDayOfWeek: 1, // Inicia la semana en lunes
-                    },
-                    onReady: function(selectedDates, dateStr, instance) {
-                        // Encuentra todas las fechas deshabilitadas
-                        const disabledDays = instance.calendarContainer.querySelectorAll(".flatpickr-day.disabled");
-                        disabledDays.forEach(day => {
-                            day.style.backgroundColor = "#f0f0f0"; // Fondo gris
-                            day.style.color = "#d3d3d3"; // Texto gris
-                            day.style.cursor = "not-allowed"; // Cursor no permitido
-                            day.style.opacity = "0.6"; // Opacidad más baja
-                        });
+            document.addEventListener('DOMContentLoaded', function() {
+                // Referencias a elementos del DOM
+                const formWidget = document.getElementById('form-widget');
+                const calendarWidget = document.getElementById('calendar-widget');
+                const appointmentForm = document.getElementById('appointmentForm');
+                const continueButton = document.getElementById('continueButton');
+                const backButton = document.getElementById('backButton');
+                const submitButton = document.getElementById('submitButton');
+                const prevMonth = document.querySelector('.prev-month');
+                const nextMonth = document.querySelector('.next-month');
+                const currentMonthElement = document.querySelector('.current-month');
+
+                // Variables globales
+                let formData = {};
+                let selectedDate = null;
+                let selectedTime = null;
+                let selectedTime24h = null;
+                const months = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 
+                            'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+                let currentDate = new Date(); // Diciembre 2024
+
+                // Funciones del calendario
+                function getDaysInMonth(year, month) {
+                    return new Date(year, month + 1, 0).getDate();
+                }
+
+                function getFirstDayOfMonth(year, month) {
+                    const firstDay = new Date(year, month, 2).getDay();
+                    return firstDay === 0 ? 7 : firstDay;
+                }
+
+                function updateCalendar() {
+                    const year = currentDate.getFullYear();
+                    const month = currentDate.getMonth();
+                    const today = new Date();
+                    currentMonthElement.textContent = `${months[month]} ${year}`;
+                    
+                    const calendarDays = document.getElementById('calendar-days');
+                    calendarDays.innerHTML = '';
+                    
+                    const firstDay = getFirstDayOfMonth(year, month);
+                    const daysInPrevMonth = getDaysInMonth(year, month - 1);
+                    const daysInCurrentMonth = getDaysInMonth(year, month);
+                    
+                    // Días del mes anterior
+                    for (let i = firstDay - 1; i > 0; i--) {
+                        const dayDiv = document.createElement('div');
+                        dayDiv.className = 'calendar-day prev-month-day disabled';
+                        dayDiv.textContent = daysInPrevMonth - i + 1;
+                        calendarDays.appendChild(dayDiv);
                     }
+                    
+                    // Días del mes actual
+                    for (let i = 1; i <= daysInCurrentMonth; i++) {
+                        const dayDiv = document.createElement('div');
+                        const currentDate = new Date(year, month, i);
+                        const isPastDay = currentDate < new Date(today.setHours(0,0,0,0));
+                        const isToday = i === today.getDate() && 
+                                        month === today.getMonth() && 
+                                        year === today.getFullYear();
+                        
+                        dayDiv.className = `calendar-day current-month-day ${isPastDay ? 'disabled' : ''}`;
+                        dayDiv.textContent = i;
+                        
+                        if (!isPastDay) {
+                            dayDiv.addEventListener('click', function() {
+                                document.querySelectorAll('.calendar-day').forEach(day => {
+                                    day.classList.remove('selected');
+                                });
+                                this.classList.add('selected');
+                                selectedDate = `${year}-${(month + 1).toString().padStart(2, '0')}-${i.toString().padStart(2, '0')}`;
+                                updateTimeSlots(); // Nueva función para actualizar horarios
+                            });
+                        }
+
+                        if (isToday) {
+                            dayDiv.classList.add('selected');
+                            selectedDate = `${year}-${(month + 1).toString().padStart(2, '0')}-${i.toString().padStart(2, '0')}`;
+                        }
+                        
+                        calendarDays.appendChild(dayDiv);
+                    }
+                    
+                    // Días del mes siguiente
+                    const totalCells = 42;
+                    const remainingCells = totalCells - (firstDay - 1 + daysInCurrentMonth);
+                    for (let i = 1; i <= remainingCells; i++) {
+                        const dayDiv = document.createElement('div');
+                        dayDiv.className = 'calendar-day next-month-day disabled';
+                        dayDiv.textContent = i;
+                        calendarDays.appendChild(dayDiv);
+                    }
+                }
+
+                function generateTimeSlots() {
+                    const timeSlotsContainer = document.querySelector('.time-slot-grid');
+                    timeSlotsContainer.innerHTML = '';
+                    
+                    for (let hour = 8; hour <= 19.5; hour += 0.5) {
+                        const hourFloor = Math.floor(hour);
+                        const minutes = hour % 1 === 0 ? '00' : '30';
+                        
+                        const time24h = `${hourFloor.toString().padStart(2, '0')}:${minutes}`;
+                        const timeFormatted = formatTime(time24h);
+                        
+                        const button = document.createElement('button');
+                        button.type = 'button';
+                        button.className = 'time-slot';
+                        button.textContent = timeFormatted;
+                        button.dataset.time24h = time24h;
+                        
+                        button.addEventListener('click', function() {
+                            if (!this.classList.contains('disabled')) {
+                                document.querySelectorAll('.time-slot.selected').forEach(el => {
+                                    el.classList.remove('selected');
+                                });
+                                this.classList.add('selected');
+                                selectedTime = this.textContent;
+                                selectedTime24h = this.dataset.time24h;
+                            }
+                        });
+                        
+                        timeSlotsContainer.appendChild(button);
+                    }
+                    updateTimeSlots(); // Llamar a updateTimeSlots después de generar los slots
+                }
+
+                function formatTime(time24h) {
+                    const [hours, minutes] = time24h.split(':');
+                    let period = 'A.M.';
+                    let hour = parseInt(hours);
+                    
+                    if (hour >= 12) {
+                        period = 'P.M.';
+                        if (hour > 12) hour -= 12;
+                    }
+                    if (hour === 0) hour = 12;
+                    
+                    return `${hour}:${minutes} ${period}`;
+                }
+
+                function updateTimeSlots() {
+                    const now = new Date();
+                    const selectedDay = selectedDate ? new Date(selectedDate) : now;
+                    const isToday = selectedDay.toDateString() === now.toDateString();
+                    const currentHour = now.getHours();
+                    const currentMinutes = now.getMinutes();
+                    
+                    document.querySelectorAll('.time-slot').forEach(slot => {
+                        const [hours, minutes] = slot.dataset.time24h.split(':');
+                        const slotHour = parseInt(hours);
+                        const slotMinutes = parseInt(minutes);
+                        
+                        if (isToday) {
+                            // Si es la misma hora, comparar minutos
+                            if (slotHour < currentHour || 
+                                (slotHour === currentHour && slotMinutes <= currentMinutes)) {
+                                slot.classList.add('disabled');
+                                slot.disabled = true;
+                            } else {
+                                slot.classList.remove('disabled');
+                                slot.disabled = false;
+                            }
+                        } else {
+                            slot.classList.remove('disabled');
+                            slot.disabled = false;
+                        }
+                    });
+                }
+
+                // Event Listeners
+                continueButton.addEventListener('click', function() {
+                    const formElements = appointmentForm.elements;
+                    for (let element of formElements) {
+                        if (element.name) {
+                            formData[element.name] = element.value;
+                        }
+                    }
+                    formWidget.style.display = 'none';
+                    calendarWidget.style.display = 'block';
+                    updateTimeSlots();
                 });
 
-                // Populate the time dropdown with hourly intervals
-                const timeDropdown = document.getElementById("timeDropdown");
+                backButton.addEventListener('click', function() {
+                    calendarWidget.style.display = 'none';
+                    formWidget.style.display = 'block';
+                });
 
-                // Set start and end hours for available time slots
-                const startHour = 8; // 8:00 AM
-                const endHour = 18; // 6:00 PM
+                // Manejador para los slots de tiempo
+                document.querySelectorAll('.time-slot').forEach(slot => {
+                    slot.addEventListener('click', function() {
+                        document.querySelectorAll('.time-slot.selected').forEach(el => {
+                            el.classList.remove('selected');
+                        });
+                        this.classList.add('selected');
+                        selectedTime = this.textContent;
+                        console.log('Hora seleccionada:', selectedTime);
+                    });
+                });
 
-                for (let hour = startHour; hour <= endHour; hour++) {
-                    // Create options for both full hour and half-hour increments
-                    const fullHourOption = document.createElement("option");
-                    const halfHourOption = document.createElement("option");
+                function convertTo24Hour(time12h) {
+                    const [time, modifier] = time12h.split(' ');
+                    let [hours, minutes] = time.split(':');
 
-                    // Format the time as HH:mm
-                    const fullHourTime = `${hour.toString().padStart(2, '0')}:00`;
-                    const halfHourTime = `${hour.toString().padStart(2, '0')}:30`;
+                    if (hours === '12') {
+                        hours = '00';
+                    }
 
-                    // Set values and text for the dropdown options
-                    fullHourOption.value = fullHourTime;
-                    fullHourOption.textContent = fullHourTime;
+                    if (modifier === 'P.M.') {
+                        hours = parseInt(hours, 10) + 12;
+                    }
 
-                    halfHourOption.value = halfHourTime;
-                    halfHourOption.textContent = halfHourTime;
-
-                    // Append options to the dropdown
-                    timeDropdown.appendChild(fullHourOption);
-                    timeDropdown.appendChild(halfHourOption);
+                    return `${hours.toString().padStart(2, '0')}:${minutes}`;
                 }
+
+                submitButton.addEventListener('click', function() {
+                    console.log('Estado actual:', { selectedDate, selectedTime, formData });
+                    
+                    if (!selectedDate || !selectedTime) {
+                        alert('Por favor selecciona fecha y hora');
+                        return;
+                    }
+
+                    // Convertir la hora a formato 24 horas para el envío
+                    const time24h = convertTo24Hour(selectedTime);
+
+                    const appointmentData = {
+                        client_id: 0,
+                        is_web: true,
+                        date: selectedDate,
+                        time: selectedTime24h, // Usar el formato 24 horas
+                        treatment: formData.treatment,
+                        name: formData.name,
+                        pet_name: formData.pet_name,
+                        species: formData.species,
+                        contact_number: formData.contact_number
+                    };
+
+                    console.log('Datos a enviar:', appointmentData);
+
+                    fetch('/api/createAppoinment', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Accept': 'application/json'
+                        },
+                        body: JSON.stringify(appointmentData)
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.message === 'Appointment creado correctamente') {
+                            alert('Solicitud de cita enviada');
+                            formData = {};
+                            selectedDate = null;
+                            selectedTime = null;
+                            appointmentForm.reset();
+                            calendarWidget.style.display = 'none';
+                            formWidget.style.display = 'block';
+                        } else {
+                            alert('Error al realizar la solicitud: ' + data.message);
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        alert('Error al procesar la solicitud');
+                    });
+                });
+
+                prevMonth.addEventListener('click', () => {
+                    const newDate = new Date(currentDate.getFullYear(), currentDate.getMonth() - 1);
+                    if (newDate.getMonth() < new Date().getMonth() && 
+                        newDate.getFullYear() <= new Date().getFullYear()) {
+                        return; // No permitir navegar a meses pasados
+                    }
+                    currentDate.setMonth(currentDate.getMonth() - 1);
+                    updateCalendar();
+                    updateTimeSlots();
+                });
+
+                nextMonth.addEventListener('click', () => {
+                    currentDate.setMonth(currentDate.getMonth() + 1);
+                    updateCalendar();
+                    updateTimeSlots();
+                });
+
+                generateTimeSlots(); // Generar los slots de tiempo
+                updateCalendar();
             });
         </script>
        
@@ -323,7 +603,7 @@
     <script src="{{ asset('/js/assets/switch.js') }}"></script>
     <script src="{{ asset('/js/assets/libs/simplebar/simplebar.min.js') }}"></script>
     <script src="{{ asset('/js/assets/libs/preline/preline.js') }}"></script>
-    <script>
+    {{-- <script>
         document.getElementById('appointmentForm').addEventListener('submit', function(e) {
             e.preventDefault();
             
@@ -362,5 +642,5 @@
                 alert('Error al procesar la solicitud');
             });
         });
-    </script>
+    </script> --}}
 </html>
