@@ -42,42 +42,35 @@ class AlertMessageNotification extends Notification
 
     public function toFmc($notifiable)
     {
-          $token = $notifiable->fcm_token;    
+        $token = $notifiable->fcm_token;
         $factory = (new Factory)->withServiceAccount(base_path('config/serverkey.json'));
         $messaging = $factory->createMessaging();
+        $msg = $this->msg;
+
+        $apnsConfig = ApnsConfig::fromArray([
+            'headers' => [
+                'apns-priority' => '10', 
+            ],
+            'payload' => [
+                'aps' => [
+                    'alert' => [
+                        'title' => 'Importante!',
+                        'body' => $msg,
+                    ],
+                    'sound' => 'default', 
+                ],
+            ],
+        ]);
 
         $message = CloudMessage::withTarget('token', $token)
-            ->withNotification(
-                FCMNotification::create()
-                    ->withTitle('Título de prueba')
-                    ->withBody($this->msg) // Cambiado de $this->message a $this->msg
-            )
-            ->withData([
-                'click_action' => 'FLUTTER_NOTIFICATION_CLICK',
-                'priority' => 'high',
-                'channel_id' => 'high_importance_channel'
-            ])
-            ->withAndroidConfig([
-                'notification' => [
-                    'channel_id' => 'high_importance_channel'
-                ]
-            ])
-            ->withApnsConfig([
-                'headers' => [
-                    'apns-priority' => '10',
-                ],
-                'payload' => [
-                    'aps' => [
-                        'sound' => 'default',
-                        'badge' => 1,
-                    ]
-                ],
-            ]);
+            ->withNotification(FCMNotification::create('Importante!', $msg))
+            ->withData(['msg' => $this->msg])
+            ->withApnsConfig($apnsConfig);
 
         try {
-            $result = $messaging->send($message);
-            return $result;
-        } catch (\Exception $e) {
+            return $messaging->send($message);
+        } catch (\Kreait\Firebase\Exception\MessagingException $e) {
+            \Log::error('Error al enviar la notificación FCM: ' . $e->getMessage());
             throw $e;
         }
     
