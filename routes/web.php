@@ -39,14 +39,11 @@ Route::get('/testsend/{doctorId}', function ($doctorId) {
     try {
         // Encuentra al doctor por ID
         $doctor = User::find($doctorId);
-
+        
         // Verifica si el doctor existe y tiene un token FCM
         if ($doctor && $doctor->fcm_token) {
-            // Define una fecha de prueba para la notificación
-            $appointmentDate = now();  // Puedes usar una fecha estática si lo prefieres
-
             // Crea la notificación
-            $notification = new AppointmentDeletedNotification($appointmentDate);
+            $notification = new PushNotification();
             
             // Enviar la notificación FCM
             $notification->toFcm($doctor);
@@ -55,17 +52,18 @@ Route::get('/testsend/{doctorId}', function ($doctorId) {
                 'message' => 'Notificación enviada con éxito',
                 'doctor' => $doctor->name,
                 'fcm_token' => $doctor->fcm_token,
+                'type' => 'test_message'
             ], 200);
         }
-
+        
         return response()->json([
             'message' => 'Doctor no encontrado o no tiene un token FCM registrado',
         ], 404);
-
     } catch (\Exception $e) {
         return response()->json([
             'message' => 'Error al enviar la notificación',
-            'error' => $e->getMessage()
+            'error' => $e->getMessage(),
+            'trace' => $e->getTraceAsString() // Añadido para mejor debugging
         ], 500);
     }
 });
