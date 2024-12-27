@@ -1,3 +1,27 @@
+.app-header {
+    position: static !important;
+    background-color: #59C2CB !important;
+    /* Eliminar o reducir los paddings y márgenes */
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+.content {
+    margin-top: 0 !important; /* Quitar el margen superior */
+    padding-top: 10px !important; /* Ajusta este valor según necesites */
+}
+
+/* Ajustar el espacio del logo y título */
+.main-profile-cover {
+    padding-top: 10px !important;
+    padding-bottom: 10px !important;
+}
+
+/* Si tienes padding en el container del formulario, ajústalo también */
+.box-body {
+    padding-top: 10px !important;
+}
+
 #widget-container {
     position: relative;
     overflow: hidden;
