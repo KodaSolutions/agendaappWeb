@@ -80,7 +80,7 @@
 
         <div class="page">
             <!-- Main-Header -->
-            <header class="app-header" style="border: none; background-color: transparent !important; box-shadow: none !important;">
+            <header class="app-header" style="border: none; background-color: transparent !important; box-shadow: none !important">
 					<nav class="main-header" aria-label="Global">
 						<div class="main-header-container !px-[0.85rem]">
 
@@ -89,7 +89,7 @@
 							</div>
 						</div>
 						<div class="header-content-right">
-							<!-- light and dark theme -->
+							{{-- <!-- light and dark theme -->
 							<div class="header-element header-theme-mode hidden !items-center sm:block !py-[1rem] !px-[0.65rem]">
 							<a aria-label="anchor"
 								class="hs-dark-mode-active:hidden flex hs-dark-mode group flex-shrink-0 justify-center items-center gap-2  rounded-full font-medium transition-all text-xs dark:bg-bodybg dark:hover:bg-black/20 dark:text-white/70 dark:hover:text-white dark:focus:ring-white/10 dark:focus:ring-offset-white/10"
@@ -110,24 +110,36 @@
 								</svg>
 							</a>
 							</div>
-							<!-- End light and dark theme -->
+							<!-- End light and dark theme --> --}}
                             <!-- share button -->
 							<div class="header-element header-theme-mode hidden !items-center sm:block !py-[1rem] !px-[0.65rem]">
-                                <a aria-label="anchor"
-                                    class="hs-dark-mode-active:hidden flex hs-dark-mode group flex-shrink-0 justify-center items-center gap-2  rounded-full font-medium transition-all text-xs dark:bg-bodybg dark:hover:bg-black/20 dark:text-white/70 dark:hover:text-white dark:focus:ring-white/10 dark:focus:ring-offset-white/10"
-                                    href="javascript:void(0);" data-hs-theme-click-value="dark">
+                                <button 
+                                    onclick="shareLink()"
+                                    class="flex justify-center items-center gap-2 rounded-full font-medium transition-all text-xs hover:bg-black/10">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="header-link-icon" height="24" viewBox="0 0 24 24" width="24">
                                         <path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.03-.47-.09-.7l7.05-4.11c.53.5 1.21.81 1.96.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.03.47.09.7L8.91 9.81c-.53-.5-1.21-.81-1.96-.81-1.66 0-3 1.34-3 3s1.34 3 3 3c.75 0 1.43-.31 1.96-.81l7.05 4.11c-.05.23-.09.46-.09.7 0 1.66 1.34 3 3 3s3-1.34 3-3-1.34-3-3-3z" />
                                     </svg>
-                                </a>
-                                <a aria-label="anchor"
-                                    class="hs-dark-mode-active:flex hidden hs-dark-mode group flex-shrink-0 justify-center items-center gap-2  rounded-full font-medium text-defaulttextcolor  transition-all text-xs dark:bg-bodybg  dark:hover:bg-black/20 dark:text-white/70 dark:hover:text-white dark:focus:ring-white/10 dark:focus:ring-offset-white/10"
-                                    href="javascript:void(0);" data-hs-theme-click-value="light">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="header-link-icon" height="24" viewBox="0 0 24 24" width="24">
-                                        <path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.03-.47-.09-.7l7.05-4.11c.53.5 1.21.81 1.96.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.03.47.09.7L8.91 9.81c-.53-.5-1.21-.81-1.96-.81-1.66 0-3 1.34-3 3s1.34 3 3 3c.75 0 1.43-.31 1.96-.81l7.05 4.11c-.05.23-.09.46-.09.7 0 1.66 1.34 3 3 3s3-1.34 3-3-1.34-3-3-3z" />
-                                    </svg>
-                                </a>
+                                </button>
                             </div>
+                            
+                            <script>
+                            function shareLink() {
+                                if (navigator.share) {
+                                    navigator.share({
+                                        title: 'Clínica Veterinaria Peninsular',
+                                        url: window.location.href
+                                    }).catch(console.error);
+                                } else {
+                                    const dummy = document.createElement('input');
+                                    document.body.appendChild(dummy);
+                                    dummy.value = window.location.href;
+                                    dummy.select();
+                                    document.execCommand('copy');
+                                    document.body.removeChild(dummy);
+                                    alert('Link copiado al portapapeles');
+                                }
+                            }
+                            </script>
                             <!-- End share button -->
 						</div>
 						</div>
@@ -302,7 +314,6 @@
 
          <script>
             document.addEventListener('DOMContentLoaded', function() {
-                // Referencias a elementos del DOM
                 const formWidget = document.getElementById('form-widget');
                 const calendarWidget = document.getElementById('calendar-widget');
                 const appointmentForm = document.getElementById('appointmentForm');
@@ -312,17 +323,16 @@
                 const prevMonth = document.querySelector('.prev-month');
                 const nextMonth = document.querySelector('.next-month');
                 const currentMonthElement = document.querySelector('.current-month');
+                const today = new Date();
+                const months = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 
+                            'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
 
-                // Variables globales
                 let formData = {};
                 let selectedDate = null;
                 let selectedTime = null;
                 let selectedTime24h = null;
-                const months = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 
-                            'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
-                let currentDate = new Date(); // Diciembre 2024
-
-                // Funciones del calendario
+                let currentDate = new Date();
+                
                 function getDaysInMonth(year, month) {
                     return new Date(year, month + 1, 0).getDate();
                 }
@@ -356,11 +366,11 @@
                     // Días del mes actual
                     for (let i = 1; i <= daysInCurrentMonth; i++) {
                         const dayDiv = document.createElement('div');
-                        const currentDate = new Date(year, month, i);
-                        const isPastDay = currentDate < new Date(today.setHours(0,0,0,0));
+                        const dateToCheck = new Date(year, month, i);
+                        const isPastDay = dateToCheck < new Date(today.getFullYear(), today.getMonth(), today.getDate());
                         const isToday = i === today.getDate() && 
-                                        month === today.getMonth() && 
-                                        year === today.getFullYear();
+                                    month === today.getMonth() && 
+                                    year === today.getFullYear();
                         
                         dayDiv.className = `calendar-day current-month-day ${isPastDay ? 'disabled' : ''}`;
                         dayDiv.textContent = i;
@@ -370,9 +380,14 @@
                                 document.querySelectorAll('.calendar-day').forEach(day => {
                                     day.classList.remove('selected');
                                 });
+                                document.querySelectorAll('.time-slot').forEach(slot => {
+                                    slot.classList.remove('selected');
+                                });
+                                selectedTime = null;
+                                selectedTime24h = null;
                                 this.classList.add('selected');
                                 selectedDate = `${year}-${(month + 1).toString().padStart(2, '0')}-${i.toString().padStart(2, '0')}`;
-                                updateTimeSlots(); // Nueva función para actualizar horarios
+                                updateTimeSlots();
                             });
                         }
 
@@ -425,7 +440,7 @@
                         
                         timeSlotsContainer.appendChild(button);
                     }
-                    updateTimeSlots(); // Llamar a updateTimeSlots después de generar los slots
+                    updateTimeSlots();
                 }
 
                 function formatTime(time24h) {
@@ -444,18 +459,33 @@
 
                 function updateTimeSlots() {
                     const now = new Date();
-                    const selectedDay = selectedDate ? new Date(selectedDate) : now;
-                    const isToday = selectedDay.toDateString() === now.toDateString();
+                    const selectedDay = selectedDate ? new Date(selectedDate + 'T00:00:00') : now;
+
+                    const todayDate = new Date(
+                        now.getFullYear(),
+                        now.getMonth(),
+                        now.getDate()
+                    ).getTime();
+
+                    const selectedDateObj = new Date(
+                        selectedDay.getFullYear(),
+                        selectedDay.getMonth(),
+                        selectedDay.getDate()
+                    ).getTime();
+
+                    const isToday = todayDate === selectedDateObj;
                     const currentHour = now.getHours();
                     const currentMinutes = now.getMinutes();
-                    
+
                     document.querySelectorAll('.time-slot').forEach(slot => {
                         const [hours, minutes] = slot.dataset.time24h.split(':');
                         const slotHour = parseInt(hours);
                         const slotMinutes = parseInt(minutes);
-                        
-                        if (isToday) {
-                            // Si es la misma hora, comparar minutos
+
+                        if (selectedDateObj < todayDate) {
+                            slot.classList.add('disabled');
+                            slot.disabled = true;
+                        } else if (isToday) {
                             if (slotHour < currentHour || 
                                 (slotHour === currentHour && slotMinutes <= currentMinutes)) {
                                 slot.classList.add('disabled');
@@ -471,7 +501,6 @@
                     });
                 }
 
-                // Event Listeners
                 continueButton.addEventListener('click', function() {
                     const formElements = appointmentForm.elements;
                     for (let element of formElements) {
@@ -489,7 +518,6 @@
                     formWidget.style.display = 'block';
                 });
 
-                // Manejador para los slots de tiempo
                 document.querySelectorAll('.time-slot').forEach(slot => {
                     slot.addEventListener('click', function() {
                         document.querySelectorAll('.time-slot.selected').forEach(el => {
@@ -524,14 +552,12 @@
                         return;
                     }
 
-                    // Convertir la hora a formato 24 horas para el envío
                     const time24h = convertTo24Hour(selectedTime);
-
                     const appointmentData = {
                         client_id: 0,
                         is_web: true,
                         date: selectedDate,
-                        time: selectedTime24h, // Usar el formato 24 horas
+                        time: selectedTime24h,
                         treatment: formData.treatment,
                         name: formData.name,
                         pet_name: formData.pet_name,
@@ -573,20 +599,30 @@
                     const newDate = new Date(currentDate.getFullYear(), currentDate.getMonth() - 1);
                     if (newDate.getMonth() < new Date().getMonth() && 
                         newDate.getFullYear() <= new Date().getFullYear()) {
-                        return; // No permitir navegar a meses pasados
+                        return;
                     }
+                    document.querySelectorAll('.time-slot').forEach(slot => {
+                        slot.classList.remove('selected');
+                    });
+                    selectedTime = null;
+                    selectedTime24h = null;
                     currentDate.setMonth(currentDate.getMonth() - 1);
                     updateCalendar();
                     updateTimeSlots();
                 });
 
                 nextMonth.addEventListener('click', () => {
+                    document.querySelectorAll('.time-slot').forEach(slot => {
+                        slot.classList.remove('selected');
+                    });
+                    selectedTime = null;
+                    selectedTime24h = null;
                     currentDate.setMonth(currentDate.getMonth() + 1);
                     updateCalendar();
                     updateTimeSlots();
                 });
 
-                generateTimeSlots(); // Generar los slots de tiempo
+                generateTimeSlots();
                 updateCalendar();
             });
         </script>
@@ -603,44 +639,4 @@
     <script src="{{ asset('/js/assets/switch.js') }}"></script>
     <script src="{{ asset('/js/assets/libs/simplebar/simplebar.min.js') }}"></script>
     <script src="{{ asset('/js/assets/libs/preline/preline.js') }}"></script>
-    {{-- <script>
-        document.getElementById('appointmentForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const formData = new FormData(this);
-            const appointmentData = {
-                client_id: 0,
-                is_web: true, 
-                date: formData.get('date'),
-                time: formData.get('time'),
-                treatment: formData.get('treatment'),
-                name: formData.get('name'),
-                pet_name: formData.get('pet_name'),
-                species: formData.get('species'),
-                contact_number: formData.get('contact_number')
-            };
-
-            fetch('/api/createAppoinment', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json'
-                },
-                body: JSON.stringify(appointmentData)
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.message === 'Appointment creado correctamente') {
-                    alert('Solicitud de cita enviada');
-                    this.reset();
-                } else {
-                    alert('Error al realizar la solicitud: ' + data.message);
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                alert('Error al procesar la solicitud');
-            });
-        });
-    </script> --}}
 </html>
