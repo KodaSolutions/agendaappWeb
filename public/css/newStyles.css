@@ -1,0 +1,355 @@
+.app-header {
+    position: static !important;
+    background-color: #59C2CB !important;
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+.content {
+    margin-top: 0 !important;
+    padding-top: 10px !important;
+}
+
+.main-profile-cover {
+    padding-top: 10px !important;
+    padding-bottom: 10px !important;
+}
+
+.box {
+    background-color: white;
+}
+
+.dark .box {
+    background-color: rgb(31 41 55);
+}
+
+.dark #widget-container,
+.dark .widget {
+    background-color: rgb(31 41 55) !important;
+}
+
+.dark .form-control,
+.dark select,
+.dark textarea {
+    background-color: rgb(15 23 42) !important;
+    color: white;
+    border-color: rgb(55 65 81);
+}
+
+.dark .form-label {
+    color: rgb(209 213 219);
+}
+
+.box-body {
+    background-color: white;
+    color: black;
+}
+
+.dark body {
+    background-color: rgb(15 23 42);
+    color: white;
+}
+
+.dark .form-control {
+    background-color: rgb(31 41 55);
+    color: white;
+    border-color: rgb(55 65 81);
+}
+
+.dark .form-label {
+    color: rgb(209 213 219);
+}
+
+.dark .main-profile-cover {
+    background-color: rgb(30 41 59) !important;
+}
+
+.dark .page-title {
+    color: white !important;
+}
+
+.dark .calendar-title {
+    color: white;
+}
+
+.dark .weekdays div {
+    color: rgb(209 213 219);
+}
+
+.dark .month-selector {
+    background-color: rgb(31 41 55);
+}
+
+.dark .time-slot {
+    background-color: rgb(31 41 55);
+    color: white;
+    border-color: rgb(55 65 81);
+}
+
+.dark .time-slot:hover:not(.disabled) {
+    background-color: rgb(55 65 81);
+}
+
+.dark .calendar-day {
+    background-color: rgb(31 41 55);
+    border-color: rgb(55 65 81);
+    color: white;
+}
+
+.dark .calendar-day.disabled {
+    background-color: rgb(17 24 39);
+    color: rgb(156 163 175);
+}
+
+.dark .time-slot.disabled {
+    background-color: rgb(17 24 39) !important;
+    color: rgb(156 163 175) !important;
+    border-color: rgb(55 65 81) !important;
+}
+
+/* Mantener el color del botón principal en dark mode */
+.dark #continueButton,
+.dark .ti-btn-primary-full {
+    background-color: #59C2CB !important;
+    color: white !important;
+}
+
+/* Ajustar el botón secundario en dark mode */
+.dark .ti-btn-secondary-full {
+    background-color: rgb(51 65 85);
+    color: white;
+}
+
+#widget-container {
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    height: 100%;
+}
+
+.widget.active {
+    opacity: 1;
+    visibility: visible;
+    left: 0;
+}
+
+.calendar-header {
+    text-align: left;
+    margin-bottom: 20px;
+    padding: 0 10px;
+}
+
+.calendar-title {
+    font-size: 1.25rem;
+    font-weight: 500;
+    margin-bottom: 8px;
+    color: #1a1a1a;
+}
+
+#continueButton {
+    background-color: #59C2CB;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+#continueButton:hover {
+    background-color: #4BA1A9;
+}
+
+.button-group button {
+    flex: 1;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.button-group button.ti-btn-secondary-full {
+    background-color: #64748B;
+    color: white;
+}
+
+.button-group button.ti-btn-secondary-full:hover {
+    background-color: #475569;
+}
+
+.button-group button.ti-btn-primary-full {
+    background-color: #59C2CB;
+    color: white;
+}
+
+.button-group button.ti-btn-primary-full:hover {
+    background-color: #4BA1A9;
+}
+
+#selected-month {
+    text-align: center;
+    font-size: 1rem;
+    color: #4a5568;
+}
+
+.month-selector {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #475569;
+    color: white;
+    padding: 10px 16px;
+    border-radius: 6px;
+    margin-bottom: 20px;
+}
+
+.month-nav {
+    background: none;
+    border: none;
+    color: white;
+    cursor: pointer;
+    padding: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: opacity 0.2s;
+}
+
+.month-nav:hover {
+    opacity: 0.8;
+}
+
+.current-month {
+    font-size: 1rem;
+    font-weight: 500;
+}
+
+.current-month-day:hover {
+    background-color: #f7fafc;
+}
+
+.current-month-day.selected {
+    background-color: #59C2CB;
+    color: white;
+}
+
+.prev-month-day,
+.next-month-day {
+    color: #a0aec0;
+    background-color: #f8f9fa;
+    cursor: default;
+}
+
+.calendar-grid {
+    margin-bottom: 20px;
+}
+
+.weekdays {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    text-align: center;
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+
+#calendar-days {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 5px;
+    padding: 10px;
+}
+
+.calendar-day {
+    padding: 10px;
+    text-align: center;
+    cursor: pointer;
+    border: 1px solid #e2e8f0;
+    border-radius: 4px;
+    transition: background-color 0.2s;
+}
+
+.calendar-day:hover {
+    background-color: #f7fafc;
+}
+
+.calendar-day.selected {
+    background-color: #59C2CB;
+    color: white;
+}
+
+.calendar-day.disabled {
+    background-color: #f0f0f0;
+    color: #a0aec0;
+    cursor: not-allowed;
+    opacity: 0.5;
+    pointer-events: none;
+}
+
+.time-slot {
+    padding: 10px;
+    border: 1px solid #e2e8f0;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.time-slot:hover:not(.disabled) {
+    background-color: #f7fafc;
+}
+
+.time-slot.selected {
+    background-color: #59C2CB;
+    color: white;
+    border-color: #59C2CB;
+}
+
+.time-slot.disabled {
+    opacity: 0.5 !important;
+    pointer-events: none !important;
+    background-color: #f0f0f0 !important;
+    color: #a0aec0 !important;
+    cursor: not-allowed !important;
+    border-color: #e2e8f0 !important;
+}
+
+.time-slot-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    padding: 15px;
+}
+
+.button-group {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+    gap: 10px;
+}
+
+@media (max-width: 768px) {
+    .time-slot-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 8px;
+    }
+
+    .time-slot {
+        padding: 12px 8px;
+        text-align: center;
+        min-height: 40px !important;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+}
+
+@media (max-width: 360px) {
+    .time-slot-grid {
+        padding: 10px;
+    }
+
+    .time-slot {
+        font-size: 0.9rem;
+        min-height: 10px;
+    }
+}
