@@ -1,25 +1,123 @@
 .app-header {
     position: static !important;
     background-color: #59C2CB !important;
-    /* Eliminar o reducir los paddings y márgenes */
     padding: 0 !important;
     margin: 0 !important;
 }
 
 .content {
-    margin-top: 0 !important; /* Quitar el margen superior */
-    padding-top: 10px !important; /* Ajusta este valor según necesites */
+    margin-top: 0 !important;
+    padding-top: 10px !important;
 }
 
-/* Ajustar el espacio del logo y título */
 .main-profile-cover {
     padding-top: 10px !important;
     padding-bottom: 10px !important;
 }
 
-/* Si tienes padding en el container del formulario, ajústalo también */
+.box {
+    background-color: white;
+}
+
+.dark .box {
+    background-color: rgb(31 41 55);
+}
+
+.dark #widget-container,
+.dark .widget {
+    background-color: rgb(31 41 55) !important;
+}
+
+.dark .form-control,
+.dark select,
+.dark textarea {
+    background-color: rgb(15 23 42) !important;
+    color: white;
+    border-color: rgb(55 65 81);
+}
+
+.dark .form-label {
+    color: rgb(209 213 219);
+}
+
 .box-body {
-    padding-top: 10px !important;
+    background-color: white;
+    color: black;
+}
+
+.dark body {
+    background-color: rgb(15 23 42);
+    color: white;
+}
+
+.dark .form-control {
+    background-color: rgb(31 41 55);
+    color: white;
+    border-color: rgb(55 65 81);
+}
+
+.dark .form-label {
+    color: rgb(209 213 219);
+}
+
+.dark .main-profile-cover {
+    background-color: rgb(30 41 59) !important;
+}
+
+.dark .page-title {
+    color: white !important;
+}
+
+.dark .calendar-title {
+    color: white;
+}
+
+.dark .weekdays div {
+    color: rgb(209 213 219);
+}
+
+.dark .month-selector {
+    background-color: rgb(31 41 55);
+}
+
+.dark .time-slot {
+    background-color: rgb(31 41 55);
+    color: white;
+    border-color: rgb(55 65 81);
+}
+
+.dark .time-slot:hover:not(.disabled) {
+    background-color: rgb(55 65 81);
+}
+
+.dark .calendar-day {
+    background-color: rgb(31 41 55);
+    border-color: rgb(55 65 81);
+    color: white;
+}
+
+.dark .calendar-day.disabled {
+    background-color: rgb(17 24 39);
+    color: rgb(156 163 175);
+}
+
+.dark .time-slot.disabled {
+    background-color: rgb(17 24 39) !important;
+    color: rgb(156 163 175) !important;
+    border-color: rgb(55 65 81) !important;
+}
+
+/* Mantener el color del botón principal en dark mode */
+.dark #continueButton,
+.dark .ti-btn-primary-full {
+    background-color: #59C2CB !important;
+    color: white !important;
+}
+
+/* Ajustar el botón secundario en dark mode */
+.dark .ti-btn-secondary-full {
+    background-color: rgb(51 65 85);
+    color: white;
 }
 
 #widget-container {
@@ -42,7 +140,7 @@
 }
 
 .calendar-title {
-    font-size: 1.25rem; /* Aproximadamente 20px */
+    font-size: 1.25rem;
     font-weight: 500;
     margin-bottom: 8px;
     color: #1a1a1a;
@@ -62,7 +160,6 @@
     background-color: #4BA1A9;
 }
 
-/* Mejorar la apariencia de los botones de acción */
 .button-group button {
     flex: 1;
     padding: 10px 20px;
@@ -95,6 +192,7 @@
     font-size: 1rem;
     color: #4a5568;
 }
+
 .month-selector {
     display: flex;
     align-items: center;
@@ -184,28 +282,26 @@
     background-color: #f0f0f0;
     color: #a0aec0;
     cursor: not-allowed;
+    opacity: 0.5;
+    pointer-events: none;
 }
 
-.time-slot:hover {
+.time-slot {
+    padding: 10px;
+    border: 1px solid #e2e8f0;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.time-slot:hover:not(.disabled) {
     background-color: #f7fafc;
 }
 
-.button-group {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 20px;
-    gap: 10px;
-}
-
-.button-group button {
-    flex: 1;
-}
-
-.calendar-day.disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-    pointer-events: none;
-    background-color: #f0f0f0;
+.time-slot.selected {
+    background-color: #59C2CB;
+    color: white;
+    border-color: #59C2CB;
 }
 
 .time-slot.disabled {
@@ -217,27 +313,43 @@
     border-color: #e2e8f0 !important;
 }
 
-.time-slot {
-    padding: 10px;
-    border: 1px solid #e2e8f0;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
-
-.time-slot:not(.disabled):hover {
-    background-color: #f7fafc;
-}
-
-.time-slot.selected {
-    background-color: #59C2CB;
-    color: white;
-    border-color: #59C2CB;
-}
-
 .time-slot-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 10px;
     padding: 15px;
+}
+
+.button-group {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+    gap: 10px;
+}
+
+@media (max-width: 768px) {
+    .time-slot-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 8px;
+    }
+
+    .time-slot {
+        padding: 12px 8px;
+        text-align: center;
+        min-height: 40px !important;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+}
+
+@media (max-width: 360px) {
+    .time-slot-grid {
+        padding: 10px;
+    }
+
+    .time-slot {
+        font-size: 0.9rem;
+        min-height: 10px;
+    }
 }
