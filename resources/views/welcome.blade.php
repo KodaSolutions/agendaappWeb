@@ -89,28 +89,28 @@
 							</div>
 						</div>
 						<div class="header-content-right">
-							{{-- <!-- light and dark theme -->
+							<!-- light and dark theme -->
 							<div class="header-element header-theme-mode hidden !items-center sm:block !py-[1rem] !px-[0.65rem]">
-							<a aria-label="anchor"
-								class="hs-dark-mode-active:hidden flex hs-dark-mode group flex-shrink-0 justify-center items-center gap-2  rounded-full font-medium transition-all text-xs dark:bg-bodybg dark:hover:bg-black/20 dark:text-white/70 dark:hover:text-white dark:focus:ring-white/10 dark:focus:ring-offset-white/10"
-								href="javascript:void(0);" data-hs-theme-click-value="dark">
-								<svg xmlns="http://www.w3.org/2000/svg" class="header-link-icon" height="24" viewBox="0 -960 960 960"
-								width="24">
-								<path
-									d="M480-120q-150 0-255-105T120-480q0-150 105-255t255-105q14 0 27.5 1t26.5 3q-41 29-65.5 75.5T444-660q0 90 63 153t153 63q55 0 101-24.5t75-65.5q2 13 3 26.5t1 27.5q0 150-105 255T480-120Zm0-80q88 0 158-48.5T740-375q-20 5-40 8t-40 3q-123 0-209.5-86.5T364-660q0-20 3-40t8-40q-78 32-126.5 102T200-480q0 116 82 198t198 82Zm-10-270Z" />
-								</svg>
-							</a>
-							<a aria-label="anchor"
-								class="hs-dark-mode-active:flex hidden hs-dark-mode group flex-shrink-0 justify-center items-center gap-2  rounded-full font-medium text-defaulttextcolor  transition-all text-xs dark:bg-bodybg  dark:hover:bg-black/20 dark:text-white/70 dark:hover:text-white dark:focus:ring-white/10 dark:focus:ring-offset-white/10"
-								href="javascript:void(0);" data-hs-theme-click-value="light">
-								<svg xmlns="http://www.w3.org/2000/svg" class="header-link-icon" fill="currentColor" height="24"
-								viewBox="0 -960 960 960" width="24">
-								<path
-									d="M480-360q50 0 85-35t35-85q0-50-35-85t-85-35q-50 0-85 35t-35 85q0 50 35 85t85 35Zm0 80q-83 0-141.5-58.5T280-480q0-83 58.5-141.5T480-680q83 0 141.5 58.5T680-480q0 83-58.5 141.5T480-280ZM200-440H40v-80h160v80Zm720 0H760v-80h160v80ZM440-760v-160h80v160h-80Zm0 720v-160h80v160h-80ZM256-650l-101-97 57-59 96 100-52 56Zm492 496-97-101 53-55 101 97-57 59Zm-98-550 97-101 59 57-100 96-56-52ZM154-212l101-97 55 53-97 101-59-57Zm326-268Z" />
-								</svg>
-							</a>
-							</div>
-							<!-- End light and dark theme --> --}}
+                                <!-- Dark mode button -->
+                                <button 
+                                    id="darkModeToggle"
+                                    class="flex hs-dark-mode-active:hidden justify-center items-center gap-2 rounded-full font-medium transition-all text-xs"
+                                    data-hs-theme-click-value="dark">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="header-link-icon" height="24" viewBox="0 -960 960 960" width="24">
+                                        <path d="M480-120q-150 0-255-105T120-480q0-150 105-255t255-105q14 0 27.5 1t26.5 3q-41 29-65.5 75.5T444-660q0 90 63 153t153 63q55 0 101-24.5t75-65.5q2 13 3 26.5t1 27.5q0 150-105 255T480-120Zm0-80q88 0 158-48.5T740-375q-20 5-40 8t-40 3q-123 0-209.5-86.5T364-660q0-20 3-40t8-40q-78 32-126.5 102T200-480q0 116 82 198t198 82Zm-10-270Z"/>
+                                    </svg>
+                                </button>
+                                <!-- Light mode button -->
+                                <button 
+                                    id="lightModeToggle"
+                                    class="hidden justify-center items-center gap-2 rounded-full font-medium text-white transition-all text-xs hover:bg-black/10"
+                                    data-hs-theme-click-value="light">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="header-link-icon" height="24" viewBox="0 -960 960 960" width="24" >
+                                        <path d="M480-360q50 0 85-35t35-85q0-50-35-85t-85-35q-50 0-85 35t-35 85q0 50 35 85t85 35Zm0 80q-83 0-141.5-58.5T280-480q0-83 58.5-141.5T480-680q83 0 141.5 58.5T680-480q0 83-58.5 141.5T480-280ZM200-440H40v-80h160v80Zm720 0H760v-80h160v80ZM440-760v-160h80v160h-80Zm0 720v-160h80v160h-80ZM256-650l-101-97 57-59 96 100-52 56Zm492 496-97-101 53-55 101 97-57 59Zm-98-550 97-101 59 57-100 96-56-52ZM154-212l101-97 55 53-97 101-59-57Zm326-268Z"/>
+                                    </svg>
+                                </button>
+                            </div>
+							<!-- End light and dark theme -->
                             <!-- share button -->
 							<div class="header-element header-theme-mode hidden !items-center sm:block !py-[1rem] !px-[0.65rem]">
                                 <button 
@@ -167,8 +167,8 @@
                     <div class="grid grid-cols-4 gap-x-6">
                         <div class="xxl:col-span-4 xl:col-span-12 col-span-12">
                             <div class="box overflow-hidden">
-                                <div class="box-body !p-0">
-                                    <div class="sm:flex items-start !py-6 px-4 main-profile-cover" style="background-color: #59C2CB !important">
+                                <div class="box-body dark:bg-navy-800 !p-0">
+                                    <div class="sm:flex items-start !py-6 px-4 main-profile-cover dark:bg-navy-800" style="background-color: #59C2CB !important">
                                         <div class="flex-grow main-profile-info">
                                             <div class="flex items-center !justify-between" style="margin-top: 0; padding-top: 10px; padding-bottom: 10px; padding-left: 20px">
                                                 <div class="md:flex block items-center justify-between mb-2 mt-0 page-header-breadcrumb" style="margin: 0;">
@@ -185,17 +185,17 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div id="widget-container" class="box-body" style="background-color: white !important">
+                                    <div id="widget-container" class="box-body dark:bg-navy-800 !important" style="background-color: white">
                                         <div class="widget active" id="form-widget">
                                             <form id="appointmentForm" class="grid grid-cols-12 sm:gap-x-6 sm:gap-y-4">
                                                 <div class="md:col-span-6 col-span-12 mb-4">
                                                     <label class="form-label">Nombre del paciente (mascota)</label>
-                                                    <input type="text" name="pet_name" class="form-control placeholder:text-textmuted" 
+                                                    <input type="text" name="pet_name" class="form-control dark:bg-navy-700 dark:text-white dark:border-navy-500" 
                                                         placeholder="Nombre de la mascota" required>
                                                 </div>
                                                 <div class="md:col-span-6 col-span-12 mb-4">
                                                     <label class="form-label">Especie</label>
-                                                    <select name="species" class="form-control placeholder:text-textmuted" required>
+                                                    <select name="species" class="form-control dark:bg-navy-700 dark:text-white dark:border-navy-500" required>
                                                         <option value="">Seleccione una especie</option>
                                                         <option value="perro">Perro</option>
                                                         <option value="gato">Gato</option>
@@ -203,17 +203,26 @@
                                                 </div>
                                                 <div class="md:col-span-6 col-span-12 mb-4">
                                                     <label class="form-label">Nombre del propietario</label>
-                                                    <input type="text" name="name" class="form-control placeholder:text-textmuted" 
+                                                    <input type="text" name="name" class="form-control dark:bg-navy-700 dark:text-white dark:border-navy-500 placeholder:text-textmuted" 
                                                         placeholder="Nombre completo del propietario" required>
                                                 </div>
                                                 <div class="md:col-span-6 col-span-12 mb-4">
                                                     <label class="form-label">Número de contacto</label>
-                                                    <input type="text" name="contact_number" class="form-control placeholder:text-textmuted" 
-                                                        placeholder="Número de contacto" required>
+                                                    <input 
+                                                        type="tel" 
+                                                        name="contact_number" 
+                                                        class="form-control dark:bg-navy-700 dark:text-white dark:border-navy-500 placeholder:text-textmuted"
+                                                        placeholder="Número de contacto (10 dígitos)" 
+                                                        pattern="[0-9]{10}"
+                                                        maxlength="10"
+                                                        oninput="this.value = this.value.replace(/[^0-9]/g, '')"
+                                                        required
+                                                    >
+                                                    <span id="phoneError" class="text-red-500 text-sm hidden">El número debe tener 10 dígitos</span>
                                                 </div>
                                                 <div class="md:col-span-6 col-span-12 mb-4">
                                                     <label class="form-label">Motivo de consulta</label>
-                                                    <textarea name="treatment" class="form-control placeholder:text-textmuted" 
+                                                    <textarea name="treatment" class="form-control dark:bg-navy-700 dark:text-white dark:border-navy-500 placeholder:text-textmuted" 
                                                         placeholder="Describa el motivo de la consulta" required></textarea>
                                                 </div>
                                                 <div class="md:col-span-12 col-span-12 flex justify-center">
@@ -228,16 +237,16 @@
                                             </form>
                                         </div>
                                         <div class="widget" id="calendar-widget" style="display: none;">
-                                            <div class="calendar-header">
+                                            <div class="calendar-header dark:bg-navy-800">
                                                 <h3 class="calendar-title">Selecciona tu horario</h3>
                                                 <div class="month-selector">
-                                                    <button class="month-nav prev-month">
+                                                    <button class="month-nav prev-month dark:text-white dark:hover:bg-navy-600">
                                                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                                             <polyline points="15 18 9 12 15 6"></polyline>
                                                         </svg>
                                                     </button>
                                                     <span class="current-month">Abril 2024</span>
-                                                    <button class="month-nav next-month">
+                                                    <button class="month-nav dark:text-white dark:hover:bg-navy-600 next-month">
                                                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                                             <polyline points="9 18 15 12 9 6"></polyline>
                                                         </svg>
@@ -246,7 +255,7 @@
                                             </div>
                                             
                                             <div class="calendar-body">
-                                                <div class="calendar-grid">
+                                                <div class="calendar-grid dark:bg-navy-800">
                                                     <div class="weekdays">
                                                         <div>Dom</div>
                                                         <div>Lun</div>
@@ -260,7 +269,7 @@
                                                 </div>
                                                 
                                                 <div class="time-slots">
-                                                    <div class="time-slot-grid">
+                                                    <div class="time-slot-grid dark:bg-navy-800">
                                                         <button class="time-slot">8:00 A.M.</button>
                                                         <button class="time-slot">9:00 A.M.</button>
                                                         <button class="time-slot">11:30 A.M.</button>
@@ -313,10 +322,42 @@
          <!-- popperjs -->
 
          <script>
+
+            document.addEventListener('DOMContentLoaded', function() {
+                const darkModeToggle = document.getElementById('darkModeToggle');
+                const lightModeToggle = document.getElementById('lightModeToggle');
+                
+                function setTheme(theme) {
+                    if (theme === 'dark') {
+                        document.documentElement.classList.add('dark');
+                        darkModeToggle.classList.add('hidden');
+                        lightModeToggle.classList.remove('hidden');
+                        // Añadir clases específicas para dark mode
+                        document.body.classList.add('dark-theme');
+                    } else {
+                        document.documentElement.classList.remove('dark');
+                        darkModeToggle.classList.remove('hidden');
+                        lightModeToggle.classList.add('hidden');
+                        // Remover clases específicas para dark mode
+                        document.body.classList.remove('dark-theme');
+                    }
+                    localStorage.setItem('theme', theme);
+                }
+                
+                darkModeToggle.addEventListener('click', () => setTheme('dark'));
+                lightModeToggle.addEventListener('click', () => setTheme('light'));
+                
+                // Cargar tema guardado o usar el predeterminado
+                const savedTheme = localStorage.getItem('theme') || 'light';
+                setTheme(savedTheme);
+            });
+            
             document.addEventListener('DOMContentLoaded', function() {
                 const formWidget = document.getElementById('form-widget');
                 const calendarWidget = document.getElementById('calendar-widget');
                 const appointmentForm = document.getElementById('appointmentForm');
+                const phoneInput = appointmentForm.querySelector('input[name="contact_number"]');
+                const phoneError = document.getElementById('phoneError');
                 const continueButton = document.getElementById('continueButton');
                 const backButton = document.getElementById('backButton');
                 const submitButton = document.getElementById('submitButton');
@@ -332,6 +373,19 @@
                 let selectedTime = null;
                 let selectedTime24h = null;
                 let currentDate = new Date();
+
+                // Event listener para validación del teléfono
+                phoneInput.addEventListener('input', function() {
+                    const isValid = this.value.length === 10 && /^[0-9]{10}$/.test(this.value);
+                    
+                    if (!isValid && this.value.length > 0) {
+                        phoneError.classList.remove('hidden');
+                        this.classList.add('border-red-500');
+                    } else {
+                        phoneError.classList.add('hidden');
+                        this.classList.remove('border-red-500');
+                    }
+                });
                 
                 function getDaysInMonth(year, month) {
                     return new Date(year, month + 1, 0).getDate();
@@ -501,13 +555,43 @@
                     });
                 }
 
-                continueButton.addEventListener('click', function() {
+                // Event listener para el botón continuar
+                continueButton.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    // Validar el número de teléfono
+                    const phoneNumber = phoneInput.value;
+                    const isPhoneValid = phoneNumber.length === 10 && /^[0-9]{10}$/.test(phoneNumber);
+                    
+                    if (!isPhoneValid) {
+                        phoneError.classList.remove('hidden');
+                        phoneInput.classList.add('border-red-500');
+                        phoneInput.focus();
+                        return;
+                    }
+                    
+                    // Validar el resto del formulario
+                    let isFormValid = true;
                     const formElements = appointmentForm.elements;
+                    
+                    // Limpiar formData antes de actualizarlo
+                    formData = {};
+                    
                     for (let element of formElements) {
-                        if (element.name) {
+                        if (element.hasAttribute('required') && !element.value) {
+                            isFormValid = false;
+                            element.classList.add('border-red-500');
+                        } else if (element.name) {
                             formData[element.name] = element.value;
+                            element.classList.remove('border-red-500');
                         }
                     }
+                    
+                    if (!isFormValid) {
+                        return;
+                    }
+                    
+                    // Si todo es válido, mostrar el calendario
                     formWidget.style.display = 'none';
                     calendarWidget.style.display = 'block';
                     updateTimeSlots();
