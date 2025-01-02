@@ -149,13 +149,45 @@
 
             <!-- Start::content  -->
             <style>
-                @media (min-width: 1024px) {
+                .content {
+                    padding: 0 1rem;
+                    max-width: 1200px;  /* Ancho máximo para el contenido */
+                    margin: 0 auto;     /* Centra el contenido horizontalmente */
+                    width: 100%;        /* Asegura que tome el ancho completo disponible */
+                }
+
+                /* Tablets y pantallas medianas */
+                @media (min-width: 768px) {
                     .content {
-                        padding: 0 30rem;
+                        padding: 0 3rem;
+                        width: 90%;     /* Reduce un poco el ancho en pantallas más grandes */
                     }
                 }
+
+                /* Laptops y pantallas grandes */
+                @media (min-width: 1024px) {
+                    .content {
+                        padding: 0 4rem;
+                        width: 80%;
+                    }
+                }
+
+                /* Pantallas extra grandes */
+                @media (min-width: 1500px) {
+                    .content {
+                        padding: 0 5rem;
+                        width: 70%;
+                    }
+                }
+
+                /* Asegurarse de que el widget-container también esté centrado */
+                #widget-container {
+                    margin: 0 auto;
+                    width: 100%;
+                    max-width: 800px;  /* Ajusta este valor según necesites */
+                }
             </style>
-            <div class="content" style="margin-inline:0rem">
+            <div class="content">
                 <!-- Start::main-content -->
 				<div class="main-content">
                   @yield('content')
@@ -165,7 +197,7 @@
 
                     <!-- Start::row-1 -->
                     <div class="grid grid-cols-4 gap-x-6">
-                        <div class="xxl:col-span-4 xl:col-span-12 col-span-12">
+                        <div class="xxl:col-span-4 xl:col-span-12 col-span-12 !px-8">
                             <div class="box overflow-hidden">
                                 <div class="box-body dark:bg-navy-800 !p-0">
                                     <div class="sm:flex items-start !py-6 px-4 main-profile-cover dark:bg-navy-800" style="background-color: #59C2CB !important">
@@ -600,6 +632,9 @@
                 backButton.addEventListener('click', function() {
                     calendarWidget.style.display = 'none';
                     formWidget.style.display = 'block';
+                    document.querySelectorAll('.time-slot.selected').forEach(el => {
+                            el.classList.remove('selected');
+                        });
                 });
 
                 document.querySelectorAll('.time-slot').forEach(slot => {
@@ -662,9 +697,9 @@
                     .then(response => response.json())
                     .then(data => {
                         if (data.message === 'Appointment creado correctamente') {
-                            alert('Solicitud de cita enviada');
+                            alert('Solicitud de cita enviada, recibirás tu confirmación cuando aceptemos tu cita.');
                             formData = {};
-                            selectedDate = null;
+                            selectedDate = `${today.getFullYear()}-${(today.getMonth() + 1).toString().padStart(2, '0')}-${today.getDate().toString().padStart(2, '0')}`;
                             selectedTime = null;
                             appointmentForm.reset();
                             calendarWidget.style.display = 'none';
@@ -676,6 +711,9 @@
                     .catch(error => {
                         console.error('Error:', error);
                         alert('Error al procesar la solicitud');
+                    });
+                    document.querySelectorAll('.time-slot').forEach(slot => {
+                        slot.classList.remove('selected');
                     });
                 });
 
