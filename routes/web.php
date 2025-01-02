@@ -9,7 +9,6 @@ use Illuminate\Support\Facades\Notification;
 use App\Http\Controllers\Auth\LoginController;
 use App\Notifications\AppointmentDeletedNotification;
 
-
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -39,9 +38,11 @@ Route::middleware('auth')->group(function () {
 Route::get('/testsend/{doctorId}', function ($doctorId) {
     try {
         $doctor = User::find($doctorId);
+
         if ($doctor && $doctor->fcm_token) {
             $appointmentDate = now(); 
             $notification = new AppointmentDeletedNotification($appointmentDate);
+
             $notification->toFcm($doctor);
             
             return response()->json([
