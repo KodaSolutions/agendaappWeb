@@ -35,3 +35,32 @@ Route::middleware('guest')->group(function () {
 Route::middleware('auth')->group(function () {
     Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 });
+Route::get('/testsend/{doctorId}', function ($doctorId) {
+    try {
+        $doctor = User::find($doctorId);
+
+        if ($doctor && $doctor->fcm_token) {
+            $appointmentDate = now();
+
+            $notification = new AppointmentDeletedNotification($appointmentDate);
+            
+            $notification->toFcm($doctor);
+            
+            return response()->json([
+                'message' => 'Notificación enviada con éxito',
+                'doctor' => $doctor->name,
+                'fcm_token' => $doctor->fcm_token,
+            ], 200);
+        }
+
+        return response()->json([
+            'message' => 'Doctor no encontrado o no tiene un token FCM registrado',
+        ], 404);
+
+    } catch (\Exception $e) {
+        return response()->json([
+            'message' => 'Error al enviar la notificación',
+            'error' => $e->getMessage()
+        ], 500);
+    }
+});
