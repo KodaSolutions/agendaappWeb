@@ -11,8 +11,7 @@ class CustomMessage extends Model
     protected $fillable = [
         'title',
         'content',
-        'active',
-        'user_id'
+        'active'
     ];
 
     protected $casts = [
