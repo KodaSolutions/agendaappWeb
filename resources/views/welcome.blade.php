@@ -162,11 +162,11 @@
                   <!-- Page Header -->
                   
                     <!-- Page Header Close -->
-
                     <!-- Start::row-1 -->
                     <div class="grid grid-cols-4 gap-x-6">
                         <div class="xxl:col-span-4 xl:col-span-12 col-span-12">
                             <div class="box overflow-hidden">
+
                                 <div class="box-body dark:bg-navy-800 !p-0">
                                     <div class="sm:flex items-start !py-6 px-4 main-profile-cover dark:bg-navy-800" style="background-color: #59C2CB !important">
                                         <div class="flex-grow main-profile-info">
@@ -723,4 +723,5 @@
     <script src="{{ asset('/js/assets/switch.js') }}"></script>
     <script src="{{ asset('/js/assets/libs/simplebar/simplebar.min.js') }}"></script>
     <script src="{{ asset('/js/assets/libs/preline/preline.js') }}"></script>
+
 </html>
