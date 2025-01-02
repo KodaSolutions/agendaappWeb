@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "agendaapp-e5568",
+  "private_key_id": "4e6808b3024372875b1516f50fbfb66f67036602",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQD10+4A022tV/76\nPCpId6w9FbVGkEPW7VZm3VL66D8Lr7sauQ077GgT2F4gIFO7hoVnvXeImSpM04S2\nzMhKUhlhUUXCemktiKBWb3GgzRM6HELurtpf2/vjmqpGq55yUX+Q3fDEO0jeJ9RD\nvWPr339gnVrZcSwEkgspB6YHHhdz1P3mzZZbPz1HpaINuEn1qADqHznQ0Dby08k3\n1Scv6cn6/YSYyb6AOlypPvLmEE/5W/Rsib2QDA7+UBQQ19PrreJDiUDCv8OCRFGd\n5gnG4+AEAxQKNtGXudatWF9Oc4G/hyPwB6nqVICLOudBIzSrgcESUnst0qbczm5D\nJDiCns33AgMBAAECggEAdGSRzgZNacO+UFDoXEN9Y7bBi9WGqV7ah/3G6lHIeAoO\ndwqjP3ohlTPe7SshOirpQ0MsM5sBsjp8Hek79CSHK9LFSt2Wqx6DfClsDYzLy7nR\n3x0e/EA2NX/nm2pqrQn1cmwDMYY4bCdDk4c6plW+A8q9VzMEem2Dpzud2sTeqdKD\nhxFfoHqqwZtdbUvSOh+NShyTnL3OU7zCcVzYNHflBJ4OPZMrFmlpa09pQRjNOj6B\ncqymZn6OgSvxvfTGUOutc2SJgmGsldMSOQrU3RE1rOOebUyDrivyQmZHRX4p06hm\nPubq6iiJNGDuDkAP3ycLnNdy9ujSMmpQtNWfUSjLcQKBgQD+2ATWWXAtgfj59t2g\nQZMaB5h8CZluctTQFEJVJ27toP+5bxKPyDSRorgdPnWvAZOI1uYJJ7sibVZawB4B\nIz4220BkkTMYrHuFTlUocTwEPyjWw3zY0TF2LSiVPFzAFYVnvqja6F1/fF4hqoZ/\nXPZTWDSYCFex3KeiZS1OzMQHRQKBgQD28XCAXf4ozPdtQsAzWSataua5m/jMvooE\nwQpZ5q/QYnroQXsM6dlX0L7uM+eIif42m/mHmaCP51VoYgOHAA7tEbVXXBO/BNh9\nRissiwyzim5mYxlVqm+fh0s3H0K8K8dXg779VMzZ+matNTXxuGsqHDwEp8A3MGTP\nq0owIGlmCwKBgHC/m+xFp6bKoR/eQ5F6UZ2rjKAcEyDVdygUPoC0MJS7rUgaRykL\n144zYqe1kZV66g4Zna6hQF7r5s/BvcSdFhJpEGUuBGA/N2r0DCMXbgkm9GeIF71J\nWEvDkPftu89T9jC/Hq+zLGKR4IeejWDd/TFEjghRcJMFX7kucEwzterNAoGAcyR0\nzoYFIkUgAYQkVkz1adr0pgsB4YXemQThrLWRuNqScIVHuOe4/edJf4wYI2QkcpYb\nrYyGf1LgUgGRn3r5erTNF2TJmEHMJ+116BkV3QlpHLiMcZM85OeSvKsI1PCczEOT\n5E+MDP9irNSoyIKzBTmRCqKlT5ZzCxnVR8d1Ha0CgYEA29co8K+0ZFixcTuw51h1\nbRmaVNqz7FYBWznEKteaHyd2I47uNNv6aW4zyKQAzCJuIJBu4h5VBCQjAuVC1SyP\nU8M/SW+9KG10Zk1grDcOC/lYspf+fFOtZHu+DRu8Ne1y77DIN5F0qkWmZQXhNH0l\nnL8l3SN6ERZEcQ+PzktTdC4=\n-----END PRIVATE KEY-----\n",
+  "client_email": "firebase-adminsdk-7t5oh@agendaapp-e5568.iam.gserviceaccount.com",
+  "client_id": "111930315098243032532",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-7t5oh%40agendaapp-e5568.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}
