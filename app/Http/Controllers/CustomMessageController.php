@@ -41,7 +41,7 @@ class CustomMessageController extends Controller
         return response()->json($message);
     }
 
-    public function destroy(CustomMessage $message)
+    public function destroy($message)
     {
         //$message->delete();
         $id = (int)$message;
