@@ -287,7 +287,6 @@ class AppointmentController extends Controller
             $validatedData = $request->validate([
                 'doctor_id' => 'required|integer'
             ]);
-
             $appointment = Appointment::find($appointmentId);
             
             if (!$appointment) {
@@ -295,16 +294,20 @@ class AppointmentController extends Controller
                     'message' => 'Cita no encontrada'
                 ], 404);
             }
-
+            
             $appointment->is_approved = 1;
             $appointment->doctor_id = $validatedData['doctor_id'];
             $appointment->save();
+            $doctor = User::find($validatedData['doctor_id']);
+            if ($doctor && $doctor->fcm_token) {
+                $notification = new AppointmentCreatedNotification($appointment->appointment_date);
+                $notification->toFcm($doctor);
+            }
 
             return response()->json([
                 'message' => 'Cita aprobada y asignada correctamente',
                 'appointment' => $appointment
             ], 200);
-
         } catch (\Exception $e) {
             return response()->json([
                 'message' => 'Error al aprobar la cita',
