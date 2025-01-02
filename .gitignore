@@ -22,3 +22,4 @@ yarn-error.log
 !/public/css/
 !config/serverkey.json
 
+"config/serverkey.json" 
