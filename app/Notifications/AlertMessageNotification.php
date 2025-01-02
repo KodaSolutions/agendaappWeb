@@ -46,6 +46,38 @@ class AlertMessageNotification extends Notification
         $factory = (new Factory)->withServiceAccount(base_path('config/serverkey.json'));
         $messaging = $factory->createMessaging();
         $msg = $this->msg;
+
+        $apnsConfig = ApnsConfig::fromArray([
+            'headers' => [
+                'apns-priority' => '10', 
+            ],
+            'payload' => [
+                'aps' => [
+                    'alert' => [
+                        'title' => 'Importante!',
+                        'body' => $msg,
+                    ],
+                    'sound' => 'default', 
+                ],
+            ],
+        ]);
+
+        $message = CloudMessage::withTarget('token', $token)
+            ->withNotification(FCMNotification::create('Importante!', $msg))
+            ->withData(['msg' => $this->msg])
+            ->withApnsConfig($apnsConfig);
+
+        try {
+            return $messaging->send($message);
+        } catch (\Kreait\Firebase\Exception\MessagingException $e) {
+            \Log::error('Error al enviar la notificación FCM: ' . $e->getMessage());
+            throw $e;
+        }
+    
+    /*    $token = $notifiable->fcm_token;
+        $factory = (new Factory)->withServiceAccount(base_path('config/serverkey.json'));
+        $messaging = $factory->createMessaging();
+        $msg = $this->msg;
         $apnsConfig = ApnsConfig::fromArray([
             'headers' => [
                 'apns-priority' => '10', 
@@ -68,7 +100,7 @@ class AlertMessageNotification extends Notification
             $messaging->send($message);
         } catch (\Kreait\Firebase\Exception\MessagingException $e) {
             \Log::error('Error al enviar la notificación FCM: ' . $e->getMessage());
-        }
+        }*/
     }
 
     /**

@@ -7,6 +7,8 @@ use App\Notifications\PushNotification;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Notification;
 use App\Http\Controllers\Auth\LoginController;
+use App\Notifications\AppointmentDeletedNotification;
+
 
 /*
 |--------------------------------------------------------------------------

@@ -26,6 +26,62 @@ class AppointmentDeletedNotification extends Notification
     {
         return [];
     }
+/*public function toFcm($notifiable)
+{
+    $token = $notifiable->fcm_token;    
+    $factory = (new Factory)->withServiceAccount(base_path('config/serverkey.json'));
+    $messaging = $factory->createMessaging();
+
+    $today = Carbon::now();
+    $appointmentDate = Carbon::parse($this->appointmentDate);
+    $diffInDays = $today->diffInDays($appointmentDate, false);
+
+    if ($diffInDays >= 0 && $diffInDays <= 7) {
+        $formattedDate = $appointmentDate->translatedFormat('l j \\d\\e F \\a \\l\\a\\s g:i A');
+        $messageText = "Cita eliminada para el: $formattedDate";
+
+        // Configuración específica para iOS (APNs)
+        $apnsConfig = ApnsConfig::fromArray([
+            'headers' => [
+                'apns-priority' => '10', // Alta prioridad para entrega inmediata
+            ],
+            'payload' => [
+                'aps' => [
+                    'alert' => [
+                        'title' => 'Cita Eliminada',
+                        'body' => $messageText,
+                    ],
+                    'sound' => 'default', // Sonido predeterminado
+                    'content-available' => 1, // Permite ejecutar código en segundo plano
+                ],
+            ],
+        ]);
+
+        // Construcción del mensaje para FCM
+        $message = CloudMessage::withTarget('token', $token)
+            ->withNotification(
+                FCMNotification::create('Cita Eliminada', $messageText)
+            )
+            ->withData([
+                'appointment_date' => $formattedDate,
+                'notification_type' => 'appointment_deleted',
+            ])
+            ->withApnsConfig($apnsConfig);
+
+        // Envío de la notificación
+        try {
+            $messaging->send($message);
+            \Log::info('Notificación FCM enviada con éxito al token: ' . $token);
+        } catch (\Kreait\Firebase\Exception\MessagingException $e) {
+            \Log::error('Error al enviar la notificación FCM: ' . $e->getMessage());
+        } catch (\Exception $e) {
+            \Log::error('Error inesperado al enviar la notificación FCM: ' . $e->getMessage());
+        }
+    } else {
+        \Log::info('La cita no está dentro de los próximos 7 días, no se enviará la notificación');
+    }
+}
+*/
 
     public function toFcm($notifiable)
     {
