@@ -36,21 +36,12 @@ Route::middleware('guest')->group(function () {
 Route::middleware('auth')->group(function () {
     Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 });
-use App\Notifications\AppointmentDeletedNotification;
 Route::get('/testsend/{doctorId}', function ($doctorId) {
     try {
-        // Encuentra al doctor por ID
         $doctor = User::find($doctorId);
-
-        // Verifica si el doctor existe y tiene un token FCM
         if ($doctor && $doctor->fcm_token) {
-            // Define una fecha de prueba para la notificación
-            $appointmentDate = now();  // Puedes usar una fecha estática si lo prefieres
-
-            // Crea la notificación
+            $appointmentDate = now(); 
             $notification = new AppointmentDeletedNotification($appointmentDate);
-            
-            // Enviar la notificación FCM
             $notification->toFcm($doctor);
             
             return response()->json([
