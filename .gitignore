@@ -20,6 +20,7 @@ yarn-error.log
 /AuthKey_*.p8
 /config/database.php
 !/public/css/
-!config/serverkey.json
+config/serverkey.json
+
 
 "config/serverkey.json" 
