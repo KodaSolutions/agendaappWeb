@@ -18,7 +18,6 @@ class CustomMessageController extends Controller
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'content' => 'required|string',
-            'user_id' => 'nullable|exists:users,id'
         ]);
 
         $message = CustomMessage::create($validated);
