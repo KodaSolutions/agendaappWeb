@@ -317,9 +317,6 @@ class AppointmentController extends Controller
     }
     public function rejectAppointment(Request $request, $appointmentId){
         try {
-            $validatedData = $request->validate([
-                'reason' => 'required|string|max:255'
-            ]);
 
             $appointment = Appointment::find($appointmentId);
             
@@ -329,12 +326,12 @@ class AppointmentController extends Controller
                 ], 404);
             }
             
-            $appointment->is_approved = 0;
-            $appointment->save();
+            //$appointment->is_approved = 0;
+            $appointment->delete();
 
             return response()->json([
-                'message' => 'Cita rechazada correctamente',
-                'appointment' => $appointment
+                'message' => 'Cita rechazada correctamente'
+                //,'appointment' => $appointment
             ], 200);
         } catch (\Exception $e) {
             return response()->json([
