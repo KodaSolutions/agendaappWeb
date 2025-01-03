@@ -40,10 +40,9 @@ Route::get('/testsend/{doctorId}', function ($doctorId) {
         $doctor = User::find($doctorId);
 
         if ($doctor && $doctor->fcm_token) {
-            $appointmentDate = now();
-
+            $appointmentDate = now(); 
             $notification = new AppointmentDeletedNotification($appointmentDate);
-            
+
             $notification->toFcm($doctor);
             
             return response()->json([
