@@ -29,16 +29,21 @@ class CustomMessageController extends Controller
         return response()->json($message);
     }
 
-    public function update(Request $request, CustomMessage $message)
-    {
+    public function update(Request $request, $id){
+        $message = CustomMessage::find($id);
+        
+        if (!$message) {
+            return response()->json(['error' => 'Mensaje no encontrado'], 404);
+        }
+
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'content' => 'required|string',
-            'active' => 'boolean'
         ]);
 
         $message->update($validated);
-        return response()->json($message);
+        
+        return response()->json($message->fresh());
     }
 
     public function destroy($message)

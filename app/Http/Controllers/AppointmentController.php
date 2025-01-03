@@ -315,4 +315,32 @@ class AppointmentController extends Controller
             ], 500);
         }
     }
+    public function rejectAppointment(Request $request, $appointmentId){
+        try {
+            $validatedData = $request->validate([
+                'reason' => 'required|string|max:255'
+            ]);
+
+            $appointment = Appointment::find($appointmentId);
+            
+            if (!$appointment) {
+                return response()->json([
+                    'message' => 'Cita no encontrada'
+                ], 404);
+            }
+            
+            $appointment->is_approved = 0;
+            $appointment->save();
+
+            return response()->json([
+                'message' => 'Cita rechazada correctamente',
+                'appointment' => $appointment
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Error al rechazar la cita',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
 }
