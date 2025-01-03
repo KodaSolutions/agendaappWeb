@@ -8,6 +8,7 @@ use App\Http\Controllers\AppointmentController;
 use App\Http\Controllers\NotificationController;
 use App\Models\User;
 use App\Models\Inventory\Producto;
+use App\Http\Controllers\CustomMessageController;
 
 /*
 |--------------------------------------------------------------------------
@@ -82,3 +83,5 @@ Route::get('ventas/producto', [CartController::class, 'getVentasPorProducto']);
 Route::get('/search', [ProductoController::class, 'search']);
 Route::get('/searchByBCode', [ProductoController::class, 'searchByBCode']);
 //Route::post('categories', [CategoryController::class, 'store']);
+//rutas custom msg
+Route::apiResource('customMessages', CustomMessageController::class);
