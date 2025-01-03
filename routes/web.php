@@ -63,4 +63,3 @@ Route::get('/testsend/{doctorId}', function ($doctorId) {
         ], 500);
     }
 });
-Route::post('createClient-zero', [LoginController::class, 'createClientWithZeroId']);

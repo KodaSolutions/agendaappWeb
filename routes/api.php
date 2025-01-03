@@ -87,3 +87,4 @@ Route::get('/searchByBCode', [ProductoController::class, 'searchByBCode']);
 //Route::post('categories', [CategoryController::class, 'store']);
 //rutas custom msg
 Route::apiResource('customMessages', CustomMessageController::class);
+Route::post('createClient-zero', [ClientController::class, 'createClientWithZeroId']);
