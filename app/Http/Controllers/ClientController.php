@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 use App\Models\Client;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -60,36 +61,19 @@ class ClientController extends Controller
     }
         public function createClientWithZeroId(Request $request)
 {
-    $validator = \Validator::make($request->all(), [
-        'name' => 'required',
-        'number' => 'required|unique:clients,number',
-        'email' => 'required|email'
-    ], [
-        'number.unique' => 'Este número ya existe para otro cliente',
-    ]);
+  
+  
+        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
+        
+        $user = new User;
+        $user->id = 1;
+        $user->name = "Admin";
+        $user->email = "admin@example.com";
+        $user->password = Hash::make('1234');
+        $user->save();
+        
+        DB::statement('SET FOREIGN_KEY_CHECKS=1;');
 
-    if ($validator->fails() && $validator->errors()->has('number')) {
-        return response()->json([
-            'message' => 'Por favor verifica que este contacto no se encuentra ya registrado',
-        ], 422);
-    }
-
-    if ($validator->fails()) {
-        return response()->json($validator->errors(), 422);
-    }
-
-    DB::statement('SET FOREIGN_KEY_CHECKS=0;');
-    
-    $client = new Client;
-    $client->id = 1;  // Forzamos el ID a 0
-    $client->name = $request->name;
-    $client->number = $request->number;
-    $client->email = $request->email;
-    $client->visit_count = 0;
-    $client->save();
-    
-    DB::statement('SET FOREIGN_KEY_CHECKS=1;');
-
-    return response()->json(['message' => 'Cliente creado correctamente', 'client' => $client], 201);
+        return response()->json(['message' => 'Usuario creado correctamente', 'user' => $user], 201);
 }
 }
