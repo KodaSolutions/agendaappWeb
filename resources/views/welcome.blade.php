@@ -553,7 +553,7 @@
                     const timeSlotsContainer = document.querySelector('.time-slot-grid');
                     timeSlotsContainer.innerHTML = '';
                     
-                    for (let hour = 8; hour <= 19.5; hour += 0.5) {
+                    for (let hour = 10.5; hour <= 18.5; hour += 0.5) {
                         const hourFloor = Math.floor(hour);
                         const minutes = hour % 1 === 0 ? '00' : '30';
                         
