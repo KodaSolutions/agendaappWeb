@@ -156,11 +156,23 @@
                     width: 100%;        /* Asegura que tome el ancho completo disponible */
                 }
 
+                @media (max-width: 360px) {
+                    .calendar-day {
+                        padding: 6px 2px !important;
+                        font-size: 0.85rem !important;
+                    }
+                }
+
                 /* Tablets y pantallas medianas */
                 @media (min-width: 768px) {
                     .content {
                         padding: 0 3rem;
                         width: 90%;     /* Reduce un poco el ancho en pantallas más grandes */
+                    }
+                    .calendar-grid {
+                        padding: 5px !important; /* Reducir el padding */
+                        width: 100%;
+                        overflow-x: hidden;
                     }
                 }
 
@@ -169,6 +181,47 @@
                     .content {
                         padding: 0 4rem;
                         width: 80%;
+                    }
+                }
+
+                @media (max-width: 768px) {
+                    /* Ajustar el contenedor principal */
+                    .calendar-grid {
+                        padding: 5px !important; /* Reducir el padding */
+                        width: 100%;
+                        overflow-x: hidden;
+                    }
+
+                    /* Ajustar el grid de días */
+                    #calendar-days {
+                        display: grid;
+                        grid-template-columns: repeat(7, 1fr);
+                        gap: 3px !important; /* Reducir el espacio entre días */
+                        padding: 5px !important;
+                    }
+
+                    /* Ajustar cada día del calendario */
+                    .calendar-day {
+                        padding: 8px 4px !important; /* Reducir el padding horizontal */
+                        font-size: 0.9rem !important;
+                        min-width: auto !important;
+                    }
+
+                    /* Ajustar los días de la semana */
+                    .weekdays {
+                        gap: 3px !important;
+                        padding: 0 5px !important;
+                    }
+
+                    .weekdays div {
+                        font-size: 0.85rem !important;
+                    }
+
+                    /* Ajustar el contenedor principal de contenido */
+                    .content {
+                        padding: 0 0.5rem !important;
+                        margin: 0 !important;
+                        overflow-x: hidden;
                     }
                 }
 
@@ -184,7 +237,7 @@
                 #widget-container {
                     margin: 0 auto;
                     width: 100%;
-                    max-width: 800px;  /* Ajusta este valor según necesites */
+                    padding: 2rem 2rem;
                 }
             </style>
             <div class="content">
@@ -196,7 +249,7 @@
                     <!-- Page Header Close -->
                     <!-- Start::row-1 -->
                     <div class="grid grid-cols-4 gap-x-6">
-                        <div class="xxl:col-span-4 xl:col-span-12 col-span-12 !px-8">
+                        <div class="xxl:col-span-4 xl:col-span-12 col-span-12 !px-2">
                             <div class="box overflow-hidden">
 
                                 <div class="box-body dark:bg-navy-800 !p-0">
