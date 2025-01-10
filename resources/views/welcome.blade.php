@@ -306,6 +306,14 @@
                                                     <span id="phoneError" class="text-red-500 text-sm hidden">El número debe tener 10 dígitos</span>
                                                 </div>
                                                 <div class="md:col-span-6 col-span-12 mb-4">
+                                                    <label class="form-label">Tipo de cita</label>
+                                                    <select name="apmnt_type" class="form-control dark:bg-navy-700 dark:text-white dark:border-navy-500" required>
+                                                        <option value="">Seleccione tipo de cita</option>
+                                                        <option value="Estética">Estética</option>
+                                                        <option value="Consulta general">Consulta general</option>
+                                                    </select>
+                                                </div>
+                                                <div class="md:col-span-6 col-span-12 mb-4">
                                                     <label class="form-label">Motivo de consulta</label>
                                                     <textarea name="treatment" class="form-control dark:bg-navy-700 dark:text-white dark:border-navy-500 placeholder:text-textmuted" 
                                                         placeholder="Describa el motivo de la consulta" required></textarea>
@@ -458,6 +466,7 @@
                 let selectedTime = null;
                 let selectedTime24h = null;
                 let currentDate = new Date();
+                let ampntType = 
 
                 // Event listener para validación del teléfono
                 phoneInput.addEventListener('input', function() {
@@ -734,7 +743,8 @@
                         name: formData.name,
                         pet_name: formData.pet_name,
                         species: formData.species,
-                        contact_number: formData.contact_number
+                        contact_number: formData.contact_number,
+                        apptmType: formData.apmnt_type
                     };
 
                     console.log('Datos a enviar:', appointmentData);
