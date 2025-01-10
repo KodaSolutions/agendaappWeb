@@ -128,11 +128,11 @@ class AppointmentController extends Controller
         $id = (int) $id;
         $user = User::find($id);
         $role_id = $user->role_id;
-        if ($role_id != 1) {
+        //if ($role_id != 1) {
             $appointments = Appointment::where('is_approved', 1)->get();
-        } else {
+        /*} else {
             $appointments = Appointment::where('doctor_id', $id)->where('is_approved', 1)->get();
-        }
+        }*/
         return response()->json(['appointments' => $appointments]);
     }
     public function getAppoinmentsAssit(){
