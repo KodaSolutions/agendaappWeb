@@ -25,7 +25,8 @@
 
 .dark #widget-container,
 .dark .widget {
-    background-color: rgb(31 41 55) !important;
+    background-color: rgb(15 23 42) !important;
+    width: 100%;
 }
 
 .dark .form-control,
