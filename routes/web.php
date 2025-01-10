@@ -8,7 +8,7 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Notification;
 use App\Http\Controllers\Auth\LoginController;
 use App\Notifications\AppointmentDeletedNotification;
-
+use Illuminate\Support\Facades\Hash;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -62,4 +62,30 @@ Route::get('/testsend/{doctorId}', function ($doctorId) {
             'error' => $e->getMessage()
         ], 500);
     }
+});
+/*Route::get('/update-role', function () {
+    $user = User::find(22);
+
+    if (!$user) {
+        return response()->json(['message' => 'Usuario no encontrado'], 404);
+    }
+    $user->role_id = 3;
+    $user->save();
+
+    return response()->json([
+        'message' => 'Rol actualizado exitosamente',
+        'user' => $user
+    ]);
+});*/
+Route::get('/update-password', function () {
+    $user = User::find(22);
+    if (!$user) {
+        return response()->json(['message' => 'Usuario no encontrado'], 404);
+    }
+    $user->password = Hash::make('1234');
+    $user->save();
+    return response()->json([
+        'message' => 'Contraseña actualizada exitosamente',
+        'user' => $user
+    ]);
 });
