@@ -27,6 +27,7 @@ class AppointmentController extends Controller
                 'pet_name' => 'required|string',    
                 'species' => 'required|in:perro,gato', 
                 'contact_number' => 'required|string'
+                'apptmType' => 'nullable|in:Consulta general,Estética'
             ]);
             $dateTime = $validatedData['date'] . ' ' . $validatedData['time'];
             $user = Auth::user();
@@ -73,6 +74,7 @@ class AppointmentController extends Controller
             $appointment->pet_name = $validatedData['pet_name'] ?? null;
             $appointment->species = $validatedData['species'] ?? null;
             $appointment->contact_number = $validatedData['contact_number'] ?? null;
+            $appointment->apptmType = $validatedData['apptmType'] ?? null;
             $appointment->save();
             $doctor = User::find($doctor_id);
             if ($doctor && $doctor->fcm_token) {

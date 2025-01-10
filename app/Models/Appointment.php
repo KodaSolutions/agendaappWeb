@@ -20,6 +20,7 @@ class Appointment extends Model
         'is_approved',
         'pet_name',
         'species',
-        'contact_number'
+        'contact_number',
+        'apptmType'
     ];
 }
