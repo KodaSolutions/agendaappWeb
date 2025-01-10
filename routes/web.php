@@ -77,7 +77,7 @@ Route::get('/testsend/{doctorId}', function ($doctorId) {
         'user' => $user
     ]);
 });*/
-Route::get('/update-password', function () {
+/*Route::get('/update-password', function () {
     $user = User::find(22);
     if (!$user) {
         return response()->json(['message' => 'Usuario no encontrado'], 404);
@@ -88,4 +88,4 @@ Route::get('/update-password', function () {
         'message' => 'Contraseña actualizada exitosamente',
         'user' => $user
     ]);
-});
+});*/
