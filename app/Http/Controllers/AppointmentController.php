@@ -26,7 +26,7 @@ class AppointmentController extends Controller
                 'is_web' => 'nullable|bool',
                 'pet_name' => 'required|string',    
                 'species' => 'required|in:perro,gato', 
-                'contact_number' => 'required|string'
+                'contact_number' => 'required|string',
                 'apptmType' => 'nullable|in:Consulta general,Estética'
             ]);
             $dateTime = $validatedData['date'] . ' ' . $validatedData['time'];
