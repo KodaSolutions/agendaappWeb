@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Notification;
 use App\Notifications\AppointmentDeletedNotification;
 use App\Notifications\AppointmentCreatedNotification;
 use App\Notifications\AppointmentEditedNotification;
+use App\Notifications\AppointmentReceivedNotification;
 class AppointmentController extends Controller
 {
     public function store(Request $request){
@@ -77,6 +78,13 @@ class AppointmentController extends Controller
             $appointment->apptmType = $validatedData['apptmType'] ?? null;
             $appointment->save();
             $doctor = User::find($doctor_id);
+            if (isset($validatedData['is_web']) && $validatedData['is_web'] === true) {
+                $users = User::whereNotNull('fcm_token')->get();
+                foreach ($users as $user) {
+                    $notification = new AppointmentReceivedNotification($appointment->appointment_date);
+                    $notification->toFcm($user);
+                }
+            }
             if ($doctor && $doctor->fcm_token) {
                 $notification = new AppointmentCreatedNotification($appointment->appointment_date);
                 $notification->toFcm($doctor);

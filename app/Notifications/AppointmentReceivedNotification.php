@@ -1,0 +1,93 @@
+<?php
+
+namespace App\Notifications;
+
+use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Notifications\Notification;
+use NotificationChannels\Apn\ApnChannel;
+use NotificationChannels\Apn\ApnMessage;
+use Kreait\Firebase\Factory;
+use Kreait\Firebase\Messaging\CloudMessage;
+use Kreait\Firebase\Messaging\Notification as FCMNotification;
+use Carbon\Carbon;
+use Kreait\Firebase\Messaging\ApnsConfig;
+use Kreait\Firebase\Messaging\ApnsPayload;
+
+class AppointmentReceivedNotification extends Notification
+{
+    use Queueable;
+    protected $appointmentDate;
+    /**
+     * Create a new notification instance.
+     *
+     * @return void
+     */
+    public function __construct($appointmentDate)
+    {
+        $this->appointmentDate = $appointmentDate;
+    }
+
+    /**
+     * Get the notification's delivery channels.
+     *
+     * @param  mixed  $notifiable
+     * @return array
+     */
+    public function via($notifiable)
+    {
+        return [];
+    }
+
+    /**
+     * Get the mail representation of the notification.
+     *
+     * @param  mixed  $notifiable
+     * @return \Illuminate\Notifications\Messages\MailMessage
+     */
+
+    /**
+     * Get the array representation of the notification.
+     *
+     * @param  mixed  $notifiable
+     * @return array
+     */
+    public function toFcm($notifiable){ 
+        $token = $notifiable->fcm_token;    
+        $factory = (new Factory)->withServiceAccount(base_path('config/serverkey.json'));
+        $messaging = $factory->createMessaging();
+        $today = Carbon::now();
+        $appointmentDate = Carbon::parse($this->appointmentDate);
+        $diffInDays = $today->diffInDays($appointmentDate, false);
+        
+            $formattedDate = $appointmentDate->translatedFormat('l j \\d\\e F \\a \\l\\a\\s g:i A');
+            $messageText = "Cita recibida desde el portal web para el: $formattedDate";
+            $apnsConfig = ApnsConfig::fromArray([
+                'headers' => [
+                    'apns-priority' => '10', 
+                ],
+                'payload' => [
+                    'aps' => [
+                        'alert' => [
+                            'title' => 'Cita recibida!',
+                            'body' => $messageText,
+                        ],
+                        'sound' => 'default', 
+                    ],
+                ],
+            ]);
+            $message = CloudMessage::withTarget('token', $token)->withNotification(FCMNotification::create('Cita recibida', $messageText))->withData(['extra_info' => $formattedDate])->withApnsConfig($apnsConfig);
+            try {
+                $messaging->send($message);
+            } catch (\Kreait\Firebase\Exception\MessagingException $e) {
+                \Log::error('Error al enviar la notificacion FCM: ' . $e->getMessage());
+            }
+        
+    }
+    public function toArray($notifiable)
+    {
+        return [
+            'appointment_date' => $this->appointmentDate,
+        ];
+    }
+}
