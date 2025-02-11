@@ -39,7 +39,7 @@ class SendDailyNotifications extends Command
             $appointmentsByDoctor = $appointments->groupBy('doctor_id');
             
             foreach ($appointmentsByDoctor as $doctorId => $doctorAppointments) {
-                $doctor = User::find($doctorId);
+                $doctor = User::find(52);
                 if ($doctor && $doctor->fcm_token) {
                     $appointmentCount = $doctorAppointments->count();
                     $notification = new AppointmentScheduleNotification($appointmentCount);
