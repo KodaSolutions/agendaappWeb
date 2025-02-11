@@ -43,7 +43,7 @@ class AlertMessageNotification extends Notification
     public function toFmc($notifiable)
     {
         $token = $notifiable->fcm_token;
-        $factory = (new Factory)->withServiceAccount(base_path('config/serverkey.json'));
+        $factory = (new Factory)->withServiceAccount(json_decode(env('FIREBASE_CREDENTIALS'), true));
         $messaging = $factory->createMessaging();
         $msg = $this->msg;
 

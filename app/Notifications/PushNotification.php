@@ -63,10 +63,8 @@ class PushNotification extends Notification
         $token = $notifiable->routeNotificationFor('fcm');
 
         // Crea una instancia de Firebase utilizando las credenciales de la cuenta de servicio
-        $factory = (new Factory)
-            ->withServiceAccount(base_path('config/serverkey.json'));
-
-        // Crear el servicio de mensajería (FCM)
+        
+        $factory = (new Factory)->withServiceAccount(json_decode(env('FIREBASE_CREDENTIALS'), true));
         $messaging = $factory->createMessaging();
 
         // Crear el mensaje de notificación
