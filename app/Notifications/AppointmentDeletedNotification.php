@@ -86,7 +86,7 @@ class AppointmentDeletedNotification extends Notification
     public function toFcm($notifiable)
     {
         $token = $notifiable->fcm_token;
-        $factory = (new Factory)->withServiceAccount(base_path('config/serverkey.json'));
+        $factory = (new Factory)->withServiceAccount(json_decode(env('FIREBASE_CREDENTIALS'), true));
         $messaging = $factory->createMessaging();
 
         $appointmentDate = Carbon::parse($this->appointmentDate);
